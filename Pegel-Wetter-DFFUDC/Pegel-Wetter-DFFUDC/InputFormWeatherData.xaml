@@ -3,7 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Pegel_Wetter_DFFUDC.InputFormWeatherData">
 
-<Label Text="Hello World!"/>
+
+<VerticalStackLayout>
+
+<Label Text="Eigene Daten hinzufügen"/>
+<Label Text="Was möchtest du hinzufügen?"/>
+
+<!-- Source Picker: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0  (last visit: 28.06.24)-->
+<Picker x:Name="picker">
+  <Picker.ItemsSource>
+    <x:Array Type="{x:Type x:String}">
+      <x:String>Pegelstand</x:String>
+      <x:String>Niederschlag</x:String>
+      <x:String>PegelstandundNiederschlag</x:String>
+      <x:String>Messstation</x:String>
+    </x:Array>
+  </Picker.ItemsSource>
+</Picker>
 
 
+
+
+</VerticalStackLayout>
 </ContentPage>
