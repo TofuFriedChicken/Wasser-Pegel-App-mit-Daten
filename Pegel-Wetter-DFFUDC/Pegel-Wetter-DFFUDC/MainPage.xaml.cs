@@ -20,6 +20,11 @@
 
             SemanticScreenReader.Announce(CounterBtn.Text);
         }
+
+        private void OnOpenInputFormClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new InputFormWeatherData());
+        }
     }
 
 }
