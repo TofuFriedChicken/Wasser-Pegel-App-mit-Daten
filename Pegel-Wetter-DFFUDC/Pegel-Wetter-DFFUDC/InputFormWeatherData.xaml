@@ -27,21 +27,21 @@
 <StackLayout x:Name="waterLevelForm" IsVisible="False">     
 
   <Label Text="Name der Messstation:"/>
-  <Entry Placeholder="..."/>
+  <Entry x:Name="inputWeatherStationName" Placeholder="..."/>
 
   <Label Text="Ort der Messung:"/>
-  <Entry Placeholder="Längengrad"/>
-  <Entry Placeholder="Breitengrad"/>
+  <Entry x:Name="inputLon" Placeholder="Längengrad"/>
+  <Entry x:Name="inputLat" Placeholder="Breitengrad"/>
 
   <Label Text="Tag und Uhrzeit der Messung:"/>
-  <Entry Placeholder="TT/MM/JJJJ"/>
-  <Entry Placeholder="Uhrzeit"/>
+  <Entry x:Name="inputDate" Placeholder="TT/MM/JJJJ"/>
+  <Entry x:Name="inputTime" Placeholder="Uhrzeit"/>
 
-   <Label Text="Angaben zum Gewässer:"/>
-  <Entry Placeholder="..."/>
+  <Label Text="Angaben zum Gewässer:"/>
+  <Entry x:Name="inputWater" Placeholder="..."/>
 
   <Label Text="Höhe des Pegelstands in cm"/>
-  <Entry Placeholder="..."/>
+  <Entry x:Name="inputWaterLevel" Placeholder="..."/>
 
 </StackLayout>
 
@@ -104,6 +104,11 @@
   <Entry Placeholder="TT/MM/JJJJ"/>
 
 </StackLayout>
+
+
+<Button x:Name="addButton" Text="Hinzufügen" Clicked="OnAddClicked"/>
+
+<Label x:Name="test" Text="test"/>
 
 
 

@@ -61,8 +61,22 @@ namespace Pegel_Wetter_DFFUDC
         }
       }
       
-
     }
+
+
+    public void OnAddClicked(object sender, EventArgs e) 
+    {
+      string weatherStationName = inputWeatherStationName.Text;
+      string lon = inputLon.Text;
+      string lat = inputLat.Text;
+      string date = inputDate.Text;
+      string time = inputTime.Text;
+      string water = inputWater.Text;
+      string waterLevel = inputWaterLevel.Text;
+
+      test.Text = weatherStationName;
+    }
+    
 
   }
 
