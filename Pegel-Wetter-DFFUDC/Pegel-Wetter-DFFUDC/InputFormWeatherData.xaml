@@ -16,13 +16,13 @@
     <x:Array Type="{x:Type x:String}">
       <x:String>Pegelstand</x:String>
       <x:String>Niederschlag</x:String>
-      <x:String>PegelstandundNiederschlag</x:String>
+      <x:String>Pegelstand und Niederschlag</x:String>
       <x:String>Messstation</x:String>
     </x:Array>
   </Picker.ItemsSource>
 </Picker>
 
-
+<!-- Form Water Level-->
 <!-- Source Visibility: https://learn.microsoft.com/en-us/answers/questions/1160894/net-maui-how-to-show-or-hide-(-collapsed-)-content (last visit: 30.06.24)-->
 <StackLayout x:Name="waterLevelForm" IsVisible="False">     
 
@@ -33,15 +33,75 @@
   <Entry Placeholder="Längengrad"/>
   <Entry Placeholder="Breitengrad"/>
 
-  <Label Text="Angaben zum Gewässer:"/>
+  <Label Text="Tag und Uhrzeit der Messung:"/>
+  <Entry Placeholder="TT/MM/JJJJ"/>
+  <Entry Placeholder="Uhrzeit"/>
+
+   <Label Text="Angaben zum Gewässer:"/>
   <Entry Placeholder="..."/>
+
+  <Label Text="Höhe des Pegelstands in cm"/>
+  <Entry Placeholder="..."/>
+
+</StackLayout>
+
+<!-- Form Rainfall-->
+<StackLayout x:Name="rainfallForm" IsVisible="False">     
+
+  <Label Text="Name der Messstation:"/>
+  <Entry Placeholder="..."/>
+
+  <Label Text="Ort der Messung:"/>
+  <Entry Placeholder="Längengrad"/>
+  <Entry Placeholder="Breitengrad"/>
 
   <Label Text="Tag und Uhrzeit der Messung:"/>
   <Entry Placeholder="TT/MM/JJJJ"/>
   <Entry Placeholder="Uhrzeit"/>
 
+  <Label Text="Niederschlagsmenge in mm"/>
+  <Entry Placeholder="..."/>
+
+</StackLayout>
+
+<!-- Form Waterlevel and Rainfall-->
+<StackLayout x:Name="waterLevelRainfallForm" IsVisible="False">     
+
+  <Label Text="Name der Messstation:"/>
+  <Entry Placeholder="..."/>
+
+  <Label Text="Ort der Messung:"/>
+  <Entry Placeholder="Längengrad"/>
+  <Entry Placeholder="Breitengrad"/>
+
+  <Label Text="Tag und Uhrzeit der Messung:"/>
+  <Entry Placeholder="TT/MM/JJJJ"/>
+  <Entry Placeholder="Uhrzeit"/>
+
+  <Label Text="Angaben zum Gewässer (der Pegelstandsmessung):"/>
+  <Entry Placeholder="..."/>
+
   <Label Text="Höhe des Pegelstands in cm"/>
   <Entry Placeholder="..."/>
+
+  <Label Text="Niederschlagsmenge in mm"/>
+  <Entry Placeholder="..."/>
+
+</StackLayout>
+
+
+<!-- Form Weather Station-->
+<StackLayout x:Name="weatherStationForm" IsVisible="False">     
+
+  <Label Text="Name der Messstation:"/>
+  <Entry Placeholder="..."/>
+
+  <Label Text="Ort der Messstation:"/>
+  <Entry Placeholder="Längengrad"/>
+  <Entry Placeholder="Breitengrad"/>
+
+  <Label Text="Inbetriebnahme der Messstation:"/>
+  <Entry Placeholder="TT/MM/JJJJ"/>
 
 </StackLayout>
 

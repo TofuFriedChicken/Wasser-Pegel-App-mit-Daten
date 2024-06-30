@@ -21,6 +21,43 @@ namespace Pegel_Wetter_DFFUDC
         if (selectedItem == "Pegelstand") 
         {
           waterLevelForm.IsVisible = true;                      //source .IsVisible https://learn.microsoft.com/en-us/answers/questions/1160894/net-maui-how-to-show-or-hide-(-collapsed-)-content (last visit: 30.06.24)
+          
+          rainfallForm.IsVisible = false;
+          waterLevelRainfallForm.IsVisible = false;
+          weatherStationForm.IsVisible = false;
+
+        }
+        else if (selectedItem == "Niederschlag")
+        {
+          rainfallForm.IsVisible = true;
+
+          waterLevelForm.IsVisible = false;
+          waterLevelRainfallForm.IsVisible = false;
+          weatherStationForm.IsVisible = false;
+        }
+        else if (selectedItem == "Pegelstand und Niederschlag")
+        {
+          waterLevelRainfallForm.IsVisible = true;
+
+          waterLevelForm.IsVisible = false;
+          rainfallForm.IsVisible = false;
+          weatherStationForm.IsVisible = false;
+        }
+        else if (selectedItem == "Messstation")
+        {
+          weatherStationForm.IsVisible = true;
+
+          waterLevelForm.IsVisible = false;
+          rainfallForm.IsVisible = false;
+          waterLevelRainfallForm.IsVisible = false;
+        }
+        else
+        {
+          waterLevelForm.IsVisible = false;
+          rainfallForm.IsVisible = false;
+          waterLevelRainfallForm.IsVisible = false;
+          weatherStationForm.IsVisible = false;
+          
         }
       }
       
