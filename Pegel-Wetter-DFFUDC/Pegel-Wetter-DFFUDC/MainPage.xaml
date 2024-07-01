@@ -11,8 +11,8 @@
             HeightRequest="540"
             VerticalOptions="FillAndExpand">
 
-        <maps:Map.MapElements>
-            <!-- Center = Standort Pegel/Niederschlag-Messstation; radius = variable für Daten verwenden -->
+         <!--<maps:Map.MapElements>
+            Center = Standort Pegel/Niederschlag-Messstation; radius = variable für Daten verwenden 
             <maps:Circle x:Name="MyCircle"
                          Center="47.6205, -122.3493" 
                          Radius="1000"
@@ -20,7 +20,7 @@
                          StrokeWidth="8"
                          FillColor="LightBlue"/>
 
-        </maps:Map.MapElements>
+        </maps:Map.MapElements>-->
         
     </maps:Map>
     
