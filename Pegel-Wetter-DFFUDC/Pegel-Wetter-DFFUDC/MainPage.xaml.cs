@@ -17,6 +17,7 @@ namespace Pegel_Wetter_DFFUDC
 
             var circle = new Circle()
             {
+                Center = location,
                 Radius = Distance.FromMeters(100000),
                 StrokeColor = Color.FromArgb("0000FF"),
                 StrokeWidth = 8,
