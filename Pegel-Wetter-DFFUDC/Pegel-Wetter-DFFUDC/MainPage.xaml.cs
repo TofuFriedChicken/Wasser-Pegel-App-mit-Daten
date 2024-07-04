@@ -1,25 +1,24 @@
-﻿namespace Pegel_Wetter_DFFUDC
+﻿using Microsoft.Maui.Maps;
+
+namespace Pegel_Wetter_DFFUDC
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
+        
         public MainPage()
         {
             InitializeComponent();
-        }
+            //center germany
+            var location = new Location(51,10);
+            var mapSpan = new MapSpan(location, 500000000, 500000000);
+            germanMap.MoveToRegion(mapSpan);
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        }
+        private void GoCurrent(object sender, EventArgs e)
         {
-            count++;
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
         }
+
     }
 
 }
