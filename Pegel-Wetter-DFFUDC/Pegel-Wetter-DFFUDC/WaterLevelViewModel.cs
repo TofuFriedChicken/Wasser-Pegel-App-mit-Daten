@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    public class WaterLevelModelView
+    public class WaterLevelViewModel
     {
         // Root myDeserializedClass = JsonConvert.DeserializeObject<List<Root>>(myJsonResponse);
         public class Root
@@ -26,6 +27,15 @@ namespace Pegel_Wetter_DFFUDC
         {
             public string shortname { get; set; }
             public string longname { get; set; }
+        }
+
+        public ObservableCollection<Root> Pins { get; set; }
+        public WaterLevelViewModel()
+        {
+            Pins = new ObservableCollection<Root>
+            {
+                new Root { latitude = 0, longitude = 0, shortname= " "},
+            };
         }
     }
 }

@@ -81,9 +81,14 @@
             
         </Frame>
 
-        <!--map from BingMaps-->
+        <!--map from BingMaps + DataTemplate for dynamic-->
         <maps:Map x:Name="germanMap" HeightRequest="660" WidthRequest="1500" MapType="Hybrid">
-        <!--heloo-->
+            <maps:Map.ItemTemplate>
+                <DataTemplate>
+                    <maps:Pin Label="{Binding shortname}"
+                              Address="{Binding latitude, Converter={StaticResource ConvertLatitudeLongitude}, ConverterParameter={Binding Longitude}}"/>
+                </DataTemplate>
+            </maps:Map.ItemTemplate>
         </maps:Map>
 
     </VerticalStackLayout>

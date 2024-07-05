@@ -4,10 +4,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maui.Controls.Maps;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    class ConvertLatitudeLongitude
+    class ConvertLatitudeLongitude : IValueConverter
     {
         public object Convert(object value, Type type, object parameter, CultureInfo culture)
         {

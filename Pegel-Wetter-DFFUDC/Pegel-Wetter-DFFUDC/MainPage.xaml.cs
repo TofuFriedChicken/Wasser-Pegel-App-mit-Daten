@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Maps;
+using Microsoft.Maui.Controls.Maps;
 
 namespace Pegel_Wetter_DFFUDC
 {
@@ -16,7 +17,11 @@ namespace Pegel_Wetter_DFFUDC
         }
         private void GoCurrent(object sender, EventArgs e)
         {
-
+            //germanMap.Pins.Add(new Pin();
+            //{
+            //    Location = new({ Binding latitude }, { Binding longitude}),
+            //    Label = "Location: " { Binding shortname},
+            //})
         }
 
     }
