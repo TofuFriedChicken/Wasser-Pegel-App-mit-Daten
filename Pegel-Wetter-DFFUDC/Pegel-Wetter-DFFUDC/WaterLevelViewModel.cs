@@ -1,18 +1,44 @@
 ﻿using System;
+using System.Net.Http;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    public class WaterLevelViewModel
+    public class WaterLevelViewModel 
     {
+
         // Root myDeserializedClass = JsonConvert.DeserializeObject<List<Root>>(myJsonResponse);
+        //public class Comment
+        //{
+        //    public string shortDescription { get; set; }
+        //    public string longDescription { get; set; }
+        //}
+
+        public class CurrentMeasurement
+        {
+            public DateTime timestamp { get; set; }
+            public double value { get; set; }
+            public string stateMnwMhw { get; set; }
+            public string stateNswHsw { get; set; }
+        }
+
+        public class GaugeZero
+        {
+            public string unit { get; set; }
+            public double value { get; set; }
+            public string validFrom { get; set; }
+        }
+
         public class Root
         {
-            public string uuid { get; set; }
+            //public string uuid { get; set; }
             public string number { get; set; }
             public string shortname { get; set; }
             public string longname { get; set; }
@@ -21,21 +47,29 @@ namespace Pegel_Wetter_DFFUDC
             public double longitude { get; set; }
             public double latitude { get; set; }
             public Water water { get; set; }
-        }
+            public List<Timeseries> timeseries { get; set; }
 
+        }
         public class Water
         {
             public string shortname { get; set; }
             public string longname { get; set; }
         }
 
-        public ObservableCollection<Root> Pins { get; set; }
-        public WaterLevelViewModel()
+        public class Timeseries
         {
-            Pins = new ObservableCollection<Root>
-            {
-                new Root { latitude = 0, longitude = 0, shortname= " "},
-            };
+            public string shortname { get; set; }
+            public string longname { get; set; }
+            public string unit { get; set; }
+            public int equidistance { get; set; }
+            public CurrentMeasurement currentMeasurement { get; set; }
+            public GaugeZero gaugeZero { get; set; }
+            //public Comment comment { get; set; }
         }
+
+
+
+
+
     }
 }
