@@ -36,6 +36,7 @@ namespace Pegel_Wetter_DFFUDC
                 OnPropertyChanged();
             }
         }
+        
 
         public async Task LoadWaterLevels()
         {

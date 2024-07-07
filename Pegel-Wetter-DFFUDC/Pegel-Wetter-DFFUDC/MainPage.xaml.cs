@@ -15,8 +15,8 @@ namespace Pegel_Wetter_DFFUDC
         {
             InitializeComponent();
             //center germany
-            var location = new Location(51,10);
-            var mapSpan = new MapSpan(location, 500000000, 500000000);
+            var germanLocation = new Location(51.1657,10.4515);
+            var mapSpan = new MapSpan(germanLocation, 10.0, 10.0);
             germanMap.MoveToRegion(mapSpan);
 
             _model = new WaterLevelModel();
@@ -31,8 +31,8 @@ namespace Pegel_Wetter_DFFUDC
             {
                 var pin = new Pin
                 {
-                    Label = position.agency,
-                    Address = position.water.longname,
+                    Label = $"{position.water.longname}: {position.number} cm",  // CurrentMeasurement.value
+                    Address = position.agency,
                     Location = new Location(position.latitude, position.longitude)
                 };
                 germanMap.Pins.Add(pin);
