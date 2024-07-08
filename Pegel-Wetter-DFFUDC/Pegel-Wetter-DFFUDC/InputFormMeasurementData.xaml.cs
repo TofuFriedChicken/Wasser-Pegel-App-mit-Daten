@@ -14,21 +14,23 @@ public partial class InputFormMeasurementData : ContentPage
 
     public InputFormMeasurementData()
     {
-        InitializeComponent();
-
         ListRainfallStation = new ObservableCollection<InputRainfallData>
             {
               new InputRainfallData { measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
               new InputRainfallData { measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
               new InputRainfallData { measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
-
         };
 
 
         ListWaterlevelStation = new ObservableCollection<InputWaterlevelData>()
         {
-        new InputWaterlevelData { measurementStationName = "Alice", lon = 4, lat = 256, date = 12, information = "6", measurementData = 2 },
+              new InputWaterlevelData { measurementStationName = "Alice", lon = 4, lat = 256, date = 12, information = "6", measurementData = 2 },
         };
+        InitializeComponent();
+
+        BindingContext = this;
+
+
 
     }
 
