@@ -36,32 +36,33 @@ namespace Pegel_Wetter_DFFUDC
             {
                 var pin = new Pin
                 {
-                    Label = $"{position.water.longname}: {position.longname} cm",  // CurrentMeasurement.value
+                    Label = $"{position.water.longname}:", // {position.currentMeasurement.value} cm",  
                     Address = position.agency,
                     Location = new Location(position.latitude, position.longitude),
-                    //Type = PinType.Place,
-                    //Icon = BitmapDescriptorFactory.FromBundle("water_4081759.png")  // versuch die Pins zu verändern
+                    //Markericon = "waterlevel.png"
                 };
                 germanMap.Pins.Add(pin);
             }
         }
 
-        public async void LoadPinsW()
+        public async void LoadPinsW()  // Rainfall
         {
-            await _rainmodel.LoadRainfall();
-            foreach (var position in _rainmodel.Positions)
-            {
-                var pin = new Pin
-                {
-                    Label = $"Standort: {position.Stationsname}",  // CurrentMeasurement.value
-                    Location = new Location(position.geoLaenge, position.geoBreite),
-                };
-                germanMap.Pins.Add(pin);
-            }
+            //await _rainmodel.LoadRainfall();
+            //foreach (var position in _rainmodel.Positions)
+            //{
+            //    var pin = new Pin
+            //    {
+            //        Label = $"Standort: {position.Stationsname}",  
+            //        Address = position.Stationsname,
+            //        Location = new Location(position.geoLaenge, position.geoBreite),
+            //    };
+            //    germanMap.Pins.Add(pin);
+            //}
         }
     }
-
-
+    // change pins?
+    //Type = PinType.Place,
+    //Icon = BitmapDescriptorFactory.FromBundle("water_4081759.png")  // versuch die Pins zu verändern
 }
 
 
