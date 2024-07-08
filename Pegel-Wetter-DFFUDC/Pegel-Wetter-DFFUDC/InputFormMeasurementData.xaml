@@ -114,8 +114,17 @@
 
 <Label x:Name="test" Text="test"/>
 
+        <ScrollView>
+            <ListView ItemsSource="{Binding ListRainfallStation}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding measurementStationName}" Detail="{Binding StationDetail}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollView>
 
 
 
-</VerticalStackLayout>
+    </VerticalStackLayout>
 </ContentPage>
