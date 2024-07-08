@@ -1,3 +1,4 @@
+
 namespace Pegel_Wetter_DFFUDC;
 
   public partial class InputFormMeasurementData : ContentPage
@@ -86,8 +87,15 @@ namespace Pegel_Wetter_DFFUDC;
         measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
       };
 
+      // var pinW = new Pin
+      // {
+      //   Location = new Location (inputWaterlevelData.lon, inputWaterlevelData.lat)
+      // };
 
-
+      // var pinR = new Pin
+      // {
+      //   Location = new Location (inputWaterlevelData.lon, inputWaterlevelData.lat)
+      // };
 
 
       string measurementStationName = inputWaterlevelData.measurementStationName;
