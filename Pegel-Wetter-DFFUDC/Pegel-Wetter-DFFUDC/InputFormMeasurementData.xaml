@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Pegel_Wetter_DFFUDC.InputFormWeatherData">
+             x:Class="Pegel_Wetter_DFFUDC.InputFormMeasurementData">
 
 
 <VerticalStackLayout>
@@ -27,21 +27,20 @@
 <StackLayout x:Name="waterLevelForm" IsVisible="False">     
 
   <Label Text="Name der Messstation:"/>
-  <Entry x:Name="inputWeatherStationName" Placeholder="..."/>
+  <Entry x:Name="inputMeasurementStationNameW" Placeholder="..."/>
 
-  <Label Text="Ort der Messung:"/>
-  <Entry x:Name="inputLon" Placeholder="Längengrad"/>
-  <Entry x:Name="inputLat" Placeholder="Breitengrad"/>
+  <Label Text="Lage der Messstation:"/>
+  <Entry x:Name="inputLonW" Placeholder="Längengrad"/>
+  <Entry x:Name="inputLatW" Placeholder="Breitengrad"/>
 
-  <Label Text="Tag und Uhrzeit der Messung:"/>
-  <Entry x:Name="inputDate" Placeholder="TT/MM/JJJJ"/>
-  <Entry x:Name="inputTime" Placeholder="Uhrzeit"/>
+  <Label Text="Tag der Messung:"/>
+  <Entry x:Name="inputDateW" Placeholder="TT/MM/JJJJ"/>
 
   <Label Text="Angaben zum Gewässer:"/>
-  <Entry x:Name="inputWater" Placeholder="..."/>
+  <Entry x:Name="inputInformationW" Placeholder="..."/>
 
   <Label Text="Höhe des Pegelstands in cm"/>
-  <Entry x:Name="inputWaterLevel" Placeholder="..."/>
+  <Entry x:Name="inputMeasurementDataW" Placeholder="..."/>
 
 </StackLayout>
 
@@ -49,34 +48,38 @@
 <StackLayout x:Name="rainfallForm" IsVisible="False">     
 
   <Label Text="Name der Messstation:"/>
-  <Entry Placeholder="..."/>
+  <Entry x:Name="inputMeasurementStationNameR" Placeholder="..."/>
 
-  <Label Text="Ort der Messung:"/>
-  <Entry Placeholder="Längengrad"/>
-  <Entry Placeholder="Breitengrad"/>
+  <Label Text="Lage der Messstation:"/>
+  <Entry x:Name="inputLonR" Placeholder="Längengrad"/>
+  <Entry x:Name="inputLatR" Placeholder="Breitengrad"/>
 
-  <Label Text="Tag und Uhrzeit der Messung:"/>
-  <Entry Placeholder="TT/MM/JJJJ"/>
-  <Entry Placeholder="Uhrzeit"/>
+  <Label Text="Tag der Messung:"/>
+  <Entry x:Name="inputDateR" Placeholder="TT/MM/JJJJ"/>
+
+  <Label Text="Ort/ Region:"/>
+  <Entry x:Name="inputInformationR" Placeholder="..."/>
 
   <Label Text="Niederschlagsmenge in mm"/>
-  <Entry Placeholder="..."/>
+  <Entry x:Name="inputMeasurementDataR" Placeholder="..."/>
 
 </StackLayout>
 
+
 <!-- Form Waterlevel and Rainfall-->
+
+<!--
 <StackLayout x:Name="waterLevelRainfallForm" IsVisible="False">     
 
   <Label Text="Name der Messstation:"/>
   <Entry Placeholder="..."/>
 
-  <Label Text="Ort der Messung:"/>
+  <Label Text="Lage der Messstation:"/>
   <Entry Placeholder="Längengrad"/>
   <Entry Placeholder="Breitengrad"/>
 
-  <Label Text="Tag und Uhrzeit der Messung:"/>
+  <Label Text="Tag der Messung:"/>
   <Entry Placeholder="TT/MM/JJJJ"/>
-  <Entry Placeholder="Uhrzeit"/>
 
   <Label Text="Angaben zum Gewässer (der Pegelstandsmessung):"/>
   <Entry Placeholder="..."/>
@@ -88,15 +91,16 @@
   <Entry Placeholder="..."/>
 
 </StackLayout>
+-->
 
-
-<!-- Form Weather Station-->
-<StackLayout x:Name="weatherStationForm" IsVisible="False">     
+<!-- Form Measurement Station-->
+<!--
+<StackLayout x:Name="measurementStationForm" IsVisible="False">     
 
   <Label Text="Name der Messstation:"/>
   <Entry Placeholder="..."/>
 
-  <Label Text="Ort der Messstation:"/>
+  <Label Text="Lage der Messstation:"/>
   <Entry Placeholder="Längengrad"/>
   <Entry Placeholder="Breitengrad"/>
 
@@ -104,7 +108,7 @@
   <Entry Placeholder="TT/MM/JJJJ"/>
 
 </StackLayout>
-
+-->
 
 <Button x:Name="addButton" Text="Hinzufügen" Clicked="OnAddClicked"/>
 

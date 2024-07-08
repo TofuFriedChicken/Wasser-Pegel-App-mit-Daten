@@ -23,8 +23,10 @@
 
         private void OnOpenInputFormClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new InputFormWeatherData());
+            Navigation.PushAsync(new InputFormMeasurementData());
         }
+
+
     }
 
 }

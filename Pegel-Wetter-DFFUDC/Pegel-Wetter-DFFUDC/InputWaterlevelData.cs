@@ -1,19 +1,14 @@
 namespace Pegel_Wetter_DFFUDC;
 
-  interface IMeasurementData
-  {
-  //information about measurement station
+public class InputWaterlevelData : IMeasurementData
+{
   public string measurementStationName { get; set; }
+
   public double lon { get; set; }
   public double lat { get; set; }
 
-  //further information (date, location or water)
   public int date { get; set; }
   public string information { get; set; }
 
-  //measurement data
   public double measurementData { get; set; }
-  }
-
-
-
+}
