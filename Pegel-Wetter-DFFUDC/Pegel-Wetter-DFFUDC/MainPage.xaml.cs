@@ -7,18 +7,20 @@
         public MainPage()
         {
             InitializeComponent();
-        }
+            try
+            {
+                var lineSeries = new LineSeries<double>
+                {
+                    Values = new double[] { 3, 5, 7, 4, 3, 6, 8 }
+                };
 
-        private void OnCounterClicked(object sender, EventArgs e)
-        {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+                cartesianChart.Series = new ISeries[] { lineSeries };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                throw;
+            }
         }
     }
 
