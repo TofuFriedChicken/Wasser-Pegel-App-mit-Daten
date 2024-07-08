@@ -25,47 +25,48 @@ namespace Pegel_Wetter_DFFUDC
         {
             public DateTime timestamp { get; set; }
             public double value { get; set; }
-            public string stateMnwMhw { get; set; }
-            public string stateNswHsw { get; set; }
+            //public string stateMnwMhw { get; set; }
+            //public string stateNswHsw { get; set; }
         }
 
-        public class GaugeZero
-        {
-            public string unit { get; set; }
-            public double value { get; set; }
-            public string validFrom { get; set; }
-        }
+        //public class GaugeZero
+        //{
+        //    public string unit { get; set; }
+        //    public double value { get; set; }
+        //    public string validFrom { get; set; }
+        //}
 
         public class Root
         {
             //public string uuid { get; set; }
-            public string number { get; set; }
-            public string shortname { get; set; }
+            //public string number { get; set; }
+            //public string shortname { get; set; }
             public string longname { get; set; }
-            public double km { get; set; }
+            //public double km { get; set; }
             public string agency { get; set; }
             public double longitude { get; set; }
             public double latitude { get; set; }
             public Water water { get; set; }
-            public List<Timeseries> timeseries { get; set; }
+            //public List<Timeseries> timeseries { get; set; }
+            public CurrentMeasurement currentMeasurement { get; set; }
 
         }
         public class Water
         {
-            public string shortname { get; set; }
+            //public string shortname { get; set; }
             public string longname { get; set; }
         }
 
-        public class Timeseries
-        {
-            public string shortname { get; set; }
-            public string longname { get; set; }
-            public string unit { get; set; }
-            public int equidistance { get; set; }
-            public CurrentMeasurement currentMeasurement { get; set; }
-            public GaugeZero gaugeZero { get; set; }
-            //public Comment comment { get; set; }
-        }
+        //public class Timeseries
+        //{
+        //    public string shortname { get; set; }
+        //    public string longname { get; set; }
+        //    public string unit { get; set; }
+        //    public int equidistance { get; set; }
+        //    public CurrentMeasurement currentMeasurement { get; set; }
+        //    public GaugeZero gaugeZero { get; set; }
+        //    public Comment comment { get; set; }
+        //}
 
 
 

@@ -82,20 +82,9 @@
             
         </Frame>
    
-        <!--map from BingMaps + DataTemplate for dynamic-->
-        <maps:Map x:Name="germanMap" HeightRequest="660" WidthRequest="1500" MapType="Hybrid">
-            <!--<maps:Map.ItemTemplate>
-                <DataTemplate>
-                    <maps:Pin Label= "{Binding agency}"
-                              Address= "{Binding longname}">
-                        <maps:Pin.Location>
-                            <maps:Location Latitude="{Binding latitude}" Longitude="{Binding longitude}"/>
-                        </maps:Pin.Location>
-                    </maps:Pin>       
+        <!--map from BingMaps-->
+        <maps:Map x:Name="germanMap" HeightRequest="660" WidthRequest="1500" MapType="Hybrid"/>
 
-                </DataTemplate>
-            </maps:Map.ItemTemplate>-->
-        </maps:Map>
 
     </VerticalStackLayout>
 
