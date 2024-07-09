@@ -1,5 +1,8 @@
 
 using System.Collections.ObjectModel;
+using static System.Collections.Specialized.BitVector32;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Runtime.InteropServices;
 
 namespace Pegel_Wetter_DFFUDC;
 
@@ -85,12 +88,13 @@ public partial class InputFormMeasurementData : ContentPage
 
             }
         }
-
     }
 
 
     public void OnAddClicked(object sender, EventArgs e)
     {
+
+        /*
         InputWaterlevelData inputWaterlevelData = new InputWaterlevelData
         {
             measurementStationName = inputMeasurementStationNameW.Text,
@@ -110,8 +114,30 @@ public partial class InputFormMeasurementData : ContentPage
             information = inputInformationR.Text,
             measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
         };
+       */
 
 
+        ListWaterlevelStation.Add(new InputWaterlevelData
+        {
+            measurementStationName = inputMeasurementStationNameW.Text,
+            lon = Convert.ToDouble(inputLonW.Text),
+            lat = Convert.ToDouble(inputLatW.Text),
+            date = Convert.ToInt32(inputDateW.Text),
+            information = inputInformationW.Text,
+            measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
+        });
+
+ 
+
+        ListRainfallStation.Add(new InputRainfallData
+        {
+            measurementStationName = inputMeasurementStationNameW.Text,
+            lon = Convert.ToDouble(inputLonW.Text),
+            lat = Convert.ToDouble(inputLatW.Text),
+            date = Convert.ToInt32(inputDateW.Text),
+            information = inputInformationW.Text,
+            measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
+        });
 
         // var pinW = new Pin
         // {
@@ -124,9 +150,9 @@ public partial class InputFormMeasurementData : ContentPage
         // };
 
 
-        string measurementStationName = inputWaterlevelData.measurementStationName;
+    //    string measurementStationName = inputWaterlevelData.measurementStationName;
 
-        test.Text = measurementStationName;
+   //     test.Text = measurementStationName;
 
 
 
