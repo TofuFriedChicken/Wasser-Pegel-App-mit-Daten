@@ -13,6 +13,8 @@ public partial class InputFormMeasurementData : ContentPage
 
     public ObservableCollection<InputWaterlevelData> ListWaterlevelStation { get; set; }
 
+    public ObservableCollection<InputintoHistory> ListHistory { get; set; }
+
 
 
     public InputFormMeasurementData()
@@ -36,6 +38,7 @@ public partial class InputFormMeasurementData : ContentPage
 
 
     }
+
 
     private void OnPickerSelectedIndexChanged(object sender, EventArgs e)     //source eventhandler https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0 (last visit: 30.06.24)
     {
@@ -94,29 +97,41 @@ public partial class InputFormMeasurementData : ContentPage
     public void OnAddClicked(object sender, EventArgs e)
     {
 
-        /*
-        InputWaterlevelData inputWaterlevelData = new InputWaterlevelData
+        
+        var picker = (Picker)sender;
+        int selectedIndex = picker.SelectedIndex;
+        string selectedItem = (string)picker.ItemsSource[selectedIndex];
+
+
+        if (selectedItem == "Pegelstand")
         {
-            measurementStationName = inputMeasurementStationNameW.Text,
-            lon = Convert.ToDouble(inputLonW.Text),
-            lat = Convert.ToDouble(inputLatW.Text),
-            date = Convert.ToInt32(inputDateW.Text),
-            information = inputInformationW.Text,
-            measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
-        };
 
-        InputRainfallData inputRainfallData = new InputRainfallData
+            ListHistory.Add(new InputintoHistory
+            {
+                measurementStationName = inputMeasurementStationNameW.Text,
+                lon = Convert.ToDouble(inputLonW.Text),
+                lat = Convert.ToDouble(inputLatW.Text),
+                date = Convert.ToInt32(inputDateW.Text),
+                information = inputInformationW.Text,
+                measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
+            });
+
+        }
+        else if (selectedItem == "Niderschlag")
         {
-            measurementStationName = inputMeasurementStationNameR.Text,
-            lon = Convert.ToDouble(inputLonR.Text),
-            lat = Convert.ToDouble(inputLatR.Text),
-            date = Convert.ToInt32(inputDateR.Text),
-            information = inputInformationR.Text,
-            measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
-        };
-       */
+            ListRainfallStation.Add(new InputRainfallData
+            {
+                measurementStationName = inputMeasurementStationNameR.Text,
+                lon = Convert.ToDouble(inputLonR.Text),
+                lat = Convert.ToDouble(inputLatR.Text),
+                date = Convert.ToInt32(inputDateR.Text),
+                information = inputInformationR.Text,
+                measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
+            });
 
+        }
 
+        
         ListWaterlevelStation.Add(new InputWaterlevelData
         {
             measurementStationName = inputMeasurementStationNameW.Text,
@@ -127,34 +142,15 @@ public partial class InputFormMeasurementData : ContentPage
             measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
         });
 
- 
-
         ListRainfallStation.Add(new InputRainfallData
         {
-            measurementStationName = inputMeasurementStationNameW.Text,
-            lon = Convert.ToDouble(inputLonW.Text),
-            lat = Convert.ToDouble(inputLatW.Text),
-            date = Convert.ToInt32(inputDateW.Text),
-            information = inputInformationW.Text,
-            measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
+            measurementStationName = inputMeasurementStationNameR.Text,
+            lon = Convert.ToDouble(inputLonR.Text),
+            lat = Convert.ToDouble(inputLatR.Text),
+            date = Convert.ToInt32(inputDateR.Text),
+            information = inputInformationR.Text,
+            measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
         });
-
-        // var pinW = new Pin
-        // {
-        //   Location = new Location (inputWaterlevelData.lon, inputWaterlevelData.lat)
-        // };
-
-        // var pinR = new Pin
-        // {
-        //   Location = new Location (inputWaterlevelData.lon, inputWaterlevelData.lat)
-        // };
-
-
-    //    string measurementStationName = inputWaterlevelData.measurementStationName;
-
-   //     test.Text = measurementStationName;
-
-
 
     }
 

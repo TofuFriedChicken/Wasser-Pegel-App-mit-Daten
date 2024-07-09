@@ -4,71 +4,71 @@
              x:Class="Pegel_Wetter_DFFUDC.InputFormMeasurementData">
 
 
-<VerticalStackLayout>
+    <VerticalStackLayout>
 
-<Label Text="Eigene Daten hinzufügen"/>
-<Label Text="Was möchtest du hinzufügen?"/>
-
-
-<!-- Source Picker: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0  (last visit: 28.06.24)-->
-<Picker x:Name="picker" SelectedIndexChanged="OnPickerSelectedIndexChanged">
-  <Picker.ItemsSource>
-    <x:Array Type="{x:Type x:String}">
-      <x:String>Pegelstand</x:String>
-      <x:String>Niederschlag</x:String>
-      <x:String>Pegelstand und Niederschlag</x:String>
-      <x:String>Messstation</x:String>
-    </x:Array>
-  </Picker.ItemsSource>
-</Picker>
-
-<!-- Form Water Level-->
-<!-- Source Visibility: https://learn.microsoft.com/en-us/answers/questions/1160894/net-maui-how-to-show-or-hide-(-collapsed-)-content (last visit: 30.06.24)-->
-<StackLayout x:Name="waterLevelForm" IsVisible="False">     
-
-  <Label Text="Name der Messstation:"/>
-  <Entry x:Name="inputMeasurementStationNameW" Placeholder="..."/>
-
-  <Label Text="Lage der Messstation:"/>
-  <Entry x:Name="inputLonW" Placeholder="Längengrad"/>
-  <Entry x:Name="inputLatW" Placeholder="Breitengrad"/>
-
-  <Label Text="Tag der Messung:"/>
-  <Entry x:Name="inputDateW" Placeholder="TT/MM/JJJJ"/>
-
-  <Label Text="Angaben zum Gewässer:"/>
-  <Entry x:Name="inputInformationW" Placeholder="..."/>
-
-  <Label Text="Höhe des Pegelstands in cm"/>
-  <Entry x:Name="inputMeasurementDataW" Placeholder="..."/>
-
-</StackLayout>
-
-<!-- Form Rainfall-->
-<StackLayout x:Name="rainfallForm" IsVisible="False">     
-
-  <Label Text="Name der Messstation:"/>
-  <Entry x:Name="inputMeasurementStationNameR" Placeholder="..."/>
-
-  <Label Text="Lage der Messstation:"/>
-  <Entry x:Name="inputLonR" Placeholder="Längengrad"/>
-  <Entry x:Name="inputLatR" Placeholder="Breitengrad"/>
-
-  <Label Text="Tag der Messung:"/>
-  <Entry x:Name="inputDateR" Placeholder="TT/MM/JJJJ"/>
-
-  <Label Text="Ort/ Region:"/>
-  <Entry x:Name="inputInformationR" Placeholder="..."/>
-
-  <Label Text="Niederschlagsmenge in mm"/>
-  <Entry x:Name="inputMeasurementDataR" Placeholder="..."/>
-
-</StackLayout>
+        <Label Text="Eigene Daten hinzufügen"/>
+        <Label Text="Was möchtest du hinzufügen?"/>
 
 
-<!-- Form Waterlevel and Rainfall-->
+        <!-- Source Picker: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0  (last visit: 28.06.24)-->
+        <Picker x:Name="picker" SelectedIndexChanged="OnPickerSelectedIndexChanged">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Pegelstand</x:String>
+                    <x:String>Niederschlag</x:String>
+                    <x:String>Pegelstand und Niederschlag</x:String>
+                    <x:String>Messstation</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
 
-<!--
+        <!-- Form Water Level-->
+        <!-- Source Visibility: https://learn.microsoft.com/en-us/answers/questions/1160894/net-maui-how-to-show-or-hide-(-collapsed-)-content (last visit: 30.06.24)-->
+        <StackLayout x:Name="waterLevelForm" IsVisible="False">
+
+            <Label Text="Name der Messstation:"/>
+            <Entry x:Name="inputMeasurementStationNameW" Placeholder="..."/>
+
+            <Label Text="Lage der Messstation:"/>
+            <Entry x:Name="inputLonW" Placeholder="Längengrad"/>
+            <Entry x:Name="inputLatW" Placeholder="Breitengrad"/>
+
+            <Label Text="Tag der Messung:"/>
+            <Entry x:Name="inputDateW" Placeholder="TT/MM/JJJJ"/>
+
+            <Label Text="Angaben zum Gewässer:"/>
+            <Entry x:Name="inputInformationW" Placeholder="..."/>
+
+            <Label Text="Höhe des Pegelstands in cm"/>
+            <Entry x:Name="inputMeasurementDataW" Placeholder="..."/>
+
+        </StackLayout>
+
+        <!-- Form Rainfall-->
+        <StackLayout x:Name="rainfallForm" IsVisible="False">
+
+            <Label Text="Name der Messstation:"/>
+            <Entry x:Name="inputMeasurementStationNameR" Placeholder="..."/>
+
+            <Label Text="Lage der Messstation:"/>
+            <Entry x:Name="inputLonR" Placeholder="Längengrad"/>
+            <Entry x:Name="inputLatR" Placeholder="Breitengrad"/>
+
+            <Label Text="Tag der Messung:"/>
+            <Entry x:Name="inputDateR" Placeholder="TT/MM/JJJJ"/>
+
+            <Label Text="Ort/ Region:"/>
+            <Entry x:Name="inputInformationR" Placeholder="..."/>
+
+            <Label Text="Niederschlagsmenge in mm"/>
+            <Entry x:Name="inputMeasurementDataR" Placeholder="..."/>
+
+        </StackLayout>
+
+
+        <!-- Form Waterlevel and Rainfall-->
+
+        <!--
 <StackLayout x:Name="waterLevelRainfallForm" IsVisible="False">     
 
   <Label Text="Name der Messstation:"/>
@@ -93,8 +93,8 @@
 </StackLayout>
 -->
 
-<!-- Form Measurement Station-->
-<!--
+        <!-- Form Measurement Station-->
+        <!--
 <StackLayout x:Name="measurementStationForm" IsVisible="False">     
 
   <Label Text="Name der Messstation:"/>
@@ -110,21 +110,45 @@
 </StackLayout>
 -->
 
-<Button x:Name="addButton" Text="Hinzufügen" Clicked="OnAddClicked"/>
+        <Button x:Name="addButton" Text="Hinzufügen" Clicked="OnAddClicked"/>
 
-<Label x:Name="test" Text="test"/>
+        <Label x:Name="test" Text="test"/>
 
         <ScrollView>
-            <ListView ItemsSource="{Binding ListRainfallStation}">
+            <ListView ItemsSource="{Binding ListRainfallStation}" Grid.Column="0" Grid.Row="1" Margin="10,10,10,0" RowHeight="40" BackgroundColor="#7C6E8D">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextCell Text="{Binding measurementStationName}" Detail="{Binding StationDetail}" />
+                        <TextCell Text="{Binding measurementStationName}" Detail="{Binding StationDetail}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollView>
 
+        <ScrollView>
+            <ListView ItemsSource="{Binding ListintoHistory}" Grid.Column="0" Grid.Row="1" Margin="10,10,10,0" RowHeight="40" BackgroundColor="#7C6E8D" ItemSelected="OnItemSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label  Grid.Column="0" Text="{Binding measurementStationName}" FontAttributes="Bold" />
+                                <Label Grid.Row="1" Text="{Binding StationDetail}" TextColor="LightGray" />
+                            </Grid>
 
-
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollView>
     </VerticalStackLayout>
+    
+    
+
 </ContentPage>
