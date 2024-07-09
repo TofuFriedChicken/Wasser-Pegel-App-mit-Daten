@@ -12,6 +12,6 @@ public class InputWaterlevelData : IMeasurementData
 
     public double measurementData { get; set; }
 
-    public string StationDetail => $"Stationsname:{measurementStationName} Longitude: {lon} Latitude: {lat} Datum: {date} Inforamtion: {information} Messdaten: {measurementData}";
+    public string StationDetail => $"Stationsname: {measurementStationName} Longitude: {lon} Latitude: {lat} Datum: {date} Inforamtion: {information} Messdaten: {measurementData}";
 
 }
