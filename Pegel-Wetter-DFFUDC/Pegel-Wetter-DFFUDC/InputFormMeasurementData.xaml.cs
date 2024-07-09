@@ -29,7 +29,7 @@ public partial class InputFormMeasurementData : ContentPage
 
         ListWaterlevelStation = new ObservableCollection<InputWaterlevelData>()
         {
-              new InputWaterlevelData { measurementStationName = "Alice", lon = 4, lat = 256, date = 12, information = "6", measurementData = 2 },
+              new InputWaterlevelData { measurementStationName = "hehe", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
         };
         InitializeComponent();
 
@@ -96,7 +96,7 @@ public partial class InputFormMeasurementData : ContentPage
 
     public void OnAddClicked(object sender, EventArgs e)
     {
-
+        /*
         
         var picker = (Picker)sender;
         int selectedIndex = picker.SelectedIndex;
@@ -131,7 +131,7 @@ public partial class InputFormMeasurementData : ContentPage
 
         }
 
-        
+        */
         ListWaterlevelStation.Add(new InputWaterlevelData
         {
             measurementStationName = inputMeasurementStationNameW.Text,
@@ -152,6 +152,9 @@ public partial class InputFormMeasurementData : ContentPage
             measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
         });
 
+
+
+        // mit der Länge der Listen arbeiten zum aktualisieren ?
     }
 
 
