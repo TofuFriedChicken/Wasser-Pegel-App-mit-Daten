@@ -14,67 +14,103 @@
             Grid.Row="1" BackgroundColor="DimGrey" HeightRequest="60" Margin="0,-50,0,0" Padding="2" >
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>    
                 <!--buttons-->
-                <StackLayout Grid.Column="0" Padding="5">
+                <StackLayout Grid.Column="0" Padding="1">
+                    <Frame 
+                        BackgroundColor="DarkBlue" WidthRequest="520" HeightRequest="53" Padding="2" >
+                        <!--maybe add three buttons in Frame-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackLayout Grid.Column="0">
+                                <Button Grid.Column="0"
+                        x:Name="four"
+                        Margin="1"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Circle Mode"
+                        TextColor="Black"
+                        WidthRequest="200"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </StackLayout>
+                            <StackLayout Grid.Column="1">
+                                <Button 
+                        x:Name="waterlevelButton"
+                        Margin="1"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Waterlevel🌊"
+                        TextColor="Black"
+                        WidthRequest="120"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </StackLayout>
+                            <StackLayout Grid.Column="2">
+                                <Button 
+                        x:Name="rainfallButton"
+                        Margin="1"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Rainfall☂"
+                        TextColor="Black"
+                        WidthRequest="120"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+                
+                <StackLayout Grid.Column="1" Padding="5">
                     <Button
                         x:Name="one"
                         Margin="1"
                         BackgroundColor="LightSkyBlue"
                         Text="Current Data"
-                      
-                        WidthRequest="150"
-                        BorderWidth="1.5"
-                        BorderColor="Black"/>
-                </StackLayout>
-                <StackLayout Grid.Column="1" Padding="5">
-                    <Button 
-                        x:Name="two"
-                        Margin="1"
-                        BackgroundColor="LightSkyBlue"
-                        Text="Add Data"
-                        WidthRequest="150"
+                        TextColor="Black"
+                        WidthRequest="180"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
                 </StackLayout>
                 <StackLayout Grid.Column="2" Padding="5">
                     <Button 
-                        x:Name="three"
+                        x:Name="two"
                         Margin="1"
                         BackgroundColor="LightSkyBlue"
-                        Text="Historie"
-                        WidthRequest="150"
+                        Text="Add Data"
+                        TextColor="Black"
+                        WidthRequest="180"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
                 </StackLayout>
                 <StackLayout Grid.Column="3" Padding="5">
                     <Button 
+                        x:Name="three"
+                        Margin="1"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Historie"
+                        TextColor="Black"
+                        WidthRequest="180"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </StackLayout>
+                <StackLayout Grid.Column="4" Padding="5">
+                    <Button 
                         x:Name="five"
                         Margin="1"
                         BackgroundColor="LightSkyBlue"
                         Text="Diagram"
-                        WidthRequest="150"
+                        TextColor="Black"
+                        WidthRequest="180"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
-                </StackLayout>
-
-                <StackLayout Grid.Column="5" Padding="1">
-                    <Frame BackgroundColor="DarkRed" WidthRequest="350" HeightRequest="53" Padding="2" >
-                        <!--maybe add three buttons in Frame-->
-                        <Button 
-                        x:Name="four"
-                        Margin="1"
-                        BackgroundColor="LightSkyBlue"
-                        Text="Circle Mode"
-                        WidthRequest="150"
-                        BorderWidth="1.5"
-                        BorderColor="Black"/>
-                    </Frame>
                 </StackLayout>
             </Grid>
             
