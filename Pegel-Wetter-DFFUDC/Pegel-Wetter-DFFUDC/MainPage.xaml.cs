@@ -63,6 +63,13 @@ namespace Pegel_Wetter_DFFUDC
     // change pins?
     //Type = PinType.Place,
     //Icon = BitmapDescriptorFactory.FromBundle("water_4081759.png")  // versuch die Pins zu verändern
+    public void SizesAdjustment(object sender, EventArgs e)
+    {
+        //Aktualisiert Größe der Map basierend auf aktueller Fenstergröße
+        germanMap.WidthRequest = this.Width;
+        germanMap.HeightRequest = this.Height;
+    }
+
 }
 
 

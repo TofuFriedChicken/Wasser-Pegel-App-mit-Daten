@@ -119,8 +119,8 @@
         </Frame>
    
         <!--map from BingMaps-->
-        <maps:Map x:Name="germanMap" HeightRequest="660" WidthRequest="1500" MapType="Hybrid"/>
-
+        <maps:Map x:Name="germanMap" MapType="Hybrid" SizeChanged="SizesAdjustment"/>
+        <!--HeightRequest="660" WidthRequest="1500"-->
 
     </VerticalStackLayout>
 
