@@ -26,6 +26,12 @@
             Navigation.PushAsync(new InputFormMeasurementData());
         }
 
+        private void OnHistoryPageClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new HistoryPage());
+        }
+
+
 
     }
 
