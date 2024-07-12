@@ -15,31 +15,29 @@ namespace Pegel_Wetter_DFFUDC
         public MainPage()
         {
             InitializeComponent();
-            //center berlin
-            var germanLocation = new Location(52.5200,13.4050);
+            
+            var germanLocation = new Location(52.5200,13.4050);     //center berlin
             var mapSpan = new MapSpan(germanLocation, 90.0, 180.0);
             germanMap.MoveToRegion(mapSpan);
-            //map adjustment
-            SizeAdjustment(this, EventArgs.Empty);
-
-            // pin for WaterLevel Stations
-            _model = new WaterLevelModel();
-            BindingContext = _model;
-            LoadPins();
-            // pin for Rainfall Stations
-            _rainmodel = new RainfallOpenDataModel();
-            LoadPinsW();
             
+            SizeAdjustment(this, EventArgs.Empty);      //map adjustment
+
+            _model = new WaterLevelModel();     // pin for WaterLevel Stations
+            BindingContext = _model;
+
+            _rainmodel = new RainfallOpenDataModel();       // pin for Rainfall Stations
+            BindingContext = _rainmodel;
+
 
         }
 
-        public void SizeAdjustment(object sender, EventArgs e)
+        public void SizeAdjustment(object sender, EventArgs e)  //map
         {
             germanMap.WidthRequest = this.Width;
             germanMap.HeightRequest = this.Height;
         }
 
-        private async void LoadPins() // pin for WaterLevel
+        private async void LoadWaterPins(object sender, EventArgs e) // pin for WaterLevel
         {
             await _model.LoadWaterLevels();
             foreach (var position in _model.Positions)
@@ -55,8 +53,8 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        public async void LoadPinsW()  // Rainfall
-        {
+        //public async void LoadRainPins(object sender, EventArgs e)  // Rainfall
+        //{
             //await _rainmodel.LoadRainfall();
             //foreach (var position in _rainmodel.Positions)
             //{
@@ -68,8 +66,9 @@ namespace Pegel_Wetter_DFFUDC
             //    };
             //    germanMap.Pins.Add(pin);
             //}
-        }
+        //}
     }
+
     // change pins?
     //Type = PinType.Place,
     //Icon = BitmapDescriptorFactory.FromBundle("water_4081759.png")  // versuch die Pins zu verändern

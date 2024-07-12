@@ -9,10 +9,16 @@
              Title=" ">
 
 
-    <VerticalStackLayout>
+    <Grid>
+        <!--1. for Frame, containing the Label + 2. for Map, taking the remeining space-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
         <!--define Frame and create buttons-->
-        <Frame
-            Grid.Row="1" BackgroundColor="DimGrey" HeightRequest="60" Margin="0,-50,0,0" Padding="2" >
+        <Frame 
+            Grid.Row="0" BackgroundColor="DimGrey" HeightRequest="70" Margin="0,-50,0,0" Padding="2" >
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
@@ -25,7 +31,7 @@
                 <StackLayout Grid.Column="0" Padding="1">
                     <Frame 
                         BackgroundColor="DarkBlue" WidthRequest="520" HeightRequest="53" Padding="2" >
-                        <!--maybe add three buttons in Frame-->
+                        <!--add three buttons in Frame-->
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
@@ -34,36 +40,38 @@
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0">
                                 <Button Grid.Column="0"
-                        x:Name="four"
-                        Margin="1"
-                        BackgroundColor="LightSkyBlue"
-                        Text="Circle Mode"
-                        TextColor="Black"
-                        WidthRequest="200"
-                        BorderWidth="1.5"
-                        BorderColor="Black"/>
-                </StackLayout>
+                                    x:Name="four"
+                                    Margin="1"
+                                    BackgroundColor="LightSkyBlue"
+                                    Text="Circle Mode"
+                                    TextColor="Black"
+                                    WidthRequest="200"
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </StackLayout>
                             <StackLayout Grid.Column="1">
                                 <Button 
-                        x:Name="waterlevelButton"
-                        Margin="1"
-                        BackgroundColor="LightSkyBlue"
-                        Text="Waterlevel🌊"
-                        TextColor="Black"
-                        WidthRequest="120"
-                        BorderWidth="1.5"
-                        BorderColor="Black"/>
-                </StackLayout>
+                                    x:Name="waterlevelButton"
+                                    Clicked="LoadWaterPins"
+                                    Margin="1"
+                                    BackgroundColor="LightSkyBlue"
+                                    Text="Waterlevel🌊"
+                                    TextColor="Black"
+                                    WidthRequest="120"
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </StackLayout>
                             <StackLayout Grid.Column="2">
                                 <Button 
-                        x:Name="rainfallButton"
-                        Margin="1"
-                        BackgroundColor="LightSkyBlue"
-                        Text="Rainfall☂"
-                        TextColor="Black"
-                        WidthRequest="120"
-                        BorderWidth="1.5"
-                        BorderColor="Black"/>
+                                    x:Name="rainfallButton"
+                                    Clicked="LoadRainPins"
+                                    Margin="1"
+                                    BackgroundColor="LightSkyBlue"
+                                    Text="Rainfall☂"
+                                    TextColor="Black"
+                                    WidthRequest="120"
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
                             </StackLayout>
                         </Grid>
                     </Frame>
@@ -121,11 +129,11 @@
    
         <!--map from BingMaps-->
         <maps:Map
-            x:Name="germanMap" MapType="Hybrid" SizeChanged="SizeAdjustment">
+            x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment">
         </maps:Map>
         <!--HeightRequest="660" WidthRequest="1500"-->
 
-    </VerticalStackLayout>
+    </Grid>
 
 
             <!--binding-->
