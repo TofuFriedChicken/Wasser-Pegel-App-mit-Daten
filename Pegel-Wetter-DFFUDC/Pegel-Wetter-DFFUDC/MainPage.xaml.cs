@@ -15,10 +15,12 @@ namespace Pegel_Wetter_DFFUDC
         public MainPage()
         {
             InitializeComponent();
-            //center germany
-            var germanLocation = new Location(51.1657,10.4515);
-            var mapSpan = new MapSpan(germanLocation, 50.0, 50.0);
+            //center berlin
+            var germanLocation = new Location(52.5200,13.4050);
+            var mapSpan = new MapSpan(germanLocation, 90.0, 180.0);
             germanMap.MoveToRegion(mapSpan);
+            //map adjustment
+            SizeAdjustment(this, EventArgs.Empty);
 
             // pin for WaterLevel Stations
             _model = new WaterLevelModel();
@@ -27,8 +29,16 @@ namespace Pegel_Wetter_DFFUDC
             // pin for Rainfall Stations
             _rainmodel = new RainfallOpenDataModel();
             LoadPinsW();
+            
 
         }
+
+        public void SizeAdjustment(object sender, EventArgs e)
+        {
+            germanMap.WidthRequest = this.Width;
+            germanMap.HeightRequest = this.Height;
+        }
+
         private async void LoadPins() // pin for WaterLevel
         {
             await _model.LoadWaterLevels();
@@ -63,12 +73,8 @@ namespace Pegel_Wetter_DFFUDC
     // change pins?
     //Type = PinType.Place,
     //Icon = BitmapDescriptorFactory.FromBundle("water_4081759.png")  // versuch die Pins zu verändern
-    public void SizesAdjustment(object sender, EventArgs e)
-    {
-        //Aktualisiert Größe der Map basierend auf aktueller Fenstergröße
-        germanMap.WidthRequest = this.Width;
-        germanMap.HeightRequest = this.Height;
-    }
+
+
 
 }
 

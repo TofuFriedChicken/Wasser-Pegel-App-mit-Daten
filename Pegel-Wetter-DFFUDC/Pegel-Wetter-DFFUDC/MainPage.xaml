@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Pegel_Wetter_DFFUDC"
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Pegel_Wetter_DFFUDC.MainPage"
              BackgroundColor="LightGray"
              Title=" ">
@@ -119,7 +120,9 @@
         </Frame>
    
         <!--map from BingMaps-->
-        <maps:Map x:Name="germanMap" MapType="Hybrid" SizeChanged="SizesAdjustment"/>
+        <maps:Map
+            x:Name="germanMap" MapType="Hybrid" SizeChanged="SizeAdjustment">
+        </maps:Map>
         <!--HeightRequest="660" WidthRequest="1500"-->
 
     </VerticalStackLayout>
