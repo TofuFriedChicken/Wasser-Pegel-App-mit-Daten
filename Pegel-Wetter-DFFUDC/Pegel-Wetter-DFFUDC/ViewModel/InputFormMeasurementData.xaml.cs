@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using static System.Collections.Specialized.BitVector32;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Runtime.InteropServices;
+using Pegel_Wetter_DFFUDC.Model;
 
 namespace Pegel_Wetter_DFFUDC;
 
@@ -13,7 +14,7 @@ public partial class InputFormMeasurementData : ContentPage
 
     public ObservableCollection<InputWaterlevelData> ListWaterlevelStation { get; set; }
 
-    public ObservableCollection<InputintoHistory> ListHistory { get; set; }
+    public ObservableCollection<ModelInputintoHistory> ListHistory { get; set; }
 
 
 

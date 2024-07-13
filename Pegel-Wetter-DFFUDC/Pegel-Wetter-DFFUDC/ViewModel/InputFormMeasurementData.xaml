@@ -124,7 +124,7 @@
             </ListView>
         </ScrollView>
 
-        <ScrollView>
+      <ScrollView>
             <ListView ItemsSource="{Binding ListintoHistory}" Grid.Column="0" Grid.Row="1" Margin="10,10,10,0" RowHeight="40" BackgroundColor="#7C6E8D"> <!--ItemSelected="OnItemSelected"-->
                 <ListView.ItemTemplate>
                     <DataTemplate>
