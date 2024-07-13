@@ -6,6 +6,12 @@ namespace Pegel_Wetter_DFFUDC;
     {
       InitializeComponent();
 
+      List<string> measurementData = new List<string>
+      {
+        "Pegelstand",
+        "Niederschlag",
+      };
 
+      testList.ItemsSource = measurementData;
     }
   }

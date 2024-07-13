@@ -4,6 +4,16 @@
              x:Class="Pegel_Wetter_DFFUDC.TestList">
 
 <VerticalStackLayout>
-<Label Text="Hello World!"/>
+
+<!-- source ListView: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/listview?view=net-maui-8.0 (last visit: 14.07.24)-->
+<ListView x:Name="testList">
+    <ListView.ItemTemplate>
+        <DataTemplate>
+            <Label Text="{Binding measurementData}"/>
+        </DataTemplate>
+    </ListView.ItemTemplate>
+</ListView>
+
+
 </VerticalStackLayout>
 </ContentPage>
