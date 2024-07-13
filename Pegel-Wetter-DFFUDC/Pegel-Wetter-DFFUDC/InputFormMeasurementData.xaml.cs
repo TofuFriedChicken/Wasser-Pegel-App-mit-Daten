@@ -7,7 +7,6 @@ namespace Pegel_Wetter_DFFUDC;
     {
       InitializeComponent();
 
-
     }
 
     private void OnPickerSelectedIndexChanged(object sender, EventArgs e)     //source eventhandler https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0 (last visit: 30.06.24)
@@ -63,10 +62,11 @@ namespace Pegel_Wetter_DFFUDC;
       }
       
     }
-
+    
 
     public async void OnAddClicked(object sender, EventArgs e) 
     {
+
       //check for valid input
 
       if (!Double.TryParse(inputLonW.Text, out _))    //source TryParse(): https://learn.microsoft.com/de-de/dotnet/api/system.double.tryparse?view=net-8.0  (last visit: 13.07.2024)
@@ -108,7 +108,7 @@ namespace Pegel_Wetter_DFFUDC;
         measurementStationName = inputMeasurementStationNameW.Text,
         lon = Convert.ToDouble(inputLonW.Text),
         lat = Convert.ToDouble(inputLatW.Text),
-        //date = Convert.ToInt32(inputDateW.Text),
+        //date = ,
         information = inputInformationW.Text,
         measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
       };
@@ -125,14 +125,14 @@ namespace Pegel_Wetter_DFFUDC;
         measurementStationName = inputMeasurementStationNameR.Text,
         lon = Convert.ToDouble(inputLonR.Text),
         lat = Convert.ToDouble(inputLatR.Text),
-        //date = Convert.(inputDateR.Text),
+        //date = ,
         information = inputInformationR.Text,
         measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
       };
       }
       else 
       {
-        await DisplayAlert("Fehler", "Bitte überprüfe deine Eingabe! Für Koordinaten und Messdaten sind nur Zahlen zulässig.", "Eingabe überarbeiten");    //source Display Alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert  (last visit: 13.07.2024)
+        await DisplayAlert("Fehler", "Bitte überprüfe deine Eingabe! Elemente fehlen oder sind fehlerhaft. Für Koordinaten und Messdaten sind nur Zahlen, keine Buchstaben, zulässig.", "Eingabe überarbeiten");    //source Display Alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert  (last visit: 13.07.2024)
       }
       
 
