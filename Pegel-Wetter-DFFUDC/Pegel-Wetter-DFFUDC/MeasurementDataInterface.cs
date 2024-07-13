@@ -8,7 +8,7 @@ namespace Pegel_Wetter_DFFUDC;
   public double lat { get; set; }
 
   //further information (date, location or water)
-  public int date { get; set; }
+  public DateTime date { get; set; }
   public string information { get; set; }
 
   //measurement data

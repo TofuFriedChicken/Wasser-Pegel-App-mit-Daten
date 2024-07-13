@@ -72,7 +72,7 @@ namespace Pegel_Wetter_DFFUDC;
         measurementStationName = inputMeasurementStationNameW.Text,
         lon = Convert.ToDouble(inputLonW.Text),
         lat = Convert.ToDouble(inputLatW.Text),
-        date = Convert.ToInt32(inputDateW.Text),
+        //date = Convert.ToInt32(inputDateW.Text),
         information = inputInformationW.Text,
         measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
       };
@@ -82,7 +82,7 @@ namespace Pegel_Wetter_DFFUDC;
         measurementStationName = inputMeasurementStationNameR.Text,
         lon = Convert.ToDouble(inputLonR.Text),
         lat = Convert.ToDouble(inputLatR.Text),
-        date = Convert.ToInt32(inputDateR.Text),
+        //date = Convert.(inputDateR.Text),
         information = inputInformationR.Text,
         measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
       };
