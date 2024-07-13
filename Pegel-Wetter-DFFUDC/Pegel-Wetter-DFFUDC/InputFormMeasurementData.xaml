@@ -27,20 +27,20 @@
 <StackLayout x:Name="waterLevelForm" IsVisible="False">     
 
   <Label Text="Name der Messstation:"/>
-  <Entry x:Name="inputMeasurementStationNameW" Placeholder="..."/>
+  <Entry x:Name="inputMeasurementStationNameW" Placeholder="..." MaxLength="100"/>
 
   <Label Text="Lage der Messstation:"/>
-  <Entry x:Name="inputLonW" Placeholder="Längengrad"/>
-  <Entry x:Name="inputLatW" Placeholder="Breitengrad"/>
+  <Entry x:Name="inputLonW" Placeholder="Längengrad" MaxLength="20"/>
+  <Entry x:Name="inputLatW" Placeholder="Breitengrad" MaxLength="20"/>
 
   <Label Text="Tag der Messung:"/>
   <Entry x:Name="inputDateW" Placeholder="TT/MM/JJJJ"/>
 
   <Label Text="Angaben zum Gewässer:"/>
-  <Entry x:Name="inputInformationW" Placeholder="..."/>
+  <Entry x:Name="inputInformationW" Placeholder="..." MaxLength="100"/>
 
   <Label Text="Höhe des Pegelstands in cm"/>
-  <Entry x:Name="inputMeasurementDataW" Placeholder="..."/>
+  <Entry x:Name="inputMeasurementDataW" Placeholder="..." MaxLength="10"/>
 
 </StackLayout>
 
@@ -48,20 +48,20 @@
 <StackLayout x:Name="rainfallForm" IsVisible="False">     
 
   <Label Text="Name der Messstation:"/>
-  <Entry x:Name="inputMeasurementStationNameR" Placeholder="..."/>
+  <Entry x:Name="inputMeasurementStationNameR" Placeholder="..." MaxLength="100"/>
 
   <Label Text="Lage der Messstation:"/>
-  <Entry x:Name="inputLonR" Placeholder="Längengrad"/>
-  <Entry x:Name="inputLatR" Placeholder="Breitengrad"/>
+  <Entry x:Name="inputLonR" Placeholder="Längengrad" MaxLength="20"/>
+  <Entry x:Name="inputLatR" Placeholder="Breitengrad" MaxLength="20"/>
 
   <Label Text="Tag der Messung:"/>
   <Entry x:Name="inputDateR" Placeholder="TT/MM/JJJJ"/>
 
   <Label Text="Ort/ Region:"/>
-  <Entry x:Name="inputInformationR" Placeholder="..."/>
+  <Entry x:Name="inputInformationR" Placeholder="..." MaxLength="100"/>
 
   <Label Text="Niederschlagsmenge in mm"/>
-  <Entry x:Name="inputMeasurementDataR" Placeholder="..."/>
+  <Entry x:Name="inputMeasurementDataR" Placeholder="..." MaxLength="10"/>
 
 </StackLayout>
 
