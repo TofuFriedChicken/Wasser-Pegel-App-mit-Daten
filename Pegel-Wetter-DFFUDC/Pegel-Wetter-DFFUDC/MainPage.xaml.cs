@@ -20,6 +20,12 @@
 
             SemanticScreenReader.Announce(CounterBtn.Text);
         }
+
+        private void OnOpenListClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new TestList());
+        }
+
     }
 
 }
