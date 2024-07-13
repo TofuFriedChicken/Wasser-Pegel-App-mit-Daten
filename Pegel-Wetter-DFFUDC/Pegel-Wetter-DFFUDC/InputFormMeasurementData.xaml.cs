@@ -65,9 +65,45 @@ namespace Pegel_Wetter_DFFUDC;
     }
 
 
-    public void OnAddClicked(object sender, EventArgs e) 
+    public async void OnAddClicked(object sender, EventArgs e) 
     {
-      InputWaterlevelData inputWaterlevelData = new InputWaterlevelData
+      //check for valid input
+
+      if (!Double.TryParse(inputLonW.Text, out _))    //source TryParse(): https://learn.microsoft.com/de-de/dotnet/api/system.double.tryparse?view=net-8.0  (last visit: 13.07.2024)
+      {
+        inputLonW.TextColor = Colors.Red;
+      }
+
+      if (!Double.TryParse(inputLatW.Text, out _))    
+      {
+        inputLatW.TextColor = Colors.Red;
+      }
+
+      if (!Double.TryParse(inputMeasurementDataW.Text, out _))    
+      {
+        inputMeasurementDataW.TextColor = Colors.Red;
+      }
+
+
+
+      if (!Double.TryParse(inputLonR.Text, out _))    
+      {
+        inputLonR.TextColor = Colors.Red;
+      }
+
+      if (!Double.TryParse(inputLatR.Text, out _))    
+      {
+        inputLatR.TextColor = Colors.Red;
+      }
+
+      if (!Double.TryParse(inputMeasurementDataR.Text, out _))    
+      {
+        inputMeasurementDataR.TextColor = Colors.Red;
+      }
+    
+      if (waterLevelForm.IsVisible && Double.TryParse(inputLonW.Text, out _) && Double.TryParse(inputLatW.Text, out _) && Double.TryParse(inputMeasurementDataW.Text, out _))
+      {
+        InputWaterlevelData inputWaterlevelData = new InputWaterlevelData
       {
         measurementStationName = inputMeasurementStationNameW.Text,
         lon = Convert.ToDouble(inputLonW.Text),
@@ -77,7 +113,14 @@ namespace Pegel_Wetter_DFFUDC;
         measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
       };
 
-      InputRainfallData inputRainfallData = new InputRainfallData
+      string measurementStationName = inputWaterlevelData.measurementStationName;
+    
+      test.Text = measurementStationName;
+
+      }
+      else if (rainfallForm.IsVisible && Double.TryParse(inputLonR.Text, out _) && Double.TryParse(inputLatR.Text, out _) && Double.TryParse(inputMeasurementDataR.Text, out _))
+      {
+        InputRainfallData inputRainfallData = new InputRainfallData
       {
         measurementStationName = inputMeasurementStationNameR.Text,
         lon = Convert.ToDouble(inputLonR.Text),
@@ -86,6 +129,17 @@ namespace Pegel_Wetter_DFFUDC;
         information = inputInformationR.Text,
         measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
       };
+      }
+      else 
+      {
+        await DisplayAlert("Fehler", "Bitte überprüfe deine Eingabe! Für Koordinaten und Messdaten sind nur Zahlen zulässig.", "Eingabe überarbeiten");    //source Display Alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert  (last visit: 13.07.2024)
+      }
+      
+
+
+
+
+      
 
       // var pinW = new Pin
       // {
@@ -98,9 +152,7 @@ namespace Pegel_Wetter_DFFUDC;
       // };
 
 
-      string measurementStationName = inputWaterlevelData.measurementStationName;
-    
-      test.Text = measurementStationName;
+      
     }
     
 

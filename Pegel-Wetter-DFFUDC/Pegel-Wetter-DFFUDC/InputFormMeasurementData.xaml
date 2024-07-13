@@ -42,6 +42,8 @@
   <Label Text="Höhe des Pegelstands in cm"/>
   <Entry x:Name="inputMeasurementDataW" Placeholder="..." MaxLength="10"/>
 
+  <Button x:Name="addButtonW" Text="Hinzufügen" Clicked="OnAddClicked"/>
+
 </StackLayout>
 
 <!-- Form Rainfall-->
@@ -62,6 +64,8 @@
 
   <Label Text="Niederschlagsmenge in mm"/>
   <Entry x:Name="inputMeasurementDataR" Placeholder="..." MaxLength="10"/>
+
+  <Button x:Name="addButtonR" Text="Hinzufügen" Clicked="OnAddClicked"/>
 
 </StackLayout>
 
@@ -110,7 +114,7 @@
 </StackLayout>
 -->
 
-<Button x:Name="addButton" Text="Hinzufügen" Clicked="OnAddClicked"/>
+
 
 <Label x:Name="test" Text="test"/>
 
