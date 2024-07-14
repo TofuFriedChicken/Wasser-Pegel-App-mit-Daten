@@ -18,8 +18,14 @@ namespace Pegel_Wetter_DFFUDC;
 
     async void OnDeleteClicked (object sender, EventArgs e)
     {
-      await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Abbrechen", "Löschen");     //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24)
-      test.Text=" ";
+      bool deleteData = await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Löschen", "Abbrechen");     //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24)
+      
+      if (deleteData)
+      {
+        test.Text=" ";
+        //use .Remove source: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.remove?view=net-8.0 (last visit: 14.07.24)
+      }
+      
 
     }
 
