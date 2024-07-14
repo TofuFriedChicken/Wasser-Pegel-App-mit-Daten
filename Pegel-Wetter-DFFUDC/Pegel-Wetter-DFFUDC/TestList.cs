@@ -16,9 +16,11 @@ namespace Pegel_Wetter_DFFUDC;
       testList.ItemsSource = measurementDatas;
     }
 
-    private void OnDeleteClicked (object sender, EventArgs e)
+    async void OnDeleteClicked (object sender, EventArgs e)
     {
+      await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Abbrechen", "Löschen");     //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24)
       test.Text=" ";
+
     }
 
     
