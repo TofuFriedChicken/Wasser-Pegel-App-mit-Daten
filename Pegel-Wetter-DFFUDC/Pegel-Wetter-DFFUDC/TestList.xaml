@@ -9,11 +9,26 @@
 <ListView x:Name="testList">
     <ListView.ItemTemplate>
         <DataTemplate>
-            <Label Text="{Binding measurementData}"/>
+         <ViewCell>
+            <Grid Padding="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="{Binding measurementData}" Grid.Column="0"/>
+                <Button x:Name="DeleteButton" Text="Löschen" Clicked="OnDeleteClicked" Grid.Column="1"/>
+
+            </Grid>
+         </ViewCell>
         </DataTemplate>
     </ListView.ItemTemplate>
 </ListView>
 
+
+
+
+<Label x:Name="test" Text="test"/>
 
 </VerticalStackLayout>
 </ContentPage>
