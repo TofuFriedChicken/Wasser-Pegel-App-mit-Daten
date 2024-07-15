@@ -1,7 +1,5 @@
-
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
-using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.ApplicationModel;
 using System.Net.NetworkInformation;
 

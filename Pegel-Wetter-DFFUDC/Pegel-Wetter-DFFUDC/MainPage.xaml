@@ -5,23 +5,19 @@
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              x:Class="Pegel_Wetter_DFFUDC.MainPage">
 
-
-   
-
-
-    <maps:Map x:Name="MyMap_Test"
-            MapType="Satellite"
-            WidthRequest="960"
-            HeightRequest="540"
-            VerticalOptions="FillAndExpand">
-    </maps:Map>
-
      <ScrollView>
-        <VerticalStackLayout
+        <VerticalStackLayout>
 
-                <Button x:Name="OpenList" Text="List" Clicked="OnOpenListClicked"/>
-                <Button x:Name="OpenInputForm" Text="Input Form" Clicked="OnOpenInputFormClicked"/>
-
+            <Button x:Name="OpenList" Text="List" Clicked="OnOpenListClicked"/>
+            <Button x:Name="OpenInputForm" Text="Input Form" Clicked="OnOpenInputFormClicked"/>
+        
+            <maps:Map x:Name="MyMap_Test"
+                MapType="Satellite"
+                WidthRequest="960"
+                HeightRequest="540"
+                VerticalOptions="FillAndExpand">
+            </maps:Map>
+            
         </VerticalStackLayout>
     </ScrollView>
     
