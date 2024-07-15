@@ -1,6 +1,8 @@
 ﻿using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.ApplicationModel;
+using System.Net.NetworkInformation;
 
 namespace Pegel_Wetter_DFFUDC
 {
@@ -24,7 +26,15 @@ namespace Pegel_Wetter_DFFUDC
                 FillColor = Color.FromArgb("ADD8E6")
             };
 
+            Pin testpin = new Pin
+            {
+                Label = "Berlin",
+                Address = "testpin for messuring station",
+                Type = PinType.Place,
+                Location = new Location(52.5162, 13.3777)
+            };
 
+            MyMap_Test.Pins.Add(testpin);
 
             MyMap_Test.MapElements.Add(circle);
 
