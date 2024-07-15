@@ -1,4 +1,4 @@
-﻿namespace Pegel_Wetter_DFFUDC
+namespace Pegel_Wetter_DFFUDC
 {
     public partial class MainPage : ContentPage
     {
@@ -21,10 +21,19 @@
             SemanticScreenReader.Announce(CounterBtn.Text);
         }
 
+
         private void OnOpenListClicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new TestList());
         }
+
+
+        private void OnOpenInputFormClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new InputFormMeasurementData());
+        }
+
+
 
     }
 
