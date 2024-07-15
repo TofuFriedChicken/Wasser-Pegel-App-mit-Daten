@@ -1,26 +1,49 @@
+
+using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Maps;
+using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.ApplicationModel;
+using System.Net.NetworkInformation;
+
+
 namespace Pegel_Wetter_DFFUDC
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
 
         public MainPage()
         {
             InitializeComponent();
+
+            var location = new Location(52.5162, 13.3777);
+
+            MyMap_Test.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromMeters(1000)));
+
+            var circle = new Circle()
+            {
+                Center = location,
+                Radius = Distance.FromMeters(100000),
+                StrokeColor = Color.FromArgb("0000FF"),
+                StrokeWidth = 8,
+                FillColor = Color.FromArgb("ADD8E6")
+            };
+
+            Pin testpin = new Pin
+            {
+                Label = "Berlin",
+                Address = "testpin for messuring station",
+                Type = PinType.Place,
+                Location = new Location(52.5162, 13.3777)
+            };
+
+            MyMap_Test.Pins.Add(testpin);
+
+            MyMap_Test.MapElements.Add(circle);
+
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
-        {
-            count++;
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
-        }
-
+       
 
         private void OnOpenListClicked(object sender, EventArgs e)
         {
@@ -32,6 +55,7 @@ namespace Pegel_Wetter_DFFUDC
         {
             Navigation.PushAsync(new InputFormMeasurementData());
         }
+
 
 
 
