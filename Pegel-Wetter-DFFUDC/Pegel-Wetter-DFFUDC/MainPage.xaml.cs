@@ -1,8 +1,10 @@
-﻿using Microsoft.Maui.Controls.Maps;
+
+using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.ApplicationModel;
 using System.Net.NetworkInformation;
+
 
 namespace Pegel_Wetter_DFFUDC
 {
@@ -39,6 +41,23 @@ namespace Pegel_Wetter_DFFUDC
             MyMap_Test.MapElements.Add(circle);
 
         }
+
+
+       
+
+        private void OnOpenListClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new TestList());
+        }
+
+
+        private void OnOpenInputFormClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new InputFormMeasurementData());
+        }
+
+
+
 
     }
 
