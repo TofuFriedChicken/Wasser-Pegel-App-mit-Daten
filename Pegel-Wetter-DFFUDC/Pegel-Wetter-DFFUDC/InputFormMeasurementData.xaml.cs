@@ -7,6 +7,10 @@ public partial class InputFormMeasurementData : ContentPage
   {
     InitializeComponent();
 
+    datePickerW.MaximumDate = DateTime.Today;                   //source date picker: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/datepicker?view=net-maui-8.0#localize-a-datepicker-on-windows  (last visit: 15.07.24)
+    datePickerR.MaximumDate = DateTime.Today;
+   
+
   }
 
   private void OnPickerSelectedIndexChanged(object sender, EventArgs e)     //source eventhandler https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0 (last visit: 30.06.24)
@@ -63,6 +67,10 @@ public partial class InputFormMeasurementData : ContentPage
 
   }
 
+  public void OnDateClicked(object sender, DateChangedEventArgs e)      //method source: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/datepicker?view=net-maui-8.0#localize-a-datepicker-on-windows, https://learn.microsoft.com/en-us/dotnet/api/microsoft.maui.controls.datechangedeventargs.-ctor?view=net-maui-8.0#microsoft-maui-controls-datechangedeventargs-ctor(system-datetime-system-datetime) and help of ChatGPT (last visit websites: 15.07.24)
+  {
+    DateTime selectedDate = e.NewDate;
+  }
 
   public async void OnAddClicked(object sender, EventArgs e)
   {
