@@ -67,9 +67,11 @@ public partial class InputFormMeasurementData : ContentPage
 
   }
 
+
+  DateTime selectedDate = DateTime.Today;
   public void OnDateClicked(object sender, DateChangedEventArgs e)      //method source: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/datepicker?view=net-maui-8.0#localize-a-datepicker-on-windows, https://learn.microsoft.com/en-us/dotnet/api/microsoft.maui.controls.datechangedeventargs.-ctor?view=net-maui-8.0#microsoft-maui-controls-datechangedeventargs-ctor(system-datetime-system-datetime) and help of ChatGPT (last visit websites: 15.07.24)
   {
-    DateTime selectedDate = e.NewDate;
+    selectedDate = e.NewDate;
   }
 
   public async void OnAddClicked(object sender, EventArgs e)
@@ -100,14 +102,15 @@ public partial class InputFormMeasurementData : ContentPage
           measurementStationName = inputMeasurementStationNameW.Text,
           lon = Convert.ToDouble(inputLonW.Text),
           lat = Convert.ToDouble(inputLatW.Text),
-          //date = ,
+          date = selectedDate,
           information = inputInformationW.Text,
           measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
         };
 
         string measurementStationName = inputWaterlevelData.measurementStationName;
 
-        test.Text = measurementStationName;
+        //test.Text = measurementStationName;
+        test.Text = $"Selected Date: {selectedDate.ToString("d")}";
       }
       else
       {
@@ -140,7 +143,7 @@ public partial class InputFormMeasurementData : ContentPage
           measurementStationName = inputMeasurementStationNameR.Text,
           lon = Convert.ToDouble(inputLonR.Text),
           lat = Convert.ToDouble(inputLatR.Text),
-          //date = ,
+          date = selectedDate,
           information = inputInformationR.Text,
           measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
         };
