@@ -22,15 +22,15 @@ public partial class InputFormMeasurementData : ContentPage
     {
         ListRainfallStation = new ObservableCollection<InputRainfallData>
             {
-              new InputRainfallData { measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
-              new InputRainfallData { measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
-              new InputRainfallData { measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
+              new InputRainfallData { datatype="jojo", measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
+              new InputRainfallData { datatype="jojo", measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
+              new InputRainfallData { datatype="jojo", measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
         };
 
 
         ListWaterlevelStation = new ObservableCollection<InputWaterlevelData>()
         {
-              new InputWaterlevelData { measurementStationName = "hehe", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
+              new InputWaterlevelData {datatype="jojo", measurementStationName = "hehe", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
         };
         InitializeComponent();
 

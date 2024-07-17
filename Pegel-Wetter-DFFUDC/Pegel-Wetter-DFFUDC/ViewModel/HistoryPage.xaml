@@ -15,5 +15,15 @@
             </ListView>
         </ScrollView>
 
+        <ScrollView>
+            <ListView ItemsSource="{Binding ListWaterlevelStation}" Grid.Column="0" Grid.Row="1" Margin="10,10,10,0" RowHeight="40" BackgroundColor="#7C6E8D">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding measurementStationName}" Detail="{Binding StationDetail}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollView>
+
     </VerticalStackLayout>
 </ContentPage>
