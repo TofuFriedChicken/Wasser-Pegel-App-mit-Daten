@@ -2,6 +2,8 @@ namespace Pegel_Wetter_DFFUDC.Model;
 
 public class InputWaterlevelData : IMeasurementData
 {
+    public InputWaterlevelData() { }
+
     public string datatype { get; set; }
 
     public string measurementStationName { get; set; }
@@ -14,6 +16,6 @@ public class InputWaterlevelData : IMeasurementData
 
     public double measurementData { get; set; }
 
-    public string StationDetail => $"Messart: {datatype} Stationsname: {measurementStationName} Longitude: {lon} Latitude: {lat} Datum: {date} Inforamtion: {information} Messdaten: {measurementData}";
+    public string StationDetail => $"Messart: {datatype} Stationsname: {measurementStationName} Longitude: {lon} Latitude: {lat} Datum: {date} Information: {information} Messdaten: {measurementData}";
 
 }

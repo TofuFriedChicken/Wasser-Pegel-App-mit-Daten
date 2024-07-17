@@ -23,14 +23,30 @@ public partial class HistoryPage : ContentPage
         };
 
 
-        ListWaterlevelStation = new ObservableCollection<InputWaterlevelData>()
+
+            ListWaterlevelStation = new ObservableCollection<InputWaterlevelData>()
         {
               new InputWaterlevelData {datatype="waterlevel", measurementStationName = "hehe", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
         };
+
+        ListHistory = new ObservableCollection<ModelInputintoHistory>()
+        {
+              new ModelInputintoHistory {datatype="waterlevel", measurementStationName = "hehe", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
+        };
+
+
 
         InitializeComponent();
 
         BindingContext = this;
 
     }
+
+
+
+    private void OnTurnBackClicked(object sender, EventArgs e)
+    {
+
+    }
+
 }

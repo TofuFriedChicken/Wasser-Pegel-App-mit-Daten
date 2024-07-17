@@ -25,5 +25,32 @@
             </ListView>
         </ScrollView>
 
+
+        <ScrollView>
+            <ListView ItemsSource="{Binding ListHistory}" Grid.Column="0" Grid.Row="1" Margin="10,10,10,0" RowHeight="40" BackgroundColor="#5F8575">
+                <!--ItemSelected="OnItemSelected"-->
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label  Grid.Column="0" Text="{Binding measurementStationName}" FontAttributes="Bold" />
+                                <Label Grid.Row="1" Text="{Binding StationDetail}" TextColor="White" />
+                                <Button x:Name="DeleteButton" Text="&lt;" Clicked="OnTurnBackClicked" Grid.Column="1"/>
+                            </Grid>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollView>
+
     </VerticalStackLayout>
 </ContentPage>
