@@ -9,16 +9,16 @@ namespace Pegel_Wetter_DFFUDC
 {
     public class RainfallOpenDataViewModel
     {
-        public class RainfallStation
+        public class data
         {
-            //public string Station_id {  get; set; }
-            public DateTime von_datum { get; set; }  // maybe string
-            public DateTime bis_datum { get; set; }
-            //public int Stationshoehe {  get; set; }
-            public double geoBreite { get; set; }
-            public double geoLaenge { get; set; }
-            public string Stationsname { get; set; }  // stadt
-            //public string Bundesland {  get; set; }
+            public string StationId { get; set; }
+            public string Label { get; set; }
+            public string Address { get; set; }
+            public double Latitude { get; set; }
+            public double Longitude { get; set; }
+
+            public DateTime Date { get; set; }
+            public double Value { get; set; }
         }
     }
 }

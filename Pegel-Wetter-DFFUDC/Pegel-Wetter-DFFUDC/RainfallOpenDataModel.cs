@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Microsoft.Maui.Controls.Maps;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Formats.Asn1;
+using System.Globalization;
+using System.IO.Compression;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -12,41 +16,26 @@ namespace Pegel_Wetter_DFFUDC
 {
     public class RainfallOpenDataModel
     {
-        public RainfallOpenDataApi _rainfallApi;
-        public ObservableCollection<RainfallStation> _positions;
+        public ObservableCollection<RainfallOpenDataModel> RainfallData { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public RainfallOpenDataModel()
         {
-            _rainfallApi = new RainfallApi();
+            RainfallData = new ObservableCollection<RainfallOpenDataModel>();
         }
 
-        public ObservableCollection<RainfallStation> Positions
-        {
-            get => _positions;
-
-            set
-            {
-                _positions = value;
-                OnPropertyChanged();
-            }
-        }
-
-
-        public async Task LoadRainfall()
-        {
-            var rainfalls = await _rainfallApi.GetRainfallAsync();
-            Positions = new ObservableCollection<RainfallStation>(rainfalls);
-        }
-
-        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //public async Task LoadDataAsync(RainfallOpenDataViewModel item)
+        //{
+        //    var api = new RainfallOpenDataApi();
+        //    var data = await api.GetRainfallDataAsync();
+        //    RainfallData.Clear();
+        //    foreach (var item in data)
+        //    {
+        //        RainfallData.Add(item);
+        //    }
+        //}
     }
 
-    internal class RainfallApi : RainfallOpenDataApi
-    {
-    }
+
 }

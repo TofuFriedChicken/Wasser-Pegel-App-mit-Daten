@@ -21,7 +21,7 @@
             Grid.Row="0" BackgroundColor="DimGrey" HeightRequest="70" Margin="0,-50,0,0" Padding="2" >
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="4*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -30,17 +30,19 @@
                 <!--buttons-->
                 <StackLayout Grid.Column="0" Padding="1">
                     <Frame 
-                        BackgroundColor="DarkBlue" WidthRequest="520" HeightRequest="53" Padding="2" >
+                        BackgroundColor="DarkBlue" WidthRequest="640" HeightRequest="53" Padding="2" >
                         <!--add three buttons in Frame-->
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0">
-                                <Button Grid.Column="0"
-                                    x:Name="four"
+                                <Button 
+                                    x:Name="Circle"
+                                    Clicked="GoCircleMode"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Circle Mode"
@@ -51,8 +53,7 @@
                             </StackLayout>
                             <StackLayout Grid.Column="1">
                                 <Button 
-                                    x:Name="waterlevelButton"
-                                    Clicked="LoadWaterPins"
+                                    Clicked="LoadWaterPins_Clicked"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Waterlevel🌊"
@@ -63,13 +64,23 @@
                             </StackLayout>
                             <StackLayout Grid.Column="2">
                                 <Button 
-                                    x:Name="rainfallButton"
-                                    Clicked="LoadRainPins"
+                                    
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Rainfall☂"
                                     TextColor="Black"
                                     WidthRequest="120"
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="3">
+                                <Button 
+                                    Clicked="RemovePins_Clicked"
+                                    Margin="1"
+                                    BackgroundColor="IndianRed"
+                                    Text="Clear"
+                                    TextColor="Black"
+                                    WidthRequest="80"
                                     BorderWidth="1.5"
                                     BorderColor="Black"/>
                             </StackLayout>
@@ -80,44 +91,48 @@
                 <StackLayout Grid.Column="1" Padding="5">
                     <Button
                         x:Name="one"
+                        Clicked="GoCurrentData"
                         Margin="1"
                         BackgroundColor="LightSkyBlue"
                         Text="Current Data"
                         TextColor="Black"
-                        WidthRequest="180"
+                        WidthRequest="160"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
                 </StackLayout>
                 <StackLayout Grid.Column="2" Padding="5">
                     <Button 
                         x:Name="two"
+                        Clicked="GoAddData"
                         Margin="1"
                         BackgroundColor="LightSkyBlue"
                         Text="Add Data"
                         TextColor="Black"
-                        WidthRequest="180"
+                        WidthRequest="160"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
                 </StackLayout>
                 <StackLayout Grid.Column="3" Padding="5">
                     <Button 
                         x:Name="three"
+                        Clicked="GoHistorie"
                         Margin="1"
                         BackgroundColor="LightSkyBlue"
                         Text="Historie"
                         TextColor="Black"
-                        WidthRequest="180"
+                        WidthRequest="160"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
                 </StackLayout>
                 <StackLayout Grid.Column="4" Padding="5">
                     <Button 
                         x:Name="five"
+                        Clicked="GoDiagram"
                         Margin="1"
                         BackgroundColor="LightSkyBlue"
                         Text="Diagram"
                         TextColor="Black"
-                        WidthRequest="180"
+                        WidthRequest="160"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
                 </StackLayout>
@@ -139,7 +154,10 @@
             <!--binding-->
     <ContentPage.BindingContext>
         <local:WaterLevelViewModel/>
+      
     </ContentPage.BindingContext>
+    
+
 
 
 </ContentPage>
