@@ -3,31 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Pegel_Wetter_DFFUDC.HistoryPage"
              Title="HistoryPage">
+
+
     <VerticalStackLayout>
-        
-        <ScrollView>
-            <ListView ItemsSource="{Binding ListRainfallStation}" Grid.Column="0" Grid.Row="1" Margin="10,10,10,0" RowHeight="40" BackgroundColor="#7C6E8D">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding measurementStationName}" Detail="{Binding StationDetail}"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </ScrollView>
+        <Grid RowDefinitions="*, *, Auto" ColumnDefinitions="2*, *">
 
-        <ScrollView>
-            <ListView ItemsSource="{Binding ListWaterlevelStation}" Grid.Column="0" Grid.Row="1" Margin="10,10,10,0" RowHeight="40" BackgroundColor="#7C6E8D">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding measurementStationName}" Detail="{Binding StationDetail}"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </ScrollView>
-
-
-        <ScrollView>
-            <ListView ItemsSource="{Binding ListHistory}" Grid.Column="0" Grid.Row="1" Margin="10,10,10,0" RowHeight="40" BackgroundColor="#5F8575">
+            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" ItemsSource="{Binding ListRainfallStation}" Margin="10,10,10,0" RowHeight="40" >
                 <!--ItemSelected="OnItemSelected"-->
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -40,17 +21,55 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Label  Grid.Column="0" Text="{Binding measurementStationName}" FontAttributes="Bold" />
-                                <Label Grid.Row="1" Text="{Binding StationDetail}" TextColor="White" />
-                                <Button x:Name="DeleteButton" Text="&lt;" Clicked="OnTurnBackClicked" Grid.Column="1"/>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding measurementStationName}" FontAttributes="Bold" BackgroundColor="DarkGray" />
+                                <Label Grid.Row="1" Grid.Column="0" Text="{Binding StationDetail}" TextColor="White"/>
+                                <Button Grid.RowSpan="2" Grid.Column="3" x:Name="Option" Text="≡" Clicked="OnOptionClicked" HorizontalOptions="End"/>
                             </Grid>
 
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-        </ScrollView>
+
+            <ListView Grid.Row="0" Grid.Column="1" ItemsSource="{Binding ListHistory}" Margin="10,10,10,0" RowHeight="40" >
+                <!--ItemSelected="OnItemSelected"-->
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding measurementStationName}" FontAttributes="Bold" BackgroundColor="Gray" />
+                                <Label Grid.Row="1" Grid.Column="0" Text="{Binding StationDetail}" TextColor="White" BackgroundColor="Gray" />
+                                <Button Grid.RowSpan="2" Grid.Column="3" x:Name="Option" Text="≡" Clicked="OnOptionClicked" BackgroundColor="DarkGreen" HorizontalOptions="End" />
+                            </Grid>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+            <StackLayout Orientation="Vertical" Grid.Row="1" Grid.Column="1">
+                
+            <Button x:Name="ReturnButton" Text="≡" Clicked="ReturnButton_Clicked" BackgroundColor="LightGoldenrodYellow"/>
+
+            <Button x:Name="EditButton" Text="≡" Clicked="EditButton_Clicked" BackgroundColor="darkgray"/>
+
+
+            </StackLayout>
+
+        </Grid>
 
     </VerticalStackLayout>
 </ContentPage>

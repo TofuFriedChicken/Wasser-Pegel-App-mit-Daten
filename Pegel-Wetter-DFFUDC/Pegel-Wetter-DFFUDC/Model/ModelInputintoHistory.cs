@@ -9,6 +9,8 @@ namespace Pegel_Wetter_DFFUDC.Model
     public class ModelInputintoHistory : IMeasurementData
     {
         public ModelInputintoHistory() { }
+
+        public string edittype { get; set; }
         public string datatype { get; set; }
 
         public string measurementStationName { get; set; }
@@ -21,6 +23,6 @@ namespace Pegel_Wetter_DFFUDC.Model
 
         public double measurementData { get; set; }
 
-        public string StationDetail => $"Messart: {datatype} Stationsname: {measurementStationName} Longitude: {lon} Latitude: {lat} Datum: {date} Information: {information} Messdaten: {measurementData}";
+        public string StationDetail => $"{edittype}";
     }
 }
