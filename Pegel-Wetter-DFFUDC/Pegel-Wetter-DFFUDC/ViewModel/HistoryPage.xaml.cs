@@ -16,7 +16,7 @@ public partial class HistoryPage : ContentPage
 
 
     public HistoryPage()
-	{
+    {
         ListRainfallStation = new ObservableCollection<InputRainfallData>
             {
               new InputRainfallData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
@@ -27,7 +27,7 @@ public partial class HistoryPage : ContentPage
 
 
 
-            ListWaterlevelStation = new ObservableCollection<InputWaterlevelData>()
+        ListWaterlevelStation = new ObservableCollection<InputWaterlevelData>()
         {
               new InputWaterlevelData {datatype="waterlevel", measurementStationName = "hehe", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
         };
@@ -37,10 +37,12 @@ public partial class HistoryPage : ContentPage
               new ModelInputintoHistory {edittype="edited", datatype="rainfall", measurementStationName = "hehe1", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
               new ModelInputintoHistory {edittype="added", datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
               new ModelInputintoHistory {edittype="deleted", datatype="waterlevel", measurementStationName = "hehe3", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
-
+              new ModelInputintoHistory {edittype="edited", datatype="rainfall", measurementStationName = "hehe1", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
+              new ModelInputintoHistory {edittype="added", datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
 
         };
 
+        xListHistory.ItemsSource = ListHistory;
 
 
         InitializeComponent();
@@ -49,33 +51,89 @@ public partial class HistoryPage : ContentPage
 
     }
 
-    
-    async private void OnOptionClicked(object sender, EventArgs e)
-    {
-        string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Edit");
 
-        switch (action)
+
+    async private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem is ModelInputintoHistory selectedItem)
         {
-            case "Return":
-                HistoryMethodClass historyreturn = new HistoryMethodClass();
-                historyreturn.HistoryReturn();
-                break;
-            case "Edit":
-                HistoryMethodClass historylistedit = new HistoryMethodClass();
-                historylistedit.ListEdit();
-                break;
-            default:
-                break;
+            string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Edit");
+
+            switch (action)
+            {
+                case "Return":
+                    HistoryMethodClass historyreturn = new HistoryMethodClass();
+                    historyreturn.HistoryReturnElement(selectedItem.edittype);
+                    break;
+                case "Edit":
+                    HistoryMethodClass historylistedit = new HistoryMethodClass();
+                    historylistedit.ListEdit(selectedItem.edittype);
+                    break;
+                default:
+                    break;
+            }
+
+
+            /*
+            switch (action)
+            {
+                case "Return":
+                    HistoryMethodClass historyreturn = new HistoryMethodClass();
+                    historyreturn.HistoryReturnElement(action);
+                    break;
+                case "Edit":
+                    HistoryMethodClass historylistedit = new HistoryMethodClass();
+                    historylistedit.ListEdit();
+                    break;
+                default:
+                    break;
+            }
+
+            if (e.SelectedItem is ModelInputintoHistory selectedItem)
+            {
+                switch (selectedItem.edittype)
+                {
+                    case "edited":
+                        HandleEdited(selectedItem);
+                        break;
+                    case "added":
+                        HandleAdded(selectedItem);
+                        break;
+                    case "deleted":
+                        HandleDeleted(selectedItem);
+                        break;
+                    default:
+                        SelectedItemLabel.Text = "Unknown edit type";
+                        break;
+                }
+            }
+            */
+
         }
-    }
 
-    private void EditButton_Clicked(object sender, EventArgs e)
-    {
 
     }
 
-    private void ReturnButton_Clicked(object sender, EventArgs e)
-    {
 
-    }
+        private void EditButton_Clicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ReturnButton_Clicked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnHistoryFowardClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnHistoryBackwardClick(object sender, EventArgs e)
+        {
+
+        }
+
+    } 
 }

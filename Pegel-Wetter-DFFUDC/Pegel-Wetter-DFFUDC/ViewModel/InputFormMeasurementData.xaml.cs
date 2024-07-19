@@ -4,6 +4,7 @@ using static System.Collections.Specialized.BitVector32;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Runtime.InteropServices;
 using Pegel_Wetter_DFFUDC.Model;
+using System.Windows.Input;
 
 namespace Pegel_Wetter_DFFUDC;
 
@@ -16,7 +17,7 @@ public partial class InputFormMeasurementData : ContentPage
 
     public ObservableCollection<ModelInputintoHistory> ListHistory { get; set; }
 
-
+    public ICommand OptionCommand { get; }
 
     public InputFormMeasurementData()
     {
