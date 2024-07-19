@@ -16,7 +16,6 @@ namespace Pegel_Wetter_DFFUDC
 
         WaterLevelModel _model;
         public bool _visiblePinsMaybe;
-        public List<Pin> _pins;
 
         RainfallOpenDataModel _rainmodel;
         public MainPage()
@@ -31,7 +30,6 @@ namespace Pegel_Wetter_DFFUDC
             _model = new WaterLevelModel();     // WaterLevel Pin
             BindingContext = _model;
             _visiblePinsMaybe = false;
-            _pins = new List<Pin>();
 
         }
 
@@ -47,20 +45,19 @@ namespace Pegel_Wetter_DFFUDC
         {
             try
             {
-                if (!_visiblePinsMaybe)
+                await _model.LoadWaterLevels();
+                foreach (var position in _model.Positions)
                 {
-
-                }
-                if (_pins.Count == 0)
-                {
-                    await WaterButton();
-                }
-                foreach (var pin in _pins)
-                {
+                    var pin = new Pin
+                    {
+                        Label = $"{position.water.longname}:", // {position.currentMeasurement.value} cm",  
+                        Address = position.agency,
+                        Location = new Location(position.latitude, position.longitude),
+                        //Markericon = "waterlevel.png"
+                    };
                     germanMap.Pins.Add(pin);
                 }
                 _visiblePinsMaybe = true;
-
             }
             catch (Exception ex)
             {
@@ -75,45 +72,28 @@ namespace Pegel_Wetter_DFFUDC
                 _visiblePinsMaybe = false;
             }
         }
-        private async Task WaterButton()
-        {
-
-            if (_pins.Count == 0)
-            {
-                await _model.LoadWaterLevels();
-                foreach (var position in _model.Positions)
-                {
-                    var pin = new Pin
-                    {
-                        Label = $"{position.water.longname}:", // {position.currentMeasurement.value} cm",  
-                        Address = position.agency,
-                        Location = new Location(position.latitude, position.longitude),
-                        //Markericon = "waterlevel.png"
-                    };
-                    _pins.Add(pin);
-                }
-            }
 
 
-            //private async void LoadRainPins_Clicked(object sender, EventArgs e)       // Rain Pins
-            //{
-            //var viewModel = BindingContext as RainfallOpenDataViewModel;
-            //await viewModel.LoadDataAsync();
 
-            //germanMap.Pins.Clear();
-            //foreach (var data in viewModel.RainfallData)
-            //{
-            //    var pin = new Pin
-            //    {
-            //        Label = data.Location,
-            //        Address = $"Rainfall: {data.Rainfall}mm",
-            //        Type = PinType.Place,
-            //        Location = new Location(data.Latitude, data.Longitude)
-            //    };
-            //    germanMap.Pins.Add(pin);
-            //}
-            //}
-        }
+        //private async void LoadRainPins_Clicked(object sender, EventArgs e)       // Rain Pins
+        //{
+        //var viewModel = BindingContext as RainfallOpenDataViewModel;
+        //await viewModel.LoadDataAsync();
+
+        //germanMap.Pins.Clear();
+        //foreach (var data in viewModel.RainfallData)
+        //{
+        //    var pin = new Pin
+        //    {
+        //        Label = data.Location,
+        //        Address = $"Rainfall: {data.Rainfall}mm",
+        //        Type = PinType.Place,
+        //        Location = new Location(data.Latitude, data.Longitude)
+        //    };
+        //    germanMap.Pins.Add(pin);
+        //}
+        //}
+
 
 
         // go to other Pages
@@ -123,7 +103,7 @@ namespace Pegel_Wetter_DFFUDC
         }
         public async void GoCurrentData(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ExamplePage()); 
+            await Navigation.PushAsync(new ExamplePage());
         }
         private async void GoAddData(object sender, EventArgs e)
         {
@@ -142,6 +122,7 @@ namespace Pegel_Wetter_DFFUDC
 
     }
 }
+
 
 
 
