@@ -42,7 +42,7 @@ public partial class HistoryPage : ContentPage
 
         };
 
-        xListHistory.ItemsSource = ListHistory;
+      //  xListHistory.ItemsSource = ListHistory;
 
 
         InitializeComponent();
@@ -55,19 +55,19 @@ public partial class HistoryPage : ContentPage
 
     async private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
+        string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Edit");
+
         if (e.SelectedItem is ModelInputintoHistory selectedItem)
         {
-            string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Edit");
-
             switch (action)
             {
-                case "Return":
+                case "Return":  
                     HistoryMethodClass historyreturn = new HistoryMethodClass();
-                    historyreturn.HistoryReturnElement(selectedItem.edittype);
+                    historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItem);
                     break;
                 case "Edit":
                     HistoryMethodClass historylistedit = new HistoryMethodClass();
-                    historylistedit.ListEdit(selectedItem.edittype);
+                    // historylistedit.ListEdit(selectedItem.edittype);
                     break;
                 default:
                     break;
@@ -115,25 +115,24 @@ public partial class HistoryPage : ContentPage
     }
 
 
-        private void EditButton_Clicked(object sender, EventArgs e)
-        {
+    private void EditButton_Clicked(object sender, EventArgs e)
+    {
 
-        }
+    }
 
-        private void ReturnButton_Clicked(object sender, EventArgs e)
-        {
+    private void ReturnButton_Clicked(object sender, EventArgs e)
+    {
 
-        }
+    }
 
-        private void OnHistoryFowardClick(object sender, EventArgs e)
-        {
+    private void OnHistoryFowardClick(object sender, EventArgs e)
+    {
 
-        }
+    }
 
-        private void OnHistoryBackwardClick(object sender, EventArgs e)
-        {
+    private void OnHistoryBackwardClick(object sender, EventArgs e)
+    {
 
-        }
+    }
 
-    } 
 }
