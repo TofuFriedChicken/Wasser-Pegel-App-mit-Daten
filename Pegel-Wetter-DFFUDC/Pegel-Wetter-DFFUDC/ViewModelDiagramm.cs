@@ -27,30 +27,17 @@ namespace Pegel_Wetter_DFFUDC
                 },*/ //example date scale from: https://livecharts.dev/docs/Maui/2.0.0-rc2/samples.axes.dateTimeScaled
                 new LineSeries<double>
                 {
-                    Values = new double[] { 4, 6, 5, 3, -3, -1, 2 }
+                    Values = new double[] { 4, 6, 5, 3, -3, -1, 2 } //input rainfall
                 },
                 //example from: https://livecharts.dev/docs/Maui/2.0.0-rc2/Overview.Installation
             };
 
         public ISeries[] level { get; set; }
             = new ISeries[]
-            {
-                /*new ColumnSeries<DateTimePoint>
-                {
-                    Values = new ObservableCollection<DateTimePoint>
-                    {
-                        new DateTimePoint(new DateTime(2021, 1, 1), 3),
-                        new DateTimePoint(new DateTime(2021, 1, 2), 6),
-                        new DateTimePoint(new DateTime(2021, 1, 3), 5),
-                        new DateTimePoint(new DateTime(2021, 1, 4), 3),
-                        new DateTimePoint(new DateTime(2021, 1, 5), 5),
-                        new DateTimePoint(new DateTime(2021, 1, 6), 8),
-                        new DateTimePoint(new DateTime(2021, 1, 7), 6)
-                    }
-                },*/ //example date scale from: https://livecharts.dev/docs/Maui/2.0.0-rc2/samples.axes.dateTimeScaled
+            {               
                 new LineSeries<double>
                 {
-                    Values =  new double[] { 2, 5, 4, -2, 4, -3, 5 }
+                    Values =  new double[] { 2, 5, 4, -2, 4, -3, 5 } //input levelposition
                 } 
             };
 

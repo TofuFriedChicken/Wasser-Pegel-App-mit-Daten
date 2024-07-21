@@ -25,6 +25,7 @@
                 XAxes="{Binding XAxes}"
                 YAxes="{Binding YAxesrainfall}">
             </lvc:CartesianChart>
+            
             <lvc:CartesianChart
                 Grid.Row="1"
                 Series="{Binding level}"
