@@ -23,14 +23,16 @@
                 Grid.Row="0"
                 Series="{Binding Rainfall}"
                 XAxes="{Binding XAxes}"
-                YAxes="{Binding YAxesrainfall}">
+                YAxes="{Binding YAxesrainfall}"
+                ZoomMode="X">
             </lvc:CartesianChart>
             
             <lvc:CartesianChart
                 Grid.Row="1"
                 Series="{Binding level}"
                 XAxes="{Binding XAxes}"
-                YAxes="{Binding YAxeslevel}">
+                YAxes="{Binding YAxeslevel}"
+                ZoomMode="X">
             </lvc:CartesianChart>
         </Grid>
     </ContentPage.Content>
