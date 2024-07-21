@@ -48,6 +48,7 @@ namespace Pegel_Wetter_DFFUDC
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }
 

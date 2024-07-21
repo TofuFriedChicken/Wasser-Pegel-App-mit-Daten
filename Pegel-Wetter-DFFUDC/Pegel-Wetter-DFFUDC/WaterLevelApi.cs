@@ -19,6 +19,7 @@ namespace Pegel_Wetter_DFFUDC
         {
             var url = "https://pegelonline.wsv.de/webservices/rest-api/v2/stations.json?includeTimeseries=true&includeCurrentMeasurement=true";
             var response = await _httpClient.GetStringAsync(url);
+            //var positions = JsonConvert.DeserializeObject<List<Root>>(response);
             return JsonConvert.DeserializeObject<List<Root>>(response);
         }
     }

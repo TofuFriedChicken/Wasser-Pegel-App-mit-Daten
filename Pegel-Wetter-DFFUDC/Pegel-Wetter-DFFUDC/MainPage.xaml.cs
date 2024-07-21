@@ -7,6 +7,9 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls.PlatformConfiguration;
+using System.Net.NetworkInformation;
+using static Pegel_Wetter_DFFUDC.RainfallOpenDataViewModel;
 
 
 namespace Pegel_Wetter_DFFUDC
@@ -16,8 +19,9 @@ namespace Pegel_Wetter_DFFUDC
 
         WaterLevelModel _model;
         public bool _visiblePinsMaybe;
+        private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
 
-        RainfallOpenDataModel _rainmodel;
+        
         public MainPage()
         {
             InitializeComponent();
@@ -29,6 +33,7 @@ namespace Pegel_Wetter_DFFUDC
 
             _model = new WaterLevelModel();     // WaterLevel Pin
             BindingContext = _model;
+            LoadWaterPins();
             _visiblePinsMaybe = false;
 
         }
@@ -41,28 +46,81 @@ namespace Pegel_Wetter_DFFUDC
 
 
 
-        private async void LoadWaterPins_Clicked(object sender, EventArgs e)     //  WaterLevel Pins
+        private async void LoadWaterPins()     //  WaterLevel Pins
         {
             try
-            {
+            { 
                 await _model.LoadWaterLevels();
-                foreach (var position in _model.Positions)
+                var loadPinTasks = _model.Positions.Select(async position =>
+                //foreach (var position in _model.Positions)
                 {
                     var pin = new Pin
                     {
-                        Label = $"{position.water.longname}:", // {position.currentMeasurement.value} cm",  
+                        Label = position.longname,
                         Address = position.agency,
                         Location = new Location(position.latitude, position.longitude),
-                        //Markericon = "waterlevel.png"
                     };
-                    germanMap.Pins.Add(pin);
-                }
-                _visiblePinsMaybe = true;
+                    _loadedPins.Add(pin);
+                }).ToList();
+
+                await Task.WhenAll(loadPinTasks);
+             
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Fehler beim Laden der Pins", ex.Message, "OK");
             }
+        }
+        private async void ShowWaterPins(object sender, EventArgs e)
+        {
+            foreach (var pin in _loadedPins)
+            {
+
+                germanMap.Pins.Add(pin);
+                pin.MarkerClicked += Pin_Clicked;
+            }
+            _visiblePinsMaybe = true;
+        }
+ 
+
+        private void Pin_Clicked(object sender, EventArgs e)
+        {
+            var pin = sender as Pin;
+            var position = _model.Positions.FirstOrDefault(p => p.latitude == pin.Location.Latitude && p.longitude == pin.Location.Longitude);
+
+            if (position.currentMeasurement != null)        // um den aktuellen Wert zu testen
+            {
+                var details = $"Value: {position.currentMeasurement?.Value ?? 0} cm\n";
+                details += $"Date: {position.currentMeasurement.Timestamp.ToShortDateString()}";
+
+                DisplayAlert("Waterlevel", details, "OK");
+            }
+            else
+            {
+                var details = $"No current values for {position.water.longname}: {position.agency}\n";
+                DisplayAlert("Waterlevel", details, "OK");
+            }
+            //if (position.currentMeasurement.value != null)        // value der letzten 20 Tage
+            //{
+            //    //für die Bezeichnungen
+            //    var lastDays = position.timeseries
+            //        .Where(m => m.timestamp.Date >= DateTime.Today.AddDays(-20))
+            //        .OrderByDescending(m => m.timestamp)
+            //        .ToList();
+
+            //    var details = $"Values for {position.water.longname}: {position.agency}\n";
+            //    foreach (var measurement in lastDays)
+            //    {
+            //        //details += $"Date: {position.currentMeasurement.timestamp.ToShortDateString()}: {position.currentMeasurement.value} cm\n";
+            //        details += $"{measurement.timestamp.ToShortDateString()}: {measurement.value} cm\n";
+            //    }
+            //    DisplayAlert("Location and Values", details, "Close");
+            //}
+            //else
+            //{
+            //    var details = $"No current values for {position.water.longname}: {position.agency}\n";
+            //    DisplayAlert("Waterlevel", details, "OK");
+            //}
         }
         private void RemovePins_Clicked(object sender, EventArgs e)         // remove all pins
         {
@@ -71,28 +129,27 @@ namespace Pegel_Wetter_DFFUDC
                 germanMap.Pins.Clear();
                 _visiblePinsMaybe = false;
             }
+
         }
 
+        private async void LoadRainPins(object sender, EventArgs e)       // Rain Pins
+        {
+            var viewModel = BindingContext as RainfallOpenDataModel;
+            await viewModel.LoadDataAsync();
 
-
-        //private async void LoadRainPins_Clicked(object sender, EventArgs e)       // Rain Pins
-        //{
-        //var viewModel = BindingContext as RainfallOpenDataViewModel;
-        //await viewModel.LoadDataAsync();
-
-        //germanMap.Pins.Clear();
-        //foreach (var data in viewModel.RainfallData)
-        //{
-        //    var pin = new Pin
-        //    {
-        //        Label = data.Location,
-        //        Address = $"Rainfall: {data.Rainfall}mm",
-        //        Type = PinType.Place,
-        //        Location = new Location(data.Latitude, data.Longitude)
-        //    };
-        //    germanMap.Pins.Add(pin);
-        //}
-        //}
+            germanMap.Pins.Clear();
+            foreach (var data in viewModel.RainfallData)
+            {
+                var pin = new Pin
+                {
+                    Label = data.Label,
+                    Address = $"Rainfall: {data.Value}mm",
+                    //Type = PinType.Place,
+                    Location = new Location(data.Latitude, data.Longitude)
+                };
+                germanMap.Pins.Add(pin);
+            }
+        }
 
 
 

@@ -34,9 +34,9 @@
                         <!--add three buttons in Frame-->
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="5*"/>
                                 <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0">
@@ -53,23 +53,23 @@
                             </StackLayout>
                             <StackLayout Grid.Column="1">
                                 <Button 
-                                    Clicked="LoadWaterPins_Clicked"
+                                    Clicked ="ShowWaterPins"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Waterlevel🌊"
                                     TextColor="Black"
-                                    WidthRequest="120"
+                                    WidthRequest="130"
                                     BorderWidth="1.5"
                                     BorderColor="Black"/>
                             </StackLayout>
                             <StackLayout Grid.Column="2">
                                 <Button 
-                                    
+                                    Clicked="LoadRainPins"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Rainfall☂"
                                     TextColor="Black"
-                                    WidthRequest="120"
+                                    WidthRequest="130"
                                     BorderWidth="1.5"
                                     BorderColor="Black"/>
                             </StackLayout>
@@ -154,7 +154,7 @@
             <!--binding-->
     <ContentPage.BindingContext>
         <local:WaterLevelViewModel/>
-      
+
     </ContentPage.BindingContext>
     
 
