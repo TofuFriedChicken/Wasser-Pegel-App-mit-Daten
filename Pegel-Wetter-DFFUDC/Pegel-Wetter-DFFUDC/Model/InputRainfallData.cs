@@ -2,6 +2,11 @@ namespace Pegel_Wetter_DFFUDC.Model;
 
 public class InputRainfallData : IMeasurementData
 {
+    public bool Equals(InputRainfallData other)
+    {
+        if (other == null) return false;
+        return (this.measurementStationName.Equals(other.measurementStationName));
+    }
     public InputRainfallData() { }
 
     public string datatype { get; set; }

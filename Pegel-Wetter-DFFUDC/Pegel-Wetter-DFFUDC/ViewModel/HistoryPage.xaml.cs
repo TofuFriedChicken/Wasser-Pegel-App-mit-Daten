@@ -22,6 +22,8 @@ public partial class HistoryPage : ContentPage
               new InputRainfallData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
               new InputRainfallData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
               new InputRainfallData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, date=12, information="6", measurementData=2},
+              new InputRainfallData { datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
+
 
         };
 

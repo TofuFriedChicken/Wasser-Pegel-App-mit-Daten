@@ -39,59 +39,60 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
                 case "edited":
                     // man macht die speicherung rückängig
                     listHistoryparameter.Remove(selectedItemparameter);
-                    inputrainfalldataparameter.Add(new InputRainfallData 
+                    inputrainfalldataparameter.Remove(new InputRainfallData 
                     { 
-                        measurementStationName = "ich wurde geadded",
+                        measurementStationName = selectedItemparameter.measurementStationName,
                         lon = selectedItemparameter.lon,
                         lat = selectedItemparameter.lat,
                         date = selectedItemparameter.date,
                         information = selectedItemparameter.information,
                         measurementData = selectedItemparameter.measurementData
                     });
-
-                    listHistoryparameter.Add(new ModelInputintoHistory
-                    {
-                        edittype = "added", // Setze edittype auf "added" oder was passend ist
-                        datatype = "rainfall",
-                        measurementStationName = "ich wurde geadded",
-                        lon = 3,
-                        lat = 123,
-                        date = 1123,
-                        information = "123",
-                        measurementData = 123
-                    });
                     break;
-                case "added":
-                    //    ListHistory.RemoveAt(); //nicht LIst History
-                    //Liste NOamel Delete
+                case "added": // in der normalen Liste sollte ein Item erscheinen welches von InputAdd geadded wird. "ListAdd() objects werden dann übertragen in List und ListHistory, wobei in ListHistory das object noch datatype hinzubekommt"
                     listHistoryparameter.Remove(selectedItemparameter);
-                    listHistoryparameter.Add(selectedItemparameter);
-
+                    inputrainfalldataparameter.Remove(new InputRainfallData
+                    {
+                        measurementStationName = selectedItemparameter.measurementStationName,
+                        lon = selectedItemparameter.lon,
+                        lat = selectedItemparameter.lat,
+                        date = selectedItemparameter.date,
+                        information = selectedItemparameter.information,
+                        measurementData = selectedItemparameter.measurementData
+                    });
                     break;
                 case "deleted":
                     listHistoryparameter.Remove(selectedItemparameter);
-                    listHistoryparameter.Add(new ModelInputintoHistory
+                    inputrainfalldataparameter.Add(new InputRainfallData
                     {
-                        edittype = "added", // Setze edittype auf "added" oder was passend ist
-                        datatype = "rainfall",
-                        measurementStationName = "ich wurde geadded",
-                        lon = 3,
-                        lat = 123,
-                        date = 1123,
-                        information = "123",
-                        measurementData = 123
+                        datatype = selectedItemparameter.datatype,
+                        measurementStationName = "delete return",
+                        lon = selectedItemparameter.lon,
+                        lat = selectedItemparameter.lat,
+                        date = selectedItemparameter.date,
+                        information = selectedItemparameter.information,
+                        measurementData = selectedItemparameter.measurementData
                     });
-
-
-
-                    //  ListHistory.RemoveAt(); //nicht LIst History
-                    // ListHistory.Add()
-
                     break;
                 default:
                     break;
             }
-        }
+        }                    
+        /*
+                    listHistoryparameter.Add(new ModelInputintoHistory
+                    {
+                        edittype = "added", // Setze edittype auf "added" oder was passend ist
+                        datatype = "rainfall",
+                        measurementStationName = "ich wurde geadded",
+                        lon = 3,
+                        lat = 123,
+                        date = 1123,
+                        information = "123",
+                        measurementData = 123
+                    });
+                    */                  
+        //    ListHistory.RemoveAt(); //nicht LIst History
+                    //Liste NOamel Delete
         public void ListItemShow(ModelInputintoHistory item)
         {
 
