@@ -13,12 +13,24 @@
 
     <ContentPage.Content>
 
-        
-             <lvc:CartesianChart
-                Series="{Binding Series}"
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <lvc:CartesianChart
+                Grid.Row="0"
+                Series="{Binding Rainfall}"
                 XAxes="{Binding XAxes}"
-                YAxes="{Binding YAxes}">
+                YAxes="{Binding YAxesrainfall}">
             </lvc:CartesianChart>
-        
+            <lvc:CartesianChart
+                Grid.Row="1"
+                Series="{Binding level}"
+                XAxes="{Binding XAxes}"
+                YAxes="{Binding YAxeslevel}">
+            </lvc:CartesianChart>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
