@@ -1,13 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Pegel_Wetter_DFFUDC.MainPage"            
-			 xmlns:charts="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui">
+             x:Class="Pegel_Wetter_DFFUDC.MainPage"          
+             xmlns:local="clr-namespace:Pegel_Wetter_DFFUDC"
+			 xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui">
 
 
 
-	<VerticalStackLayout>
-		<charts:CartesianChart x:Name="cartesianChart" />
-	</VerticalStackLayout>
+    <ContentPage.BindingContext>
+        <local:ViewModelDiagramm />
+    </ContentPage.BindingContext>
 
+    <ContentPage.Content>
+
+        <Grid>
+            <lvc:CartesianChart
+            Series="{Binding Series}">
+            </lvc:CartesianChart>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>
