@@ -10,6 +10,20 @@ namespace Pegel_Wetter_DFFUDC.Model
     {
         public ModelInputintoHistory() { }
 
+        private static ModelInputintoHistory _instance;
+
+        public static ModelInputintoHistory Instanz
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ModelInputintoHistory();
+                }
+                return _instance;
+            }
+        }
+
         public string edittype { get; set; }
         public string datatype { get; set; }
 

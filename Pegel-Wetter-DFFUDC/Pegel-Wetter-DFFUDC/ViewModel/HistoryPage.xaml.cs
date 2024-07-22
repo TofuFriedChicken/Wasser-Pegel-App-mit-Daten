@@ -18,6 +18,11 @@ public partial class HistoryPage : ContentPage
     private List<ClassofHistoryforJumps> ListofListHistoryofEdits { get; set; }
 
     private List<ClassofMainListforJumps> ListofMainlist { get; set; }
+
+    private static readonly Lazy<ModelInputintoHistory> lazy = new Lazy<ModelInputintoHistory>(() => new ModelInputintoHistory());
+
+    public static ModelInputintoHistory Instance { get { return lazy.Value; } }
+
     public HistoryPage()
     {
         ListRainfallStation = new ObservableCollection<InputRainfallData>
