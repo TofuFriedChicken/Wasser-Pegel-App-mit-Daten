@@ -1,5 +1,6 @@
 using Pegel_Wetter_DFFUDC.Model;
 using Pegel_Wetter_DFFUDC.ViewModel;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 
@@ -14,7 +15,7 @@ public partial class HistoryPage : ContentPage
 
     public ObservableCollection<ModelInputintoHistory> ListHistory { get; set; }
 
-
+    private List<ClassofHistoryforJumps> ListofListHistoryofEdits { get; set; }
     public HistoryPage()
     {
         ListRainfallStation = new ObservableCollection<InputRainfallData>
@@ -44,8 +45,12 @@ public partial class HistoryPage : ContentPage
 
         };
 
-      //  xListHistory.ItemsSource = ListHistory;
+        //  xListHistory.ItemsSource = ListHistory;
 
+
+        ListofListHistoryofEdits = new List<ClassofHistoryforJumps>();
+
+        SaveCurrentHistory();
 
         InitializeComponent();
 
@@ -54,20 +59,42 @@ public partial class HistoryPage : ContentPage
     }
 
 
+    public void SaveCurrentHistory()
+    {
+        ListofListHistoryofEdits.Add(new ClassofHistoryforJumps(ListHistory));
+    }
+
+    private void JumpHistory()
+    {   
+        if (ListofListHistoryofEdits.Count > 0)
+        {
+            var lastscreenshot = ListofListHistoryofEdits.Last();
+            ListHistory.Clear();
+            foreach (var item in lastscreenshot.ListHistoryScreenshot)
+            {
+                ListHistory.Add(item);
+            }
+            ListofListHistoryofEdits.Remove(lastscreenshot);
+        }
+    }
+
 
     async private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
+
         string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Edit");
 
         if (e.SelectedItem is ModelInputintoHistory selectedItem)
         {
             switch (action)
             {
-                case "Return":  
+                case "Return":
+                    SaveCurrentHistory();
                     HistoryMethodClass historyreturn = new HistoryMethodClass();
                     historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItem);
                     break;
                 case "Edit":
+                    SaveCurrentHistory();
                     HistoryMethodClass historylistedit = new HistoryMethodClass();
                     // historylistedit.ListEdit(selectedItem.edittype);
                     break;
@@ -129,12 +156,12 @@ public partial class HistoryPage : ContentPage
 
     private void OnHistoryFowardClick(object sender, EventArgs e)
     {
-
+        JumpHistory();
     }
 
     private void OnHistoryBackwardClick(object sender, EventArgs e)
     {
-
+        JumpHistory();
     }
 
 }

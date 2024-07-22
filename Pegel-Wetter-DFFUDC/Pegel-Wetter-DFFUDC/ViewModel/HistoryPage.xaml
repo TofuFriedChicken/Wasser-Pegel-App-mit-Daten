@@ -11,7 +11,6 @@
             <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="2" HorizontalOptions="Start" Margin="5" BackgroundColor="MediumPurple">
                 <Label Text="Change History"></Label>
                 <Button Text="&lt;-" Clicked="OnHistoryBackwardClick" BackgroundColor="LightGray" WidthRequest="40" />
-                <Button Text="->" Clicked="OnHistoryFowardClick" BackgroundColor="LightGray" WidthRequest="40" />
             </StackLayout>
 
             <ListView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" ItemsSource="{Binding ListRainfallStation}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray">

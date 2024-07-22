@@ -72,6 +72,7 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
                         date = selectedItemparameter.date,
                         information = selectedItemparameter.information,
                         measurementData = selectedItemparameter.measurementData
+
                     });
                     break;
                 default:
