@@ -19,10 +19,10 @@ namespace Pegel_Wetter_DFFUDC
         public double Latitude { get; set; }
         public double StationHeight { get; set; }
         public double Value { get; set; }
-        //public string StartDate { get; set; }
-        //public string EndDate { get; set; }
-        //public string DeviceType { get; set; }
-        //public string MeasurementMethod { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public string DeviceType { get; set; }
+        public string MeasurementMethod { get; set; }
 
     }
 }

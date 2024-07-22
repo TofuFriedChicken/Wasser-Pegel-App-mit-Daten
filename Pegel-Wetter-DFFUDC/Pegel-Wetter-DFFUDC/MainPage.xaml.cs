@@ -61,6 +61,11 @@ namespace Pegel_Wetter_DFFUDC
                 
                 foreach (var position in _model.Positions)
                 {
+                    //var key = pinData.Uuid;       
+                    //if (!_pinDataCache.Contains(key))
+                    //{
+                    //    _pinDataCache.Add(key, pinData);
+                    //}
                     var pin = new Pin
                     {
                         Label = position.longname,
@@ -91,15 +96,13 @@ namespace Pegel_Wetter_DFFUDC
             var position = _model.Positions.FirstOrDefault(p => p.latitude == pin.Location.Latitude && p.longitude == pin.Location.Longitude);
 
             var currentDate = DateTime.Now.ToString("dd.MM.yyyy");
-            var details = $"Current values for: {position.water.longname.ToLower()} - {position.agency.ToLower()}\n";
+            var details = $"Location: {position.water.longname.ToLower()} - {position.agency.ToLower()}\n";
             details += $"Value: {position.Timeseries[0].currentMeasurement.Value} cm \nDate: {currentDate}";
 
-            DisplayAlert("Waterlevel", details, "OK");
+            DisplayAlert("Waterlevel", details, "Close");
 
 
-            //if (position.currentMeasurement.value != null)        // value der letzten 20 Tage??? 
-            //{
-            //    //für die Bezeichnungen
+            //    //für die Bezeichnungen          // value der letzten 20 Tage??? 
             //    var lastDays = position.timeseries
             //        .Where(m => m.timestamp.Date >= DateTime.Today.AddDays(-20))
             //        .OrderByDescending(m => m.timestamp)
@@ -112,12 +115,7 @@ namespace Pegel_Wetter_DFFUDC
             //        details += $"{measurement.timestamp.ToShortDateString()}: {measurement.value} cm\n";
             //    }
             //    DisplayAlert("Location and Values", details, "Close");
-            //}
-            //else
-            //{
-            //    var details = $"No current values for {position.water.longname}: {position.agency}\n";
-            //    DisplayAlert("Waterlevel", details, "OK");
-            //}
+
         }
         private void RemovePins_Clicked(object sender, EventArgs e)         // remove all pins
         {
@@ -133,14 +131,14 @@ namespace Pegel_Wetter_DFFUDC
     
         private void ShowRainPins(object sender, EventArgs e)
         {
-            string zipFilePath = "Resource/Raw/RainfallData.zip";
+            string zipFilePath = "Resource/Raw/RainfallData.zip";       // nicht korrekt?
             string extractPath = "Raw";
             
             _modelData.LoadData(zipFilePath, extractPath);
-             AddPinsToMap();
+             AddRainPinsToMap();
         }
 
-        private void AddPinsToMap()
+        private void AddRainPinsToMap()
         {
             foreach (var pinData in _modelData.RainfallDataCollection)
             {
