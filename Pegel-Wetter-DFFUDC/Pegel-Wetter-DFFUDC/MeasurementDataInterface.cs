@@ -1,7 +1,8 @@
 namespace Pegel_Wetter_DFFUDC;
 
-  interface IMeasurementData
-  {
+interface IMeasurementData
+{
+  public string datatype { get; set; }
   //information about measurement station
   public string measurementStationName { get; set; }
   public double lon { get; set; }
@@ -13,7 +14,7 @@ namespace Pegel_Wetter_DFFUDC;
 
   //measurement data
   public double measurementData { get; set; }
-  }
+}
 
 
 
