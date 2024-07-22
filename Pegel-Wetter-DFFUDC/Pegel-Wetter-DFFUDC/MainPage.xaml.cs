@@ -1,4 +1,4 @@
-﻿using Microsoft.Maui.Maps;
+using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Maps;
 using System.Collections.ObjectModel;
