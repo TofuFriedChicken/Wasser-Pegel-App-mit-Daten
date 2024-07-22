@@ -79,21 +79,7 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
                     break;
             }
         }                    
-        /*
-                    listHistoryparameter.Add(new ModelInputintoHistory
-                    {
-                        edittype = "added", // Setze edittype auf "added" oder was passend ist
-                        datatype = "rainfall",
-                        measurementStationName = "ich wurde geadded",
-                        lon = 3,
-                        lat = 123,
-                        date = 1123,
-                        information = "123",
-                        measurementData = 123
-                    });
-                    */                  
-        //    ListHistory.RemoveAt(); //nicht LIst History
-                    //Liste NOamel Delete
+      
         public void ListItemShow(ModelInputintoHistory item)
         {
 

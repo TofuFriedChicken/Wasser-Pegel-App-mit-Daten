@@ -35,6 +35,8 @@ public partial class HistoryPage : ContentPage
 
         ListHistory = new ObservableCollection<ModelInputintoHistory>()
         {
+                          new ModelInputintoHistory {edittype="deleted", datatype="waterlevel", measurementStationName = "hehe3", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
+
               new ModelInputintoHistory {edittype="edited", datatype="rainfall", measurementStationName = "hehe1", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
               new ModelInputintoHistory {edittype="added", datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
               new ModelInputintoHistory {edittype="deleted", datatype="waterlevel", measurementStationName = "hehe3", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
@@ -42,8 +44,6 @@ public partial class HistoryPage : ContentPage
               new ModelInputintoHistory {edittype="added", datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, date = 1123, information = "123", measurementData = 123 },
 
         };
-
-        //  xListHistory.ItemsSource = ListHistory;
 
 
         ListofListHistoryofEdits = new List<ClassofHistoryforJumps>();
@@ -123,42 +123,6 @@ public partial class HistoryPage : ContentPage
                 default:
                     break;
             }
-
-
-            /*
-            switch (action)
-            {
-                case "Return":
-                    HistoryMethodClass historyreturn = new HistoryMethodClass();
-                    historyreturn.HistoryReturnElement(action);
-                    break;
-                case "Edit":
-                    HistoryMethodClass historylistedit = new HistoryMethodClass();
-                    historylistedit.ListEdit();
-                    break;
-                default:
-                    break;
-            }
-
-            if (e.SelectedItem is ModelInputintoHistory selectedItem)
-            {
-                switch (selectedItem.edittype)
-                {
-                    case "edited":
-                        HandleEdited(selectedItem);
-                        break;
-                    case "added":
-                        HandleAdded(selectedItem);
-                        break;
-                    case "deleted":
-                        HandleDeleted(selectedItem);
-                        break;
-                    default:
-                        SelectedItemLabel.Text = "Unknown edit type";
-                        break;
-                }
-            }
-            */
 
         }
 
