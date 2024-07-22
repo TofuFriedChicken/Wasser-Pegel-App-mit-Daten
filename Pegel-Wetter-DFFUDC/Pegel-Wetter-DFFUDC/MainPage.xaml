@@ -64,7 +64,7 @@
                             </StackLayout>
                             <StackLayout Grid.Column="2">
                                 <Button 
-                                    Clicked="LoadRainPins"
+                                    Clicked="ShowRainPins"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Rainfall☂"

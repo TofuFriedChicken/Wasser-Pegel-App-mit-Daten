@@ -10,6 +10,9 @@ using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Net.NetworkInformation;
 using static Pegel_Wetter_DFFUDC.RainfallOpenDataViewModel;
+using static Microsoft.Maui.ApplicationModel.Permissions;
+using System.Reflection;
+using CsvHelper;
 
 
 namespace Pegel_Wetter_DFFUDC
@@ -20,6 +23,8 @@ namespace Pegel_Wetter_DFFUDC
         WaterLevelModel _model;
         public bool _visiblePinsMaybe;
         private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
+
+        private RainfallOpenDataModel _modelData;
 
         
         public MainPage()
@@ -36,6 +41,8 @@ namespace Pegel_Wetter_DFFUDC
             LoadWaterPins();
             _visiblePinsMaybe = false;
 
+            //BindingContext = new RainfallOpenDataModel();   // Rainfall Pin
+            _modelData = new RainfallOpenDataModel();
         }
 
         public void SizeAdjustment(object sender, EventArgs e)
@@ -51,20 +58,17 @@ namespace Pegel_Wetter_DFFUDC
             try
             { 
                 await _model.LoadWaterLevels();
-                var loadPinTasks = _model.Positions.Select(async position =>
-                //foreach (var position in _model.Positions)
+                
+                foreach (var position in _model.Positions)
                 {
                     var pin = new Pin
                     {
                         Label = position.longname,
-                        Address = position.agency,
+                        Address = position.agency, // + hier den Value von CurrentMeasurement anzeigen
                         Location = new Location(position.latitude, position.longitude),
                     };
                     _loadedPins.Add(pin);
-                }).ToList();
-
-                await Task.WhenAll(loadPinTasks);
-             
+                }
             }
             catch (Exception ex)
             {
@@ -81,26 +85,19 @@ namespace Pegel_Wetter_DFFUDC
             }
             _visiblePinsMaybe = true;
         }
- 
-
         private void Pin_Clicked(object sender, EventArgs e)
         {
             var pin = sender as Pin;
             var position = _model.Positions.FirstOrDefault(p => p.latitude == pin.Location.Latitude && p.longitude == pin.Location.Longitude);
 
-            if (position.currentMeasurement != null)        // um den aktuellen Wert zu testen
-            {
-                var details = $"Value: {position.currentMeasurement?.Value ?? 0} cm\n";
-                details += $"Date: {position.currentMeasurement.Timestamp.ToShortDateString()}";
+            var currentDate = DateTime.Now.ToString("dd.MM.yyyy");
+            var details = $"Current values for: {position.water.longname.ToLower()} - {position.agency.ToLower()}\n";
+            details += $"Value: {position.Timeseries[0].currentMeasurement.Value} cm \nDate: {currentDate}";
 
-                DisplayAlert("Waterlevel", details, "OK");
-            }
-            else
-            {
-                var details = $"No current values for {position.water.longname}: {position.agency}\n";
-                DisplayAlert("Waterlevel", details, "OK");
-            }
-            //if (position.currentMeasurement.value != null)        // value der letzten 20 Tage
+            DisplayAlert("Waterlevel", details, "OK");
+
+
+            //if (position.currentMeasurement.value != null)        // value der letzten 20 Tage??? 
             //{
             //    //für die Bezeichnungen
             //    var lastDays = position.timeseries
@@ -132,25 +129,32 @@ namespace Pegel_Wetter_DFFUDC
 
         }
 
-        private async void LoadRainPins(object sender, EventArgs e)       // Rain Pins
+  
+    
+        private void ShowRainPins(object sender, EventArgs e)
         {
-            var viewModel = BindingContext as RainfallOpenDataModel;
-            await viewModel.LoadDataAsync();
+            string zipFilePath = "Resource/Raw/RainfallData.zip";
+            string extractPath = "Raw";
+            
+            _modelData.LoadData(zipFilePath, extractPath);
+             AddPinsToMap();
+        }
 
-            germanMap.Pins.Clear();
-            foreach (var data in viewModel.RainfallData)
+        private void AddPinsToMap()
+        {
+            foreach (var pinData in _modelData.RainfallDataCollection)
             {
                 var pin = new Pin
                 {
-                    Label = data.Label,
-                    Address = $"Rainfall: {data.Value}mm",
                     //Type = PinType.Place,
-                    Location = new Location(data.Latitude, data.Longitude)
+                    Location = new Location(pinData.Latitude, pinData.Longitude),
+                    Label = pinData.StationName,
+                    Address = $"Station ID: {pinData.StationID}, Höhe: {pinData.StationHeight}m"
                 };
                 germanMap.Pins.Add(pin);
             }
+            _visiblePinsMaybe = true;
         }
-
 
 
         // go to other Pages

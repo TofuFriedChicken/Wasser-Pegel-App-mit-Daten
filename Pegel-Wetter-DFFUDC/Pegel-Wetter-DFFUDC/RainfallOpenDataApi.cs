@@ -7,59 +7,41 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static Pegel_Wetter_DFFUDC.RainfallOpenDataViewModel;
+using System.Globalization;
 
 namespace Pegel_Wetter_DFFUDC
 {
     public class RainfallOpenDataApi
     {
-        public async Task<List<RainfallOpenDataViewModel>> GetRainfallDataAsync()
+        public List<RainfallOpenDataViewModel> LoadRainfallData(string zipFilePath, string extractPath)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "Pegel_Wetter_DFFUDC.Resources.Zips.Rainfall.zip"; 
+            ZipFile.ExtractToDirectory(zipFilePath, extractPath);
 
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            var pinDataList = new List<RainfallOpenDataViewModel>();
+
+            foreach (var file in Directory.GetFiles(extractPath, "*.txt"))
             {
-                if (stream == null) //test exe
-                    throw new FileNotFoundException("Data not found");
-
-                return await ExtractRainfallDataFromZip(stream);
-            }
-        }
-
-        private async Task<List<RainfallOpenDataViewModel>> ExtractRainfallDataFromZip(Stream zipStream)
-        {
-            var rainfallData = new List<RainfallOpenDataViewModel>();
-
-            using (var archive = new ZipArchive(zipStream))
-            {
-                foreach (var entry in archive.Entries)
+                var lines = File.ReadAllLines(file);
+                foreach (var line in lines)
                 {
-                    if (entry.FullName.EndsWith(".csv"))  // überprüfung necesary!
+                    var parts = line.Split(';');
+                    if (parts.Length >= 7)
                     {
-                        using (var reader = new StreamReader(entry.Open()))
+                        var pinData = new RainfallOpenDataViewModel
                         {
-                            var header = await reader.ReadLineAsync(); 
-                            while (!reader.EndOfStream)
-                            {
-                                var line = await reader.ReadLineAsync();
-                                var values = line.Split(',');
-
-                                rainfallData.Add(new RainfallOpenDataViewModel
-                                {
-                                    Label = values[0],
-                                    Latitude = double.Parse(values[1]),
-                                    Longitude = double.Parse(values[2]),
-                                    Value = double.Parse(values[3])
-                                });
-                            }
-                        }
+                            StationID = parts[0],
+                            StationName = parts[1],
+                            Longitude = double.Parse(parts[2], CultureInfo.InvariantCulture),
+                            Latitude = double.Parse(parts[3], CultureInfo.InvariantCulture),
+                            StationHeight = double.Parse(parts[4], CultureInfo.InvariantCulture),
+                            
+                        };
+                        pinDataList.Add(pinData);
                     }
                 }
             }
-
-            return rainfallData;
+            return pinDataList;
         }
     }
-
 }
 

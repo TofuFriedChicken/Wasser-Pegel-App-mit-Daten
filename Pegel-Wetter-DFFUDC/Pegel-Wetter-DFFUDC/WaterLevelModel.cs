@@ -27,9 +27,8 @@ namespace Pegel_Wetter_DFFUDC
         }
 
         public ObservableCollection<Root> Positions
-        {
+        { 
             get => _positions;
-
             set
             {
                 _positions = value;

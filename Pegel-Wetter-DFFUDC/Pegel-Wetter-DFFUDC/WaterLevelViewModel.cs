@@ -44,7 +44,7 @@ namespace Pegel_Wetter_DFFUDC
             public double longitude { get; set; }
             public double latitude { get; set; }
             public Water water { get; set; }
-            public List<Timeseries> timeseries { get; set; }
+            public List<Timeseries> Timeseries { get; set; }
             //public List<CurrentMeasurement> timeseries { get; set; }
             public CurrentMeasurement currentMeasurement { get; set; }
         }
@@ -53,16 +53,16 @@ namespace Pegel_Wetter_DFFUDC
             public string shortname { get; set; }
             public string longname { get; set; }
         }
-        //public class Timeseries
-        //{
-        //    public string shortname { get; set; }
-        //    public string longname { get; set; }
-        //    public string unit { get; set; }
-        //    public int equidistance { get; set; }
-        //    public CurrentMeasurement currentMeasurement { get; set; }
+        public class Timeseries
+        {
+            public string shortname { get; set; }
+            public string longname { get; set; }
+            public string unit { get; set; }
+            public int equidistance { get; set; }
+            public CurrentMeasurement currentMeasurement { get; set; }
             //public GaugeZero gaugeZero { get; set; }
             //public Comment comment { get; set; }
-        //}
+        }
 
 
 

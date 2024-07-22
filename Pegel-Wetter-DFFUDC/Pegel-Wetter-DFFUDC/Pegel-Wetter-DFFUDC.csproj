@@ -58,6 +58,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\waterlevel.png" />
+	  <None Remove="Resources\Raw\RainfallData.zip" />
 	</ItemGroup>
 
 	<ItemGroup>
