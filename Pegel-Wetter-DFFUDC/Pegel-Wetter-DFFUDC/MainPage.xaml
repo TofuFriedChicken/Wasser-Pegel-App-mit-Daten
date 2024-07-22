@@ -31,8 +31,8 @@
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Fill" />
 
-            <Button x:Name="OpenInputForm" Text="Input Form" Clicked="OnOpenInputFormClicked"/>
-
+            
+            
             <Button x:Name="History" Text="History" Clicked="OnHistoryPageClicked"/>
         </VerticalStackLayout>
     </ScrollView>
