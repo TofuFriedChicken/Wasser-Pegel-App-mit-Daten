@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Net.NetworkInformation;
-using static Pegel_Wetter_DFFUDC.RainfallOpenDataViewModel;
+using static Pegel_Wetter_DFFUDC.RainfallStation;
 using static Microsoft.Maui.ApplicationModel.Permissions;
 using System.Reflection;
 using CsvHelper;
@@ -24,9 +24,9 @@ namespace Pegel_Wetter_DFFUDC
         public bool _visiblePinsMaybe;
         private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
 
-        private RainfallOpenDataModel _modelData;
+        private readonly RainfallModel _rainfallModel;
 
-        
+
         public MainPage()
         {
             InitializeComponent();
@@ -41,8 +41,9 @@ namespace Pegel_Wetter_DFFUDC
             LoadWaterPins();
             _visiblePinsMaybe = false;
 
-            //BindingContext = new RainfallOpenDataModel();   // Rainfall Pin
-            _modelData = new RainfallOpenDataModel();
+            // Rainfall Pin
+            _rainfallModel = new RainfallModel(new RainfallApi());
+
         }
 
         public void SizeAdjustment(object sender, EventArgs e)
@@ -101,21 +102,6 @@ namespace Pegel_Wetter_DFFUDC
 
             DisplayAlert("Waterlevel", details, "Close");
 
-
-            //    //für die Bezeichnungen          // value der letzten 20 Tage??? 
-            //    var lastDays = position.timeseries
-            //        .Where(m => m.timestamp.Date >= DateTime.Today.AddDays(-20))
-            //        .OrderByDescending(m => m.timestamp)
-            //        .ToList();
-
-            //    var details = $"Values for {position.water.longname}: {position.agency}\n";
-            //    foreach (var measurement in lastDays)
-            //    {
-            //        //details += $"Date: {position.currentMeasurement.timestamp.ToShortDateString()}: {position.currentMeasurement.value} cm\n";
-            //        details += $"{measurement.timestamp.ToShortDateString()}: {measurement.value} cm\n";
-            //    }
-            //    DisplayAlert("Location and Values", details, "Close");
-
         }
         private void RemovePins_Clicked(object sender, EventArgs e)         // remove all pins
         {
@@ -129,29 +115,27 @@ namespace Pegel_Wetter_DFFUDC
 
   
     
-        private void ShowRainPins(object sender, EventArgs e)
+        private async void ShowRainPins(object sender, EventArgs e)           // Pins Rainfall
         {
-            string zipFilePath = "Resource/Raw/RainfallData.zip";       // nicht korrekt?
-            string extractPath = "Raw";
-            
-            _modelData.LoadData(zipFilePath, extractPath);
-             AddRainPinsToMap();
+            string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
+            var stations = await _rainfallModel.GetRainStationsAsync(url);
+            LoadRainPins(stations);
         }
 
-        private void AddRainPinsToMap()
+
+        private void LoadRainPins(List<RainfallStation> stations)
         {
-            foreach (var pinData in _modelData.RainfallDataCollection)
+            foreach (var station in stations)
             {
                 var pin = new Pin
                 {
-                    //Type = PinType.Place,
-                    Location = new Location(pinData.Latitude, pinData.Longitude),
-                    Label = pinData.StationName,
-                    Address = $"Station ID: {pinData.StationID}, Höhe: {pinData.StationHeight}m"
+                    Label = station.Stationname,
+                    Address = $"{station.State}, High: {station.StationHeight}m",
+                    Location = new Location(station.Latitude, station.Longitude)
                 };
-                germanMap.Pins.Add(pin);
+
+                germanMap.Pins.Add(pin); 
             }
-            _visiblePinsMaybe = true;
         }
 
 
