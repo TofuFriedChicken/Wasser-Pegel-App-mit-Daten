@@ -68,7 +68,7 @@ namespace Pegel_Wetter_DFFUDC
         {
             new Axis
             {
-                Name = "Pegelstand in m",
+                Name = "Pegelstand in cm",
                 /*LabelsPaint = new SolidColorPaint
                 {
                     Color = SKColors.Blue,
