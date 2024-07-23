@@ -65,4 +65,10 @@
 		<PackageReference Include="Microsoft.Maui.Maps" Version="8.0.70" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="ViewModel\HistoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

@@ -1,4 +1,7 @@
-﻿using Microsoft.Maui.Controls.Maps;
+﻿using Pegel_Wetter_DFFUDC.Model;
+using System.Threading;
+
+using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.ApplicationModel;
 using System.Net.NetworkInformation;
@@ -119,9 +122,12 @@ namespace Pegel_Wetter_DFFUDC
 
 
         private void OnOpenInputFormClicked(object sender, EventArgs e)
+
+        private void OnHistoryPageClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new InputFormMeasurementData());
+            Navigation.PushAsync(new HistoryPage());
         }
+
 
 
 
