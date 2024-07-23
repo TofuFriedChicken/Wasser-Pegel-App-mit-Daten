@@ -4,8 +4,161 @@
              xmlns:local="clr-namespace:Pegel_Wetter_DFFUDC"
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="Pegel_Wetter_DFFUDC.MainPage">
+             x:Class="Pegel_Wetter_DFFUDC.MainPage"
+             BackgroundColor="LightGray"
+             Title=" ">
 
+
+    <Grid>
+        <!--1. for Frame, containing the Label + 2. for Map, taking the remeining space-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--define Frame and create buttons-->
+        <Frame 
+            Grid.Row="0" BackgroundColor="DimGrey" HeightRequest="70" Margin="0,-50,0,0" Padding="2" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>    
+                <!--buttons-->
+                <StackLayout Grid.Column="0" Padding="1">
+                    <Frame 
+                        BackgroundColor="DarkBlue" WidthRequest="640" HeightRequest="53" Padding="2" >
+                        <!--add three buttons in Frame-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackLayout Grid.Column="0">
+                                <Button 
+                                    x:Name="Circle"
+                                    Clicked="GoCircleMode"
+                                    Margin="1"
+                                    BackgroundColor="LightSkyBlue"
+                                    Text="Circle Mode"
+                                    TextColor="Black"
+                                    WidthRequest="200"
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1">
+                                <Button 
+                                    Clicked ="ShowWaterPins"
+                                    Margin="1"
+                                    BackgroundColor="LightSkyBlue"
+                                    Text="Waterlevel🌊"
+                                    TextColor="Black"
+                                    WidthRequest="130"
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2">
+                                <Button 
+                                    Clicked="ShowRainPins"
+                                    Margin="1"
+                                    BackgroundColor="LightSkyBlue"
+                                    Text="Rainfall☂"
+                                    TextColor="Black"
+                                    WidthRequest="130"
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="3">
+                                <Button 
+                                    Clicked="RemovePins_Clicked"
+                                    Margin="1"
+                                    BackgroundColor="IndianRed"
+                                    Text="Clear"
+                                    TextColor="Black"
+                                    WidthRequest="80"
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+                
+                <StackLayout Grid.Column="1" Padding="5">
+                    <Button
+                        x:Name="one"
+                        Clicked="GoCurrentData"
+                        Margin="1"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Current Data"
+                        TextColor="Black"
+                        WidthRequest="160"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </StackLayout>
+                <StackLayout Grid.Column="2" Padding="5">
+                    <Button 
+                        x:Name="two"
+                        Clicked="GoAddData"
+                        Margin="1"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Add Data"
+                        TextColor="Black"
+                        WidthRequest="160"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </StackLayout>
+                <StackLayout Grid.Column="3" Padding="5">
+                    <Button 
+                        x:Name="three"
+                        Clicked="GoHistorie"
+                        Margin="1"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Historie"
+                        TextColor="Black"
+                        WidthRequest="160"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </StackLayout>
+                <StackLayout Grid.Column="4" Padding="5">
+                    <Button 
+                        x:Name="five"
+                        Clicked="GoDiagram"
+                        Margin="1"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Diagram"
+                        TextColor="Black"
+                        WidthRequest="160"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </StackLayout>
+            </Grid>
+            
+            
+            
+        </Frame>
+   
+        <!--map from BingMaps-->
+        <maps:Map
+            x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment">
+        </maps:Map>
+        <!--HeightRequest="660" WidthRequest="1500"-->
+
+    </Grid>
+
+
+            <!--binding-->
+    <ContentPage.BindingContext>
+        <local:WaterLevelViewModel/>
+
+    </ContentPage.BindingContext>
+    
+
+    //Muss in eigene page, solange unterhalb der oberen map vom feature1 die map vom feature4
     <!--Benutzeroberfläche-->
     <VerticalStackLayout>
 
