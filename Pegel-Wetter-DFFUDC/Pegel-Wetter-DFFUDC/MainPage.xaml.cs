@@ -1,3 +1,4 @@
+<<<<<<< Pegel-Wetter-DFFUDC/Pegel-Wetter-DFFUDC/MainPage.xaml.cs
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Maps;
@@ -15,17 +16,20 @@ using System.Reflection;
 using CsvHelper;
 
 
+//Code behind
+
 namespace Pegel_Wetter_DFFUDC
 {
     public partial class MainPage : ContentPage
     {
-
         WaterLevelModel _model;
         public bool _visiblePinsMaybe;
         private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
 
         private readonly RainfallModel _rainfallModel;
 
+        private DateTime today = DateTime.Today;
+        Location location = new Location(52.5162, 13.3777); //current Berlin
 
         public MainPage()
         {
@@ -44,14 +48,111 @@ namespace Pegel_Wetter_DFFUDC
             // Rainfall Pin
             _rainfallModel = new RainfallModel(new RainfallApi());
 
+            //startpoint, based on variable location
+            MyMap_Test.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromMeters(1000)));
+
+            var circle = new Circle()
+            {
+                Center = location,
+                Radius = Distance.FromMeters(100000),
+                StrokeColor = Color.FromArgb("0000FF"),
+                StrokeWidth = 8,
+                FillColor = Color.FromArgb("ADD8E6")
+            };
+            
+            MyMap_Test.MapElements.Add(circle);
+
+            Pin testpin = new Pin
+            {
+                Label = "Berlin",
+                Address = "testpin for messuring station",
+                Type = PinType.Place,
+                Location = new Location(52.5162, 13.3777)
+            };
+
+            MyMap_Test.Pins.Add(testpin);
+
+            UpdateTodayLabel(); //current date 
         }
 
-        public void SizeAdjustment(object sender, EventArgs e)
+        private void CurrentMapSizeUpdate(object sender, EventArgs e)
         {
-            germanMap.WidthRequest = this.Width;
-            germanMap.HeightRequest = this.Height;
+            //update Mapsize based on current windowsize
+            MyMap_Test.WidthRequest = this.Width;
+            MyMap_Test.HeightRequest = this.Height;
         }
 
+        private void UpdateTodayLabel()
+        {
+            DateLabel.Text = today.ToString("dddd, dd. MMMM yyyy"); //form changeable
+        }
+
+        private void DateBack_Clicked(object sender, EventArgs e)
+        {
+            today = today.AddDays(-1); //1 day to past
+            UpdateTodayLabel();
+        }
+
+        private async void DateForward_Clicked(object sender, EventArgs e)
+        {
+            //shouldn't see/click to future dates
+            if (today == DateTime.Today)
+            {
+                string currentDayPopUp = "You've reached the current date.";
+                await DisplayAlert("Information", currentDayPopUp, "Exit");
+            }
+            else
+            {
+                today = today.AddDays(1); //1 day to future
+                UpdateTodayLabel();
+            }
+
+        }
+
+        //getWaterlevel in Listenform (von Sophie feature 1.1)
+        private void AddPinsWaterlevel()
+        {
+            MyMap_Test.Pins.Clear();
+
+            //datum auslesen und nur tagesaktuelle daten in detailfenster anzeigen bei mouseover
+            /*
+            foreach (var item in collection)
+            {
+                Pins erzeugen
+            }*/
+        }
+
+        private void rainfallmap_Clicked(object sender, EventArgs e)
+        {
+            //aktuelles datum abfragen und aktualisieren
+            AddPinsWaterlevel();
+        }
+
+        //getWaterlevel in Listenform (von Sophie feature 1.1)
+        private void AddPinsRainfall()
+        {
+            MyMap_Test.Pins.Clear();
+        }
+
+        private void waterlevelmap_Clicked(object sender, EventArgs e)
+        {
+            AddPinsRainfall();
+        }
+
+        private void OnOpenListClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new TestList());
+        }
+
+        private void OnOpenInputFormClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new InputFormMeasurementData());
+        }
+
+        private void OnHistoryPageClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new HistoryPage());
+        }
 
 
         private async void LoadWaterPins()     //  WaterLevel Pins
@@ -81,6 +182,7 @@ namespace Pegel_Wetter_DFFUDC
                 await DisplayAlert("Fehler beim Laden der Pins", ex.Message, "OK");
             }
         }
+
         private async void ShowWaterPins(object sender, EventArgs e)
         {
             foreach (var pin in _loadedPins)
@@ -91,6 +193,7 @@ namespace Pegel_Wetter_DFFUDC
             }
             _visiblePinsMaybe = true;
         }
+
         private void Pin_Clicked(object sender, EventArgs e)
         {
             var pin = sender as Pin;
@@ -103,6 +206,7 @@ namespace Pegel_Wetter_DFFUDC
             DisplayAlert("Waterlevel", details, "Close");
 
         }
+
         private void RemovePins_Clicked(object sender, EventArgs e)         // remove all pins
         {
             if (_visiblePinsMaybe == true)
@@ -113,8 +217,6 @@ namespace Pegel_Wetter_DFFUDC
 
         }
 
-  
-    
         private async void ShowRainPins(object sender, EventArgs e)           // Pins Rainfall
         {
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
@@ -165,13 +267,3 @@ namespace Pegel_Wetter_DFFUDC
 
     }
 }
-
-
-
-
-
-
-
-
-
-

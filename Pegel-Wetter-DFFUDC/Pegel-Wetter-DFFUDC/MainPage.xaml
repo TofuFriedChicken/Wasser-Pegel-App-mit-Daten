@@ -158,6 +158,39 @@
     </ContentPage.BindingContext>
     
 
+    //Muss in eigene page, solange unterhalb der oberen map vom feature1 die map vom feature4
+    <!--Benutzeroberfläche-->
+    <VerticalStackLayout>
 
+        <HorizontalStackLayout HorizontalOptions="End">
+
+            <Button x:Name="OpenList" Text="List" Clicked="OnOpenListClicked"/>
+
+            <Button x:Name="OpenInputForm" Text="Input Form" Clicked="OnOpenInputFormClicked"/>
+
+            <Button x:Name="rainfallmap" BackgroundColor="White" TextColor="Blue" Text="show only rainfall measuring station" Clicked="rainfallmap_Clicked"/>
+
+            <Button x:Name="waterlevelmap" BackgroundColor="White" TextColor="Blue" Text="show only waterlevel measuring station" Clicked="waterlevelmap_Clicked" />
+
+            <Button x:Name="DateBack" BackgroundColor="White" TextColor="Blue" Text="back" Clicked="DateBack_Clicked"/>
+
+            <Frame CornerRadius="10" BackgroundColor="White">
+
+                <Label x:Name="DateLabel" TextColor="Blue" VerticalOptions="Center"/>
+
+            </Frame>
+
+            <Button x:Name="DateForward" BackgroundColor="White" TextColor="Blue" Text="forward" Clicked="DateForward_Clicked"/>
+
+        </HorizontalStackLayout>
+
+        <!--create map-->
+        <maps:Map x:Name="MyMap_Test"
+                  SizeChanged="CurrentMapSizeUpdate"
+                  MapType="Street" >
+        </maps:Map>
+
+    </VerticalStackLayout>
 
 </ContentPage>
+
