@@ -109,6 +109,23 @@ namespace Pegel_Wetter_DFFUDC
             AddPinsRainfall();
         }
 
+
+       
+
+        private void OnOpenListClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new TestList());
+        }
+
+
+        private void OnOpenInputFormClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new InputFormMeasurementData());
+        }
+
+
+
+
     }
 
 }
