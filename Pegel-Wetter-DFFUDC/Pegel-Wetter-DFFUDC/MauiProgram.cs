@@ -11,7 +11,10 @@ namespace Pegel_Wetter_DFFUDC
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+
+                //API key for bingmaps
                 .UseMauiCommunityToolkitMaps("1L5DIEOsrWUGhOGrcRQH~K3FfsbEonXTrbGtgx6vWrw~AlMAjdmTc86UMHN0fdFlxsxoUFZhIvgMUnISDN8K0db3kaymimRqUZ7feYTHn_y3")
+
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -19,10 +22,11 @@ namespace Pegel_Wetter_DFFUDC
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
+
         }
     }
 }
