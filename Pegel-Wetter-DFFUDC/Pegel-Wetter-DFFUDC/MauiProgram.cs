@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Pegel_Wetter_DFFUDC.Model;
 
 namespace Pegel_Wetter_DFFUDC
 {
@@ -14,10 +15,13 @@ namespace Pegel_Wetter_DFFUDC
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-            
+            builder.Services.AddSingleton<ModelInputintoHistory>();
+            builder.Services.AddSingleton<InputRainfallData>();
+
+
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

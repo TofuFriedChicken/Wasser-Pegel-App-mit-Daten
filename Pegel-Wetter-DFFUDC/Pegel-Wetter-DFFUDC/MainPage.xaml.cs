@@ -1,4 +1,7 @@
-﻿namespace Pegel_Wetter_DFFUDC
+﻿using Pegel_Wetter_DFFUDC.Model;
+using System.Threading;
+
+namespace Pegel_Wetter_DFFUDC
 {
     public partial class MainPage : ContentPage
     {

@@ -19,12 +19,10 @@ public partial class HistoryPage : ContentPage
 
     private List<ClassofMainListforJumps> ListofMainlist { get; set; }
 
-    private static readonly Lazy<ModelInputintoHistory> lazy = new Lazy<ModelInputintoHistory>(() => new ModelInputintoHistory());
-
-    public static ModelInputintoHistory Instance { get { return lazy.Value; } }
 
     public HistoryPage()
     {
+
         ListRainfallStation = new ObservableCollection<InputRainfallData>
             {
               new InputRainfallData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
@@ -49,7 +47,6 @@ public partial class HistoryPage : ContentPage
               new ModelInputintoHistory {edittype="added", datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, information = "123", measurementData = 123 },
 
         };
-
 
         ListofListHistoryofEdits = new List<ClassofHistoryforJumps>();
 

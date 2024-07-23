@@ -2,12 +2,11 @@ namespace Pegel_Wetter_DFFUDC.Model;
 
 public class InputRainfallData : IMeasurementData
 {
-    public bool Equals(InputRainfallData other)
-    {
-        if (other == null) return false;
-        return (this.measurementStationName.Equals(other.measurementStationName));
-    }
     public InputRainfallData() { }
+
+    private static readonly Lazy<InputRainfallData> lazy = new Lazy<InputRainfallData>(() => new InputRainfallData());
+
+    public static InputRainfallData Instance { get { return lazy.Value; } }
 
     public string datatype { get; set; }
 

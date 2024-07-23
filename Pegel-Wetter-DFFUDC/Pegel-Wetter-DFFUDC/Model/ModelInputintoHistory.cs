@@ -10,19 +10,9 @@ namespace Pegel_Wetter_DFFUDC.Model
     {
         public ModelInputintoHistory() { }
 
-        private static ModelInputintoHistory _instance;
+        private static readonly Lazy<ModelInputintoHistory> lazy = new Lazy<ModelInputintoHistory>(() => new ModelInputintoHistory());
 
-        public static ModelInputintoHistory Instanz
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new ModelInputintoHistory();
-                }
-                return _instance;
-            }
-        }
+        public static ModelInputintoHistory Instance { get { return lazy.Value; } }
 
         public string edittype { get; set; }
         public string datatype { get; set; }
