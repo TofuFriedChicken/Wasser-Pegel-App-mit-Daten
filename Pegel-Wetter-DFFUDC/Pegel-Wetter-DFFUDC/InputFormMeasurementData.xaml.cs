@@ -1,4 +1,6 @@
 
+using Pegel_Wetter_DFFUDC.Model;
+
 namespace Pegel_Wetter_DFFUDC;
 
 public partial class InputFormMeasurementData : ContentPage
