@@ -9,10 +9,11 @@ using System.Collections.Generic;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Net.NetworkInformation;
-using static Pegel_Wetter_DFFUDC.RainfallStation;
 using static Microsoft.Maui.ApplicationModel.Permissions;
 using System.Reflection;
 using CsvHelper;
+using System.Globalization;
+using System.IO.Compression;
 
 
 //Code behind
@@ -24,8 +25,8 @@ namespace Pegel_Wetter_DFFUDC
         WaterLevelModel _model;
         public bool _visiblePinsMaybe;
         private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
+        private readonly RainfallApi _rainfallApi;  // Rainfall
 
-        private readonly RainfallModel _rainfallModel;
 
         public MainPage()
         {
@@ -42,7 +43,9 @@ namespace Pegel_Wetter_DFFUDC
             _visiblePinsMaybe = false;
 
             // Rainfall Pin
-            _rainfallModel = new RainfallModel(new RainfallApi());
+            LoadAndProcessFile();   //Rainfall Station Pins
+
+            DisplayRSValues();  // Values of the last 5 Days - Rainfall
 
         }
 
@@ -124,29 +127,114 @@ namespace Pegel_Wetter_DFFUDC
 
         }
 
-        private async void ShowRainPins(object sender, EventArgs e)           // Pins Rainfall
+        // rainfall Stations - wird noch richtig gestellt
+        private async void LoadAndProcessFile()
         {
-            string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
-            var stations = await _rainfallModel.GetRainStationsAsync(url);
-            LoadRainPins(stations);
+            string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/RR_Tageswerte_Beschreibung_Stationen.txt";
+            string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);  // Methode in neuer Klasse
+            var processedLines = ProcessLines(lines);
+            AddPinsToMap(processedLines);
+        }
+        public RainfallStations[] ProcessLines(string[] lines)
+        {
+            var processedLines = lines
+                .Skip(380)
+                .Take(580)
+                .Select(line =>
+                {
+                    var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    return new RainfallStations
+                    {
+                        StationID = int.Parse(parts[0]),
+                        FromDate = DateTime.ParseExact(parts[1], "yyyyMMdd", CultureInfo.InvariantCulture),
+                        ToDate = DateTime.ParseExact(parts[2], "yyyyMMdd", CultureInfo.InvariantCulture),
+                        StationHight = int.Parse(parts[3]),
+                        Latitude = double.Parse(parts[4], CultureInfo.InvariantCulture),
+                        Longitude = double.Parse(parts[5], CultureInfo.InvariantCulture),
+                        StationName = parts[6]
+                    };
+                })
+                .ToArray();
+            return processedLines;
         }
 
-
-        private void LoadRainPins(List<RainfallStation> stations)
+        private void AddPinsToMap(RainfallStations[] stations)
         {
             foreach (var station in stations)
             {
                 var pin = new Pin
                 {
-                    Label = station.Stationname,
-                    Address = $"{station.State}, High: {station.StationHeight}m",
+                    Label = station.StationName,
+                    Address = $"ID: {station.StationID}, High: {station.StationHight}m",
                     Location = new Location(station.Latitude, station.Longitude)
                 };
-
-                germanMap.Pins.Add(pin); 
+                germanMap.Pins.Add(pin);
+            }
+            if (stations.Length > 0)
+            {
+                var centerPosition = new Location(stations[0].Latitude, stations[0].Longitude);
+                germanMap.MoveToRegion(MapSpan.FromCenterAndRadius(centerPosition, Distance.FromKilometers(100)));
             }
         }
 
+        //Rainfall - 20 Days
+        private async void DisplayRSValues()
+        {
+            try
+            {
+                var rsValues = await GetRSValuesAsync();
+                RSValuesLabel.Text = string.Join(Environment.NewLine, rsValues.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
+            }
+            catch (Exception ex)
+            {
+                RSValuesLabel.Text = $"Error: {ex.Message}";
+            }
+        }
+
+        private async Task<Dictionary<string, double>> GetRSValuesAsync()
+        {
+            var rsValues = new Dictionary<string, double>();
+
+            using (var httpClient = new HttpClient())
+            {
+                for (int i = 1; i <= 10; i++)
+                {
+                    string zipUrl = $"https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/tageswerte_RR_0000{i:00}_hist.zip";
+                    byte[] zipBytes = await httpClient.GetByteArrayAsync(zipUrl);
+
+                    using (var zipStream = new MemoryStream(zipBytes))
+                    using (var archive = new ZipArchive(zipStream))
+                    {
+                        foreach (var entry in archive.Entries)
+                        {
+                            if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                            {
+                                using (var reader = new StreamReader(entry.Open()))
+                                {
+                                    while (!reader.EndOfStream)
+                                    {
+                                        string line = await reader.ReadLineAsync();
+                                        if (line.StartsWith("STATIONS_ID") || string.IsNullOrWhiteSpace(line))
+                                            continue;
+
+                                        var columns = line.Split(';');
+                                        if (columns.Length >= 3 && DateTime.TryParseExact(columns[1], "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime date) && date >= DateTime.Now.AddDays(-20))
+                                        {
+                                            if (double.TryParse(columns[3], out double rsValue))
+                                            {
+                                                rsValues[date.ToString("yyyy-MM-dd")] = rsValue;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return rsValues;
+        }
 
         // go to other Pages
         public async void GoCircleMode(object sender, EventArgs e)
