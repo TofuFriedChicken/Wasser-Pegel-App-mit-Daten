@@ -29,6 +29,9 @@ namespace Pegel_Wetter_DFFUDC
 
 
 
+            builder.Services.AddTransient<swapDates>();
+            
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
