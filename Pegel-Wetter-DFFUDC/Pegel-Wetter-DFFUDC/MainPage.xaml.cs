@@ -179,5 +179,9 @@ namespace Pegel_Wetter_DFFUDC
             germanMap.HeightRequest = this.Height;
         }
 
+        private async void swapDatesBut_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new swapDates());
+        }
     }
 }

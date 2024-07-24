@@ -41,11 +41,11 @@
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0">
                                 <Button 
-                                    x:Name="Circle"
-                                    Clicked="GoCircleMode"
+                                    x:Name="swapDatesBut"
+                                    Clicked="swapDatesBut_Clicked"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
-                                    Text="Circle Mode"
+                                    Text="swap throught dates"
                                     TextColor="Black"
                                     WidthRequest="200"
                                     BorderWidth="1.5"
