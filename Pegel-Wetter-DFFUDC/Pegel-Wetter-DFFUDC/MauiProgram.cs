@@ -21,6 +21,9 @@ namespace Pegel_Wetter_DFFUDC
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.Services.AddTransient<swapDates>();
+            
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
