@@ -22,7 +22,7 @@ namespace Pegel_Wetter_DFFUDC
 {
     public partial class MainPage : ContentPage
     {
-        WaterLevelModel _model;
+        WaterLevelStations _model;
         public bool _visiblePinsMaybe;
         private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
 
@@ -38,7 +38,7 @@ namespace Pegel_Wetter_DFFUDC
             germanMap.MoveToRegion(mapSpan);
             SizeAdjustment(this, EventArgs.Empty);
 
-            _model = new WaterLevelModel();     // WaterLevel Pin
+            _model = new WaterLevelStations();     // WaterLevel Pin
             BindingContext = _model;
             LoadWaterPins();
             _visiblePinsMaybe = false;
@@ -64,7 +64,7 @@ namespace Pegel_Wetter_DFFUDC
             Navigation.PushAsync(new HistoryPage());
         }
 
-
+        // Ab hier sind die Waterlevel Pins:
         private async void LoadWaterPins()     //  WaterLevel Pins
         {
             try
@@ -79,7 +79,7 @@ namespace Pegel_Wetter_DFFUDC
                         Label = position.longname,
                         Address = position.agency, 
                         Location = new Location(position.latitude, position.longitude),
-                      
+                        //ImageSource = ImageSource.Fromfile("waterlevel.png")
                     };
                     _loadedPins.Add(pin);
                 }
@@ -126,9 +126,16 @@ namespace Pegel_Wetter_DFFUDC
         private async void ShowRainPins(object sender, EventArgs e)
         {
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/RR_Tageswerte_Beschreibung_Stationen.txt";
+            //LoadingProgressBar.IsVisible = true;
+            //LoadingIndicator.IsRunning = true;
+            //LoadingIndicator.IsVisible = true;
             string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);  // Methode in neuer Klasse
             var processedLines = _rainfallModel.ProcessLines(lines);
+            
             AddPinsToMap(processedLines);
+            //LoadingProgressBar.IsVisible = false;
+            //LoadingIndicator.IsRunning = false;
+            //LoadingIndicator.IsVisible = false;
         }
 
         private void AddPinsToMap(RainfallStations[] stations)

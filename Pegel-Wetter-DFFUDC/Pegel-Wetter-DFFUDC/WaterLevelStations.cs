@@ -14,14 +14,15 @@ using System.Diagnostics;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    public class WaterLevelModel 
+    public class WaterLevelStations
+        
     {
         public WaterLevelApi _waterlevelApi;
         public ObservableCollection<Root> _positions;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public WaterLevelModel()
+        public WaterLevelStations()
         {
             _waterlevelApi = new WaterLevelApi();
         }
