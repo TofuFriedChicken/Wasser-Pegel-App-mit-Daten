@@ -137,7 +137,7 @@ public partial class InputFormMeasurementData : ContentPage
 
         HistoryPage historyPage = new HistoryPage();
         historyPage.ListWaterlevelStation.Add(inputWaterlevelData);
-        Navigation.PushAsync
+        Navigation.PushAsync(historyPage);
 
       }
       else
@@ -176,6 +176,10 @@ public partial class InputFormMeasurementData : ContentPage
           information = inputInformationR.Text,
           measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
         };
+
+        HistoryPage historyPage = new HistoryPage();
+        historyPage.ListRainfallStation.Add(inputRainfallData);
+        Navigation.PushAsync(historyPage);
       }
       else
       {
