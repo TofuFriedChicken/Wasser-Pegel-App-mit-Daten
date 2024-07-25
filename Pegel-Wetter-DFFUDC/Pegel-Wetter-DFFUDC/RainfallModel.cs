@@ -17,10 +17,14 @@ namespace Pegel_Wetter_DFFUDC
 {
     public class RainfallModel
     {
-        string url = "";
-        public async void getRainstationAsync(string url)
+        private readonly RainfallApi _rainfallApi;
+        public RainfallModel(RainfallApi rainfallApi)
         {
-            await 
+            _rainfallApi = rainfallApi;
+        }
+        public async Task<List<RainfallStation>> GetRainStationsAsync(string url)
+        {
+            return await _rainfallApi.GetRainStationsAsync(url);
         }
 
         public RainfallStations[] ProcessLines(string[] lines)
