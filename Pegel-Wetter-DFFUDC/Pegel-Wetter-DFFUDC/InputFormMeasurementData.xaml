@@ -71,56 +71,5 @@
 </StackLayout>
 
 
-<!-- Form Waterlevel and Rainfall-->
-
-<!--
-<StackLayout x:Name="waterLevelRainfallForm" IsVisible="False">     
-
-  <Label Text="Name der Messstation:"/>
-  <Entry Placeholder="..."/>
-
-  <Label Text="Lage der Messstation:"/>
-  <Entry Placeholder="Längengrad"/>
-  <Entry Placeholder="Breitengrad"/>
-
-  <Label Text="Tag der Messung:"/>
-  <Entry Placeholder="TT/MM/JJJJ"/>
-
-  <Label Text="Angaben zum Gewässer (der Pegelstandsmessung):"/>
-  <Entry Placeholder="..."/>
-
-  <Label Text="Höhe des Pegelstands in cm"/>
-  <Entry Placeholder="..."/>
-
-  <Label Text="Niederschlagsmenge in mm"/>
-  <Entry Placeholder="..."/>
-
-</StackLayout>
--->
-
-<!-- Form Measurement Station-->
-<!--
-<StackLayout x:Name="measurementStationForm" IsVisible="False">     
-
-  <Label Text="Name der Messstation:"/>
-  <Entry Placeholder="..."/>
-
-  <Label Text="Lage der Messstation:"/>
-  <Entry Placeholder="Längengrad"/>
-  <Entry Placeholder="Breitengrad"/>
-
-  <Label Text="Inbetriebnahme der Messstation:"/>
-  <Entry Placeholder="TT/MM/JJJJ"/>
-
-</StackLayout>
--->
-
-
-
-<Label x:Name="test" Text="test"/>
-
-
-
-
 </VerticalStackLayout>
 </ContentPage>
