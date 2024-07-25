@@ -142,7 +142,7 @@ namespace Pegel_Wetter_DFFUDC
             
             //fragt stationen ab
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
-            var stations = await RfModel.GetRainStationsAsync(url);
+            //var stations = await RfModel.GetRainStationsAsync(url);
             string[] lines = await RfApi.LoadFileFromUrlAsync(url);
 
             //übergibt stationen an Methode, läd informationen in Liste aus stationen
@@ -158,13 +158,13 @@ namespace Pegel_Wetter_DFFUDC
             }
             else if (stations != null) 
             {
-                foreach (RainfallStation station in stations)
+                foreach (RainfallApi lines in processedLines)
                 {
                     double latitudetest = 48.75845;
                     double longitudetest = 9.9855;
                     Pin RfPin = new Pin
                     {
-                        Label = station.Stationname,
+                        Label = lines.,
                         Address = $"{station.State}, High: {station.StationHeight}m",
                         Location = new Location(station.Latitude, station.Longitude) //probleme beim button rf map mit latitude
                     };
