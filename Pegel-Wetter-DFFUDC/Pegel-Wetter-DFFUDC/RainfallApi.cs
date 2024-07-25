@@ -27,7 +27,7 @@ namespace Pegel_Wetter_DFFUDC
             return ParseStations(response);
         }
 
-        private List<RainfallStation> ParseStations(string data)
+        public List<RainfallStation> ParseStations(string data)
         {
             var lines = data.Split('\n');
             var stations = new List<RainfallStation>();

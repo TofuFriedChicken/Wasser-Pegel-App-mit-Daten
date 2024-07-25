@@ -10,25 +10,30 @@
     
  <!--Benutzeroberfläche-->   
 
-        <VerticalStackLayout>
+    <VerticalStackLayout>
 
-            <HorizontalStackLayout HorizontalOptions = "End" >
+        <HorizontalStackLayout HorizontalOptions="End">
 
-                <Button x:Name="rainfallmap" BackgroundColor="White" TextColor="Blue" Text="show only rainfall measuring station" Clicked="rainfallmap_Clicked"/>
+            <Button x:Name="DateBack" IsVisible="False" BackgroundColor="White" TextColor="Blue" Text="back" Clicked="DateBack_Clicked"/>
 
-                <Button x:Name="waterlevelmap" BackgroundColor="White" TextColor="Blue" Text="show only waterlevel measuring station" Clicked="waterlevelmap_Clicked" />
+            <Frame CornerRadius = "10" BackgroundColor="White">
 
-                <Button x:Name="DateBack" BackgroundColor="White" TextColor="Blue" Text="back" Clicked="DateBack_Clicked"/>
+                <Label x:Name="DateLabel" TextColor="Blue" VerticalOptions="Center"/>
 
-                <Frame CornerRadius = "10" BackgroundColor="White">
+            </Frame>
 
-                    <Label x:Name="DateLabel" TextColor="Blue" VerticalOptions="Center"/>
+            <Button x:Name="DateForward" IsVisible="False" BackgroundColor="White" TextColor="Blue" Text="forward" Clicked="DateForward_Clicked"/>
 
-                </Frame>
+        </HorizontalStackLayout>
 
-                <Button x:Name="DateForward" BackgroundColor="White" TextColor="Blue" Text="forward" Clicked="DateForward_Clicked"/>
+        <HorizontalStackLayout HorizontalOptions = "Start" >
 
-            </HorizontalStackLayout>
+            <Button x:Name="rainfallmap" BackgroundColor="White" TextColor="Blue" Text="show only rainfall measuring station" Clicked="rainfallmap_Clicked"/>
+
+            <Button x:Name="waterlevelmap" BackgroundColor="White" TextColor="Blue" Text="show only waterlevel measuring station" Clicked="waterlevelmap_Clicked" />
+
+        </HorizontalStackLayout>
+ 
 
             <!--create map-->
             <maps:Map x:Name="MyMap_Test"
@@ -36,5 +41,5 @@
                     MapType="Street" >
             </maps:Map>
 
-        </VerticalStackLayout>
+    </VerticalStackLayout>
 </ContentPage>
