@@ -1,4 +1,4 @@
-using Microsoft.Maui.Maps;
+﻿using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Maps;
 using System.Collections.ObjectModel;
@@ -13,6 +13,7 @@ using static Pegel_Wetter_DFFUDC.RainfallStation;
 using static Microsoft.Maui.ApplicationModel.Permissions;
 using System.Reflection;
 using CsvHelper;
+using Map = Microsoft.Maui.Controls.Maps.Map;
 
 
 //Code behind
@@ -43,6 +44,10 @@ namespace Pegel_Wetter_DFFUDC
 
             // Rainfall Pin
             _rainfallModel = new RainfallModel(new RainfallApi());
+
+            // Pin from input form
+            var station = new InputFormMeasurementData();
+            station.AddPinToMap(germanMap);
 
         }
 

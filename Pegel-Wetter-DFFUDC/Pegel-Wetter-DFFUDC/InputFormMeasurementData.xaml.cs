@@ -1,5 +1,8 @@
 
 using Pegel_Wetter_DFFUDC.Model;
+using Microsoft.Maui.Maps;
+using Microsoft.Maui.Controls.Maps;
+using Map = Microsoft.Maui.Controls.Maps.Map;
 
 namespace Pegel_Wetter_DFFUDC;
 
@@ -85,6 +88,42 @@ public partial class InputFormMeasurementData : ContentPage
     
   }
 
+  public void AddPinToMap(Map map)
+  {
+    if (waterLevelForm.IsVisible && !string.IsNullOrWhiteSpace(inputLonW.Text) && !string.IsNullOrWhiteSpace(inputLatW.Text))
+    {
+      string measurementStationName = inputMeasurementStationNameW.Text;
+      double lat = Convert.ToDouble(inputLatW.Text);
+      double lon = Convert.ToDouble(inputLonW.Text);
+      
+      var pinW = new Pin
+      {
+        Label = measurementStationName,
+        Location = new Location (lat, lon)
+      };
+
+      map.Pins.Add(pinW);
+    }
+
+    if (rainfallForm.IsVisible && !string.IsNullOrWhiteSpace(inputLonR.Text) && !string.IsNullOrWhiteSpace(inputLatR.Text))
+    {
+      string measurementStationName = inputMeasurementStationNameR.Text;
+      double lat = Convert.ToDouble(inputLatR.Text); 
+      double lon = Convert.ToDouble(inputLonR.Text);
+
+      var pinR = new Pin
+      {
+        Label = measurementStationName,
+        Location = new Location (lat, lon)
+      };
+
+      map.Pins.Add(pinR);
+    }
+    
+  }
+
+
+
   public async void OnAddClicked(object sender, EventArgs e)
   {
     //check for valid input
@@ -168,24 +207,6 @@ public partial class InputFormMeasurementData : ContentPage
     {
       await DisplayAlert("Fehler", "Bitte trage in alle Felder Daten ein.", "Eingabe überarbeiten");    
     }
-
-
-
-
-
-
-
-    // var pinW = new Pin
-    // {
-    //   Location = new Location (inputWaterlevelData.lon, inputWaterlevelData.lat)
-    // };
-
-    // var pinR = new Pin
-    // {
-    //   Location = new Location (inputWaterlevelData.lon, inputWaterlevelData.lat)
-    // };
-
-
 
   }
 
