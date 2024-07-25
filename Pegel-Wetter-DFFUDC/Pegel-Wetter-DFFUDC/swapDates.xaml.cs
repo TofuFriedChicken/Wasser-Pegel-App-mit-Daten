@@ -146,10 +146,11 @@ namespace Pegel_Wetter_DFFUDC
             var stations = await RfModel.GetRainStationsAsync(url);
 
             //übergibt stationen an Methode, läd informationen in Liste aus stationen
-            LoadRainPins(stations); 
+            var processedLines = RfModel.ProcessLines(lines);
+            LoadRainPins(processedLines); 
         }
 
-        private void LoadRainPins(List<RainfallStation> stations)
+        private void LoadRainPins(RainfallStations[] stations)
         {
             if (stations == null)
             {
