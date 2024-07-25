@@ -47,6 +47,7 @@ namespace Pegel_Wetter_DFFUDC
         }
 
         private void OnOpenListClicked(object sender, EventArgs e)
+
         {
             Navigation.PushAsync(new TestList());
         }
@@ -121,7 +122,11 @@ namespace Pegel_Wetter_DFFUDC
                 germanMap.Pins.Clear();
                 _visiblePinsMaybe = false;
             }
-
+            else
+            {
+                //Unittest
+                DisplayAlert("Information", "Nichts zum entfernen vorhanden.", "schlieﬂen");
+            }
         }
 
         private async void ShowRainPins(object sender, EventArgs e)           // Pins Rainfall

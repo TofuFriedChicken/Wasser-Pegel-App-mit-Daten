@@ -8,14 +8,8 @@
              x:Name="swapDatesLayout"
              Title="swapDates">
     
-    <VerticalStackLayout>
-        
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+ <!--Benutzeroberfläche-->   
 
-        <!--Benutzeroberfläche-->
         <VerticalStackLayout>
 
             <HorizontalStackLayout HorizontalOptions = "End" >
@@ -43,5 +37,4 @@
             </maps:Map>
 
         </VerticalStackLayout>
-    </VerticalStackLayout>
 </ContentPage>
