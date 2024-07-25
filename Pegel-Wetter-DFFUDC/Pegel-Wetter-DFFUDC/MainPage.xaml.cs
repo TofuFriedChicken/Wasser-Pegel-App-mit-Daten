@@ -25,8 +25,9 @@ namespace Pegel_Wetter_DFFUDC
         WaterLevelModel _model;
         public bool _visiblePinsMaybe;
         private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
-        private readonly RainfallApi _rainfallApi;  // Rainfall
 
+        private readonly RainfallApi _rainfallApi;  // Rainfall
+        private readonly RainfallModel _rainfallModel;
 
         public MainPage()
         {
@@ -42,10 +43,9 @@ namespace Pegel_Wetter_DFFUDC
             LoadWaterPins();
             _visiblePinsMaybe = false;
 
-            // Rainfall Pin
-            LoadAndProcessFile();   //Rainfall Station Pins
+            _rainfallApi = new RainfallApi(); // Rainfall Pin
+            _rainfallModel = new RainfallModel();
 
-            DisplayRSValues();  // Values of the last 5 Days - Rainfall
 
         }
 
@@ -73,16 +73,13 @@ namespace Pegel_Wetter_DFFUDC
                 
                 foreach (var position in _model.Positions)
                 {
-                    //var key = pinData.Uuid;       
-                    //if (!_pinDataCache.Contains(key))
-                    //{
-                    //    _pinDataCache.Add(key, pinData);
-                    //}
+                
                     var pin = new Pin
                     {
                         Label = position.longname,
-                        Address = position.agency, // + hier den Value von CurrentMeasurement anzeigen
+                        Address = position.agency, 
                         Location = new Location(position.latitude, position.longitude),
+                      
                     };
                     _loadedPins.Add(pin);
                 }
@@ -99,12 +96,12 @@ namespace Pegel_Wetter_DFFUDC
             {
 
                 germanMap.Pins.Add(pin);
-                pin.MarkerClicked += Pin_Clicked;
+                pin.MarkerClicked += WaterlevelValues_Clicked;
             }
             _visiblePinsMaybe = true;
         }
 
-        private void Pin_Clicked(object sender, EventArgs e)
+        private void WaterlevelValues_Clicked(object sender, EventArgs e)
         {
             var pin = sender as Pin;
             var position = _model.Positions.FirstOrDefault(p => p.latitude == pin.Location.Latitude && p.longitude == pin.Location.Longitude);
@@ -124,38 +121,14 @@ namespace Pegel_Wetter_DFFUDC
                 germanMap.Pins.Clear();
                 _visiblePinsMaybe = false;
             }
-
         }
 
-        // rainfall Stations - wird noch richtig gestellt
-        private async void LoadAndProcessFile()
+        private async void ShowRainPins(object sender, EventArgs e)
         {
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/RR_Tageswerte_Beschreibung_Stationen.txt";
             string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);  // Methode in neuer Klasse
-            var processedLines = ProcessLines(lines);
+            var processedLines = _rainfallModel.ProcessLines(lines);
             AddPinsToMap(processedLines);
-        }
-        public RainfallStations[] ProcessLines(string[] lines)
-        {
-            var processedLines = lines
-                .Skip(380)
-                .Take(580)
-                .Select(line =>
-                {
-                    var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    return new RainfallStations
-                    {
-                        StationID = int.Parse(parts[0]),
-                        FromDate = DateTime.ParseExact(parts[1], "yyyyMMdd", CultureInfo.InvariantCulture),
-                        ToDate = DateTime.ParseExact(parts[2], "yyyyMMdd", CultureInfo.InvariantCulture),
-                        StationHight = int.Parse(parts[3]),
-                        Latitude = double.Parse(parts[4], CultureInfo.InvariantCulture),
-                        Longitude = double.Parse(parts[5], CultureInfo.InvariantCulture),
-                        StationName = parts[6]
-                    };
-                })
-                .ToArray();
-            return processedLines;
         }
 
         private void AddPinsToMap(RainfallStations[] stations)
@@ -169,7 +142,9 @@ namespace Pegel_Wetter_DFFUDC
                     Location = new Location(station.Latitude, station.Longitude)
                 };
                 germanMap.Pins.Add(pin);
+                pin.MarkerClicked += RainfallValues_Clicked;
             }
+            _visiblePinsMaybe = true;
             if (stations.Length > 0)
             {
                 var centerPosition = new Location(stations[0].Latitude, stations[0].Longitude);
@@ -178,16 +153,22 @@ namespace Pegel_Wetter_DFFUDC
         }
 
         //Rainfall - 20 Days
-        private async void DisplayRSValues()
+        private async void RainfallValues_Clicked(object sender, PinClickedEventArgs e)
+        {
+            await RainValue();
+            e.HideInfoWindow = true;
+        }
+        private async Task RainValue()
         {
             try
             {
                 var rsValues = await GetRSValuesAsync();
-                RSValuesLabel.Text = string.Join(Environment.NewLine, rsValues.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
+                string displayText = string.Join(Environment.NewLine, rsValues.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
+                await DisplayAlert("RS Values", displayText, "OK");
             }
             catch (Exception ex)
             {
-                RSValuesLabel.Text = $"Error: {ex.Message}";
+                await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
             }
         }
 

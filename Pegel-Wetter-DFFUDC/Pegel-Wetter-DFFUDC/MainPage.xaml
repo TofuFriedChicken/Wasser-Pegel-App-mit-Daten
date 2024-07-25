@@ -64,7 +64,7 @@
                             </StackLayout>
                             <StackLayout Grid.Column="2">
                                 <Button 
-                            
+                                    Clicked="ShowRainPins"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Rainfall☂"
@@ -145,8 +145,13 @@
         <!--map from BingMaps-->
         <maps:Map
             x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment">
+            <maps:Map.Pins>
+                <!--<maps:Pin.ImageSource>
+                    <FileImageSource File="blue_pin.png"/>
+                </maps:Pin.ImageSource>-->
+            </maps:Map.Pins>
         </maps:Map>
-        <!--HeightRequest="660" WidthRequest="1500"-->
+   
 
     </Grid>
 
