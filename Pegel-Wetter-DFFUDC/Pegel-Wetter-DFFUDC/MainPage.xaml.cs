@@ -14,6 +14,7 @@ using System.Reflection;
 using CsvHelper;
 using System.Globalization;
 using System.IO.Compression;
+using System;
 
 
 //Code behind
@@ -28,6 +29,8 @@ namespace Pegel_Wetter_DFFUDC
 
         private readonly RainfallApi _rainfallApi; 
         private readonly RainfallModel _rainfallModel;
+
+        private readonly DataFetcher _dataFetcher = new DataFetcher();
 
         public MainPage()
         {
@@ -65,7 +68,7 @@ namespace Pegel_Wetter_DFFUDC
         }
 
         // Ab hier sind die Waterlevel Pins:
-        private async void LoadWaterPins()     //  WaterLevel Pins
+        private async void LoadWaterPins()     
         {
             try
             { 
@@ -89,8 +92,30 @@ namespace Pegel_Wetter_DFFUDC
                 await DisplayAlert("Fehler beim Laden der Pins", ex.Message, "OK");
             }
         }
+        private async Task ShowLoadingPopup(Func<Task> loadDataFunc)
+        {
+            //var loadingPopup = new Popup
+            //{
+            //    Content = new VerticalStackLayout
+            //    {
+            //        Padding = new Thickness(50),
+            //        BackgroundColor = Colors.White,
+            //        Children = { new ActivityIndicator { IsRunning = true, Color = Colors.Black }, new Label { Text = "One second, pins are set", TextColor = Colors.Black } }
+            //    }
+            //};
 
+            //MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen*/ });
+
+            //try { await loadDataFunc(); }
+            //catch (Exception ex) { await MainThread.InvokeOnMainThreadAsync(async () => { await DisplayAlert("Fehler", "Es ist ein Fehler aufgetreten. \nLaden nicht erfolgreich.\n" + ex.Message, "OK"); }); }
+            //finally { MainThread.BeginInvokeOnMainThread(() => { loadingPopup.Close(); }); }
+        }
+   
         private async void ShowWaterPins(object sender, EventArgs e)
+        {
+            await ShowLoadingPopup(async () => { await WaterPins(); }); 
+        }
+        private async Task WaterPins()
         {
             foreach (var pin in _loadedPins)
             {
@@ -139,8 +164,8 @@ namespace Pegel_Wetter_DFFUDC
             {
                 var pin = new Pin
                 {
-                    Label = station.StationName,
-                    Address = $"ID: {station.StationID}, High: {station.StationHight}m",
+                    Label = $"{station.StationName}, High: {station.StationHight}m",
+                    Address = station.StationID.ToString(),
                     Location = new Location(station.Latitude, station.Longitude)
                 };
                 germanMap.Pins.Add(pin);
@@ -157,16 +182,20 @@ namespace Pegel_Wetter_DFFUDC
         //Rainfall - 20 Days
         private async void RainfallValues_Clicked(object sender, PinClickedEventArgs e)
         {
-            await RainValue();
+            if (sender is Pin pin && !string.IsNullOrEmpty(pin.Address))
+            {
+                await RainValues(pin.Address); // StationId als Argument in Adress
+            }
             e.HideInfoWindow = true;
+
         }
-        private async Task RainValue()
+        private async Task RainValues(string StationID)
         {
             try
             {
-                var rsValues = await GetRSValuesAsync();
+                var rsValues = await GetRSValuesAsync(StationID);
                 string displayText = string.Join(Environment.NewLine, rsValues.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
-                await DisplayAlert("RS Values", displayText, "OK");
+                await DisplayAlert($"RS Values for Station {StationID}", displayText, "OK");
             }
             catch (Exception ex)
             {
@@ -174,23 +203,25 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        private async Task<Dictionary<string, double>> GetRSValuesAsync()
+        private async Task<Dictionary<string, string>> GetRSValuesAsync(string StationID)
         {
-            var rsValues = new Dictionary<string, double>();
+            var rsValues = new Dictionary<string, string>();
+            string baseUrl = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/";
+            string endDate = DateTime.Now.AddDays(-1).ToString("yyyyMMdd");
+            string zipUrl = $"{baseUrl}produkt_nieder_tag_20230122_{endDate}_{StationID}.zip";
 
             using (var httpClient = new HttpClient())
             {
-                for (int i = 1; i <= 10; i++)
-                {
-                    string zipUrl = $"https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/tageswerte_RR_0000{i:00}_hist.zip";
-                    byte[] zipBytes = await httpClient.GetByteArrayAsync(zipUrl);
+                //string zipUrl = $"{baseUrl}tageswerte_RR_{StationID}_akt.zip";
+
+                byte[] zipBytes = await httpClient.GetByteArrayAsync(zipUrl);
 
                     using (var zipStream = new MemoryStream(zipBytes))
                     using (var archive = new ZipArchive(zipStream))
                     {
                         foreach (var entry in archive.Entries)
                         {
-                            if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                            if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) && entry.FullName.Contains("produkt"))
                             {
                                 using (var reader = new StreamReader(entry.Open()))
                                 {
@@ -203,9 +234,10 @@ namespace Pegel_Wetter_DFFUDC
                                         var columns = line.Split(';');
                                         if (columns.Length >= 3 && DateTime.TryParseExact(columns[1], "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime date) && date >= DateTime.Now.AddDays(-20))
                                         {
+                                            string dateString = date.ToString("yyyy-MM-dd");
                                             if (double.TryParse(columns[3], out double rsValue))
                                             {
-                                                rsValues[date.ToString("yyyy-MM-dd")] = rsValue;
+                                                rsValues[dateString] = rsValue.ToString();
                                             }
                                         }
                                     }
@@ -213,6 +245,14 @@ namespace Pegel_Wetter_DFFUDC
                             }
                         }
                     }
+
+            }
+            var last20Days = Enumerable.Range(0, 20).Select(offset => DateTime.Now.AddDays(-offset).ToString("yyyy-MM-dd")).ToList();
+            foreach (var date in last20Days)
+            {
+                if (!rsValues.ContainsKey(date))
+                {
+                    rsValues[date] = "Keine Werte";
                 }
             }
 
