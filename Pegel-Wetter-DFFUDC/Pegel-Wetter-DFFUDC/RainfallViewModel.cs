@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    public class RainfallStations
+    public class RainfallViewModel
     {
 
         public int StationID { get; set; }

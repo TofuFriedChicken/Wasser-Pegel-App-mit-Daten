@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    public class WaterLevelStations
+    public class WaterLevelModel
         
     {
         public WaterLevelApi _waterlevelApi;
@@ -22,7 +22,7 @@ namespace Pegel_Wetter_DFFUDC
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public WaterLevelStations()
+        public WaterLevelModel()
         {
             _waterlevelApi = new WaterLevelApi();
         }

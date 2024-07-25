@@ -22,11 +22,11 @@ namespace Pegel_Wetter_DFFUDC
 {
     public partial class MainPage : ContentPage
     {
-        WaterLevelStations _model;
+        WaterLevelModel _model;
         public bool _visiblePinsMaybe;
         private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
 
-        private readonly RainfallApi _rainfallApi;  // Rainfall
+        private readonly RainfallApi _rainfallApi; 
         private readonly RainfallModel _rainfallModel;
 
         public MainPage()
@@ -37,13 +37,13 @@ namespace Pegel_Wetter_DFFUDC
             var mapSpan = new MapSpan(germanLocation, 90.0, 180.0);
             germanMap.MoveToRegion(mapSpan);
             SizeAdjustment(this, EventArgs.Empty);
-
-            _model = new WaterLevelStations();     // WaterLevel Pin
-            BindingContext = _model;
-            LoadWaterPins();
             _visiblePinsMaybe = false;
 
-            _rainfallApi = new RainfallApi(); // Rainfall Pin
+            _model = new WaterLevelModel();     // WaterLevel Pin
+            BindingContext = _model;
+            LoadWaterPins();
+
+            _rainfallApi = new RainfallApi();   // Rainfall Pin
             _rainfallModel = new RainfallModel();
 
 
@@ -123,22 +123,17 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
+        // ab hier die Rainfall Pins
         private async void ShowRainPins(object sender, EventArgs e)
         {
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/RR_Tageswerte_Beschreibung_Stationen.txt";
-            //LoadingProgressBar.IsVisible = true;
-            //LoadingIndicator.IsRunning = true;
-            //LoadingIndicator.IsVisible = true;
             string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);  // Methode in neuer Klasse
             var processedLines = _rainfallModel.ProcessLines(lines);
             
             AddPinsToMap(processedLines);
-            //LoadingProgressBar.IsVisible = false;
-            //LoadingIndicator.IsRunning = false;
-            //LoadingIndicator.IsVisible = false;
         }
 
-        private void AddPinsToMap(RainfallStations[] stations)
+        private void AddPinsToMap(RainfallViewModel[] stations)
         {
             foreach (var station in stations)
             {

@@ -16,7 +16,7 @@ namespace Pegel_Wetter_DFFUDC
 {
     public class RainfallModel
     {
-        public RainfallStations[] ProcessLines(string[] lines)
+        public RainfallViewModel[] ProcessLines(string[] lines)
         {
             var processedLines = lines
                 .Skip(380)
@@ -24,7 +24,7 @@ namespace Pegel_Wetter_DFFUDC
                 .Select(line =>
                 {
                     var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    return new RainfallStations
+                    return new RainfallViewModel
                     {
                         StationID = int.Parse(parts[0]),
                         FromDate = DateTime.ParseExact(parts[1], "yyyyMMdd", CultureInfo.InvariantCulture),
