@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Pegel_Wetter_DFFUDC"
-             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Pegel_Wetter_DFFUDC.MainPage"
              BackgroundColor="LightGray"
@@ -53,7 +53,7 @@
                             </StackLayout>
                             <StackLayout Grid.Column="1">
                                 <Button 
-                                    Clicked ="ShowWaterPins"
+                                    
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Waterlevel🌊"
@@ -64,7 +64,7 @@
                             </StackLayout>
                             <StackLayout Grid.Column="2">
                                 <Button 
-                                    Clicked="ShowRainPins"
+                                    
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Rainfall☂"
@@ -75,7 +75,7 @@
                             </StackLayout>
                             <StackLayout Grid.Column="3">
                                 <Button 
-                                    Clicked="RemovePins_Clicked"
+                                    
                                     Margin="1"
                                     BackgroundColor="IndianRed"
                                     Text="Clear"
@@ -142,11 +142,7 @@
             
         </Frame>
    
-        <!--map from BingMaps-->
-        <maps:Map
-            x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment">
-        </maps:Map>
-        <!--HeightRequest="660" WidthRequest="1500"-->
+        
 
     </Grid>
 

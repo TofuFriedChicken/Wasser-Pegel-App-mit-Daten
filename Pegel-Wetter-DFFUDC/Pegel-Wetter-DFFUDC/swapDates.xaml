@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Pegel_Wetter_DFFUDC"
-             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Pegel_Wetter_DFFUDC.swapDates"
              x:Name="swapDatesLayout"
@@ -20,9 +20,7 @@
 
             <HorizontalStackLayout HorizontalOptions = "End" >
 
-                <Button x:Name="rainfallmap" BackgroundColor="White" TextColor="Blue" Text="show only rainfall measuring station" Clicked="rainfallmap_Clicked"/>
-
-                <Button x:Name="waterlevelmap" BackgroundColor="White" TextColor="Blue" Text="show only waterlevel measuring station" Clicked="waterlevelmap_Clicked" />
+                
 
                 <Button x:Name="DateBack" BackgroundColor="White" TextColor="Blue" Text="back" Clicked="DateBack_Clicked"/>
 
@@ -36,11 +34,7 @@
 
             </HorizontalStackLayout>
 
-            <!--create map-->
-            <maps:Map x:Name="MyMap_Test"
-                    SizeChanged="CurrentMapSizeUpdate"
-                    MapType="Street" >
-            </maps:Map>
+            
 
         </VerticalStackLayout>
     </VerticalStackLayout>
