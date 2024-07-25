@@ -134,6 +134,11 @@ public partial class InputFormMeasurementData : ContentPage
           information = inputInformationW.Text,
           measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
         };
+
+        HistoryPage historyPage = new HistoryPage();
+        historyPage.ListWaterlevelStation.Add(inputWaterlevelData);
+        Navigation.PushAsync
+
       }
       else
       {

@@ -122,6 +122,13 @@ public partial class HistoryPage : ContentPage
                     HistoryMethodClass historylistedit = new HistoryMethodClass();
                     // historylistedit.ListEdit(selectedItem.edittype);
                     break;
+                // case "Delete":
+                //     bool deleteData = await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Löschen", "Abbrechen");     //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24) 
+                //     if (deleteData)
+                //     {
+                //          use .Remove source: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.remove?view=net-8.0 (last visit: 14.07.24)
+                //     }
+                //     break;   
                 default:
                     break;
             }
@@ -140,5 +147,6 @@ public partial class HistoryPage : ContentPage
     {
         JumpHistory();
     }
+                                  
 
 }
