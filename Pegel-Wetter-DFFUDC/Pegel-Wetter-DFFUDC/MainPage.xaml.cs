@@ -137,7 +137,7 @@ namespace Pegel_Wetter_DFFUDC
         }
 
 
-        private void LoadRainPins(List<RainfallStation> stations)
+        private void LoadRainPins(/*List<RainfallStation> stations*/)
         {
             foreach (var station in stations)
             {

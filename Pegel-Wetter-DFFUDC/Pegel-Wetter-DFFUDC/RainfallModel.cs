@@ -17,6 +17,12 @@ namespace Pegel_Wetter_DFFUDC
 {
     public class RainfallModel
     {
+        string url = "";
+        public async void getRainstationAsync(string url)
+        {
+            await 
+        }
+
         public RainfallStations[] ProcessLines(string[] lines)
         {
             var processedLines = lines
