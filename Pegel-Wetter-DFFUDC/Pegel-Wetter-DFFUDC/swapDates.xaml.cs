@@ -25,15 +25,14 @@ namespace Pegel_Wetter_DFFUDC
 
         private DateTime date;
 
-        //var Rainfallstation station = new RainfallStation
-        //var RainfallApi stations = new List<RainfallStation>();
 
         WaterLevelModel WlModel = new WaterLevelModel();
         private List<Pin> WlPinslist = new List<Pin>();
         
 
         //Rf Stationen anfragen
-        RainfallModel RfModel = new RainfallModel(new RainfallApi()); //Api Key 
+        RainfallModel RfModel = new RainfallModel(new RainfallApi()); //Api Key
+        RainfallApi RfApi = new RainfallApi();                                                              //
         private List<Pin> RfPinslist = new List<Pin>();
 
         public swapDates()
@@ -144,6 +143,7 @@ namespace Pegel_Wetter_DFFUDC
             //fragt stationen ab
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
             var stations = await RfModel.GetRainStationsAsync(url);
+            string[] lines = await RfApi.LoadFileFromUrlAsync(url);
 
             //übergibt stationen an Methode, läd informationen in Liste aus stationen
             var processedLines = RfModel.ProcessLines(lines);
