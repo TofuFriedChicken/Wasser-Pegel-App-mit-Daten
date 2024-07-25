@@ -15,6 +15,7 @@ using CsvHelper;
 using System.Globalization;
 using System.IO.Compression;
 using System;
+using CommunityToolkit.Maui.Views;
 
 
 //Code behind
@@ -94,21 +95,21 @@ namespace Pegel_Wetter_DFFUDC
         }
         private async Task ShowLoadingPopup(Func<Task> loadDataFunc)
         {
-            //var loadingPopup = new Popup
-            //{
-            //    Content = new VerticalStackLayout
-            //    {
-            //        Padding = new Thickness(50),
-            //        BackgroundColor = Colors.White,
-            //        Children = { new ActivityIndicator { IsRunning = true, Color = Colors.Black }, new Label { Text = "One second, pins are set", TextColor = Colors.Black } }
-            //    }
-            //};
+            var loadingPopup = new Popup
+            {
+                Content = new VerticalStackLayout
+                {
+                    Padding = new Thickness(50),
+                    BackgroundColor = Colors.White,
+                    Children = { new ActivityIndicator { IsRunning = true, Color = Colors.Black }, new Label { Text = "One second, pins are set", TextColor = Colors.Black } }
+                }
+            };
 
-            //MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen*/ });
+            MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen*/ });
 
-            //try { await loadDataFunc(); }
-            //catch (Exception ex) { await MainThread.InvokeOnMainThreadAsync(async () => { await DisplayAlert("Fehler", "Es ist ein Fehler aufgetreten. \nLaden nicht erfolgreich.\n" + ex.Message, "OK"); }); }
-            //finally { MainThread.BeginInvokeOnMainThread(() => { loadingPopup.Close(); }); }
+            try { await loadDataFunc(); }
+            catch (Exception ex) { await MainThread.InvokeOnMainThreadAsync(async () => { await DisplayAlert("Fehler", "Es ist ein Fehler aufgetreten. \nLaden nicht erfolgreich.\n" + ex.Message, "OK"); }); }
+            finally { MainThread.BeginInvokeOnMainThread(() => { loadingPopup.Close(); }); }
         }
    
         private async void ShowWaterPins(object sender, EventArgs e)
@@ -126,7 +127,7 @@ namespace Pegel_Wetter_DFFUDC
             _visiblePinsMaybe = true;
         }
 
-        private void WaterlevelValues_Clicked(object sender, EventArgs e)
+        private async void WaterlevelValues_Clicked(object sender, EventArgs e)
         {
             var pin = sender as Pin;
             var position = _model.Positions.FirstOrDefault(p => p.latitude == pin.Location.Latitude && p.longitude == pin.Location.Longitude);
@@ -135,7 +136,7 @@ namespace Pegel_Wetter_DFFUDC
             var details = $"Location: {position.water.longname.ToLower()} - {position.agency.ToLower()}\n";
             details += $"Value: {position.Timeseries[0].currentMeasurement.Value} cm \nDate: {currentDate}";
 
-            DisplayAlert("Waterlevel", details, "Close");
+            await DisplayAlert("Waterlevel", details, "Close");     //await??? o mejor no
 
         }
 
