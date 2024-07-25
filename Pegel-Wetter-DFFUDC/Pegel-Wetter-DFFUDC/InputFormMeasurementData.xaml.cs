@@ -14,6 +14,7 @@ public partial class InputFormMeasurementData : ContentPage
 
   }
 
+  string dataType = "";
   private void OnPickerSelectedIndexChanged(object sender, EventArgs e)     //source eventhandler https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0 (last visit: 30.06.24)
   {
     var picker = (Picker)sender;
@@ -27,11 +28,13 @@ public partial class InputFormMeasurementData : ContentPage
       {
         waterLevelForm.IsVisible = true;                      //source .IsVisible https://learn.microsoft.com/en-us/answers/questions/1160894/net-maui-how-to-show-or-hide-(-collapsed-)-content (last visit: 30.06.24)
         rainfallForm.IsVisible = false;
+        dataType = "waterlevel";
       }
       else if (selectedItem == "Niederschlag")
       {
         rainfallForm.IsVisible = true;
-        waterLevelForm.IsVisible = false;  
+        waterLevelForm.IsVisible = false; 
+        dataType = "rainfall"; 
       }
       else
       {
@@ -123,6 +126,7 @@ public partial class InputFormMeasurementData : ContentPage
       {
         InputWaterlevelData inputWaterlevelData = new InputWaterlevelData
         {
+          datatype = dataType, 
           measurementStationName = inputMeasurementStationNameW.Text,
           lon = Convert.ToDouble(inputLonW.Text),
           lat = Convert.ToDouble(inputLatW.Text),
@@ -130,11 +134,6 @@ public partial class InputFormMeasurementData : ContentPage
           information = inputInformationW.Text,
           measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
         };
-
-        string measurementStationName = inputWaterlevelData.measurementStationName;
-
-        //test.Text = measurementStationName;
-        test.Text = $"Selected Date: {measurementDataDate.ToString("d")}";
       }
       else
       {
@@ -164,6 +163,7 @@ public partial class InputFormMeasurementData : ContentPage
       {
         InputRainfallData inputRainfallData = new InputRainfallData
         {
+          datatype = dataType,
           measurementStationName = inputMeasurementStationNameR.Text,
           lon = Convert.ToDouble(inputLonR.Text),
           lat = Convert.ToDouble(inputLatR.Text),

@@ -53,7 +53,7 @@ namespace Pegel_Wetter_DFFUDC
 
         private void OnOpenListClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new TestList());
+            //Navigation.PushAsync(new TestList());
         }
 
         private void OnOpenInputFormClicked(object sender, EventArgs e)
@@ -160,7 +160,7 @@ namespace Pegel_Wetter_DFFUDC
         }
         public async void GoCurrentData(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new TestList());
+          //  await Navigation.PushAsync(new TestList());
         }
         private async void GoAddData(object sender, EventArgs e)
         {
