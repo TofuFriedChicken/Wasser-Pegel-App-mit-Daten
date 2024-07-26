@@ -106,7 +106,7 @@ public partial class HistoryPage : ContentPage
 
         if (e.SelectedItem is InputRainfallData selectedItem)
         {
-            string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Edit");
+            string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Edit", "Delete");
             switch (action)
             {
                 case "Return":
