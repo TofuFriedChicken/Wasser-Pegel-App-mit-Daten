@@ -50,7 +50,7 @@ namespace Pegel_Wetter_DFFUDC
 
             // for Pin from input form
             Map = germanMap;
-            Content = Map;
+
 
         }
 
