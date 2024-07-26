@@ -4,7 +4,7 @@ namespace Pegel_Wetter_DFFUDC.Model;
 
 public class InputRainfallData : IMeasurementData
 {
-    public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
+ //  public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
 
     public InputRainfallData() { }
 

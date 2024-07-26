@@ -1,8 +1,17 @@
+using System.Collections.ObjectModel;
+
 namespace Pegel_Wetter_DFFUDC.Model;
 
 public class InputWaterlevelData : IMeasurementData
 {
+  //  public ObservableCollection<InputWaterlevelData> ListWaterlevelStation { get; set; }
+
     public InputWaterlevelData() { }
+
+    private static readonly Lazy<InputWaterlevelData> lazy = new Lazy<InputWaterlevelData>(() => new InputWaterlevelData());
+
+    public static InputWaterlevelData Instance { get { return lazy.Value; } }
+
 
     public string datatype { get; set; }
 

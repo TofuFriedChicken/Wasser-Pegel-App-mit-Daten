@@ -15,57 +15,24 @@ public partial class HistoryPage : ContentPage
 
     public static HistoryPage Instance { get { return lazy.Value; } }
 
-    public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
+    public ObservableCollection<InputRainfallData> ListRainfallStation => DataStore.Instance.ListRainfallStation;
 
-    public ObservableCollection<InputWaterlevelData> ListWaterlevelStation { get; set; }
-
-    public ObservableCollection<ModelInputintoHistory> ListHistory { get; set; }
+    public ObservableCollection<ModelInputintoHistory> ListHistory => DataStore.Instance.ListHistory;
 
     private List<ClassofHistoryforJumps> ListofListHistoryofEdits { get; set; }
 
     private List<ClassofMainListforJumps> ListofMainlist { get; set; }
 
+    private List<RainfallViewModel> RainfallDataset { get; set; }
+
 
     public HistoryPage()
     {
-
-        ListRainfallStation = new ObservableCollection<InputRainfallData>
-            {
-              new InputRainfallData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
-              new InputRainfallData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
-              new InputRainfallData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
-              new InputRainfallData { datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, information = "123", measurementData = 123 },
-        };
-
-        ListWaterlevelStation = new ObservableCollection<InputWaterlevelData>()
-        {
-              new InputWaterlevelData {datatype="waterlevel", measurementStationName = "hehe", lon = 3, lat = 123, information = "123", measurementData = 123 },
-        };
-
-        ListHistory = new ObservableCollection<ModelInputintoHistory>()
-        {
-                          new ModelInputintoHistory {edittype="deleted", datatype="waterlevel", measurementStationName = "hehe3", lon = 3, lat = 123, information = "123", measurementData = 123 },
-
-              new ModelInputintoHistory {edittype="edited", datatype="rainfall", measurementStationName = "hehe1", lon = 3, lat = 123, information = "123", measurementData = 123 },
-              new ModelInputintoHistory {edittype="added", datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, information = "123", measurementData = 123 },
-              new ModelInputintoHistory {edittype="deleted", datatype="waterlevel", measurementStationName = "hehe3", lon = 3, lat = 123, information = "123", measurementData = 123 },
-              new ModelInputintoHistory {edittype="edited", datatype="rainfall", measurementStationName = "hehe1", lon = 3, lat = 123, information = "123", measurementData = 123 },
-              new ModelInputintoHistory {edittype="added", datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, information = "123", measurementData = 123 },
-
-        };
 
         ListofListHistoryofEdits = new List<ClassofHistoryforJumps>();
 
         ListofMainlist = new List<ClassofMainListforJumps>();
 
-   //     List<ModelInputintoHistory> loadmainlist = HistoryPage.Instance.ListHistory.ToList();
-
-     //   List<InputRainfallData> loadhistorylist = HistoryPage.Instance.ListRainfallStation.ToList();
-
-
-  //      SaveCurrentMainlist();
-
-    //    SaveCurrentHistory();
 
         InitializeComponent();
 

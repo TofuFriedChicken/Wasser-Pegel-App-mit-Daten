@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace Pegel_Wetter_DFFUDC.Model
 {
     public class ModelInputintoHistory : IMeasurementData
     {
+     //   public ObservableCollection<ModelInputintoHistory> ListHistory { get; set; }
         public ModelInputintoHistory() { }
 
         private static readonly Lazy<ModelInputintoHistory> lazy = new Lazy<ModelInputintoHistory>(() => new ModelInputintoHistory());
