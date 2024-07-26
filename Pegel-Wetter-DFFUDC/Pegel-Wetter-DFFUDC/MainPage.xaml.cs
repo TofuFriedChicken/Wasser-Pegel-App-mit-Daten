@@ -78,12 +78,12 @@ namespace Pegel_Wetter_DFFUDC
                 foreach (var position in _model.Positions)
                 {
                 
-                    var pin = new Pin
+                    var pin = new CustomPin
                     {
                         Label = position.longname,
                         Address = position.agency, 
                         Location = new Location(position.latitude, position.longitude),
-                        //ImageSource = ImageSource.Fromfile("waterlevel.png")
+                        ImageSource = "waterlevel.png"
                     };
                     _loadedPins.Add(pin);
                 }
@@ -95,26 +95,27 @@ namespace Pegel_Wetter_DFFUDC
         }
         private async Task ShowLoadingPopup(Func<Task> loadDataFunc)
         {
-            var loadingPopup = new Popup
-            {
-                Content = new VerticalStackLayout
-                {
-                    Padding = new Thickness(50),
-                    BackgroundColor = Colors.White,
-                    Children = { new ActivityIndicator { IsRunning = true, Color = Colors.Black }, new Label { Text = "One second, pins are set", TextColor = Colors.Black } }
-                }
-            };
+            //var loadingPopup = new Popup
+            //{
+            //    Content = new VerticalStackLayout
+            //    {
+            //        Padding = new Thickness(50),
+            //        BackgroundColor = Colors.White,
+            //        Children = { new ActivityIndicator { IsRunning = true, Color = Colors.Black }, new Label { Text = "One second, pins are set", TextColor = Colors.Black } }
+            //    }
+            //};
 
-            MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen*/ });
+            //MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen*/ });
 
-            try { await loadDataFunc(); }
-            catch (Exception ex) { await MainThread.InvokeOnMainThreadAsync(async () => { await DisplayAlert("Fehler", "Es ist ein Fehler aufgetreten. \nLaden nicht erfolgreich.\n" + ex.Message, "OK"); }); }
-            finally { MainThread.BeginInvokeOnMainThread(() => { loadingPopup.Close(); }); }
+            //try { await loadDataFunc(); }
+            //catch (Exception ex) { await MainThread.InvokeOnMainThreadAsync(async () => { await DisplayAlert("Fehler", "Es ist ein Fehler aufgetreten. \nLaden nicht erfolgreich.\n" + ex.Message, "OK"); }); }
+            //finally { MainThread.BeginInvokeOnMainThread(() => { loadingPopup.Close(); }); }
         }
    
         private async void ShowWaterPins(object sender, EventArgs e)
         {
-            await ShowLoadingPopup(async () => { await WaterPins(); }); 
+            //await ShowLoadingPopup(async () => { await WaterPins(); });
+            await WaterPins();
         }
         private async Task WaterPins()
         {
@@ -180,15 +181,14 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        //Rainfall - 20 Days
+        //Rainfall History - 20 Days
         private async void RainfallValues_Clicked(object sender, PinClickedEventArgs e)
         {
             if (sender is Pin pin && !string.IsNullOrEmpty(pin.Address))
             {
-                await RainValues(pin.Address); // StationId als Argument in Adress
+                await RainValues(pin.Address); // um StationId als Argument in Adress
             }
             e.HideInfoWindow = true;
-
         }
         private async Task RainValues(string StationID)
         {
@@ -214,7 +214,6 @@ namespace Pegel_Wetter_DFFUDC
             using (var httpClient = new HttpClient())
             {
                 //string zipUrl = $"{baseUrl}tageswerte_RR_{StationID}_akt.zip";
-
                 byte[] zipBytes = await httpClient.GetByteArrayAsync(zipUrl);
 
                     using (var zipStream = new MemoryStream(zipBytes))
@@ -253,7 +252,7 @@ namespace Pegel_Wetter_DFFUDC
             {
                 if (!rsValues.ContainsKey(date))
                 {
-                    rsValues[date] = "Keine Werte";
+                    rsValues[date] = "No Value";
                 }
             }
 
