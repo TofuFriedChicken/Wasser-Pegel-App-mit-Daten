@@ -6,12 +6,18 @@ using System.Net.NetworkInformation;
 using CommunityToolkit.Maui;
 using static Pegel_Wetter_DFFUDC.swapDates;
 using Map = Microsoft.Maui.Controls.Maps.Map;
+using EventArgs = System.EventArgs;
 using static Pegel_Wetter_DFFUDC.RainfallStation;
 using static Pegel_Wetter_DFFUDC.RainfallApi;
 using static Pegel_Wetter_DFFUDC.WaterLevelModel;
 using static Pegel_Wetter_DFFUDC.WaterLevelViewModel;
 using CommunityToolkit.Maui.Views;
 using System;
+using LiveChartsCore.Behaviours.Events;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Maps.Handlers;
+using static SkiaSharp.HarfBuzz.SKShaper;
+using Windows.System;
 //using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 //using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 //using Javax.Security.Auth;
@@ -112,7 +118,7 @@ namespace Pegel_Wetter_DFFUDC
         }
 
         //Quelle ChatGPT 4.0, 25.07.2024; mitlerweile mehrfach verändert
-        private async Task ShowLoadingPopup(Func<Task> loadDataFunc)
+        private async Task ShowLoadingPopup(Func<Task> loadedFunction)
         {
             //Popup Ladefenster definiert
             var loadingPopup = new Popup
@@ -127,7 +133,7 @@ namespace Pegel_Wetter_DFFUDC
 
             MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen*/ });
 
-            try { await loadDataFunc(); }
+            try { await loadedFunction(); }
             catch (Exception ex) { await MainThread.InvokeOnMainThreadAsync(async () => { await DisplayAlert("Fehler", "Es ist ein Fehler aufgetreten. \nLaden nicht erfolgreich.\n" + ex.Message, "OK"); }); }
             finally { MainThread.BeginInvokeOnMainThread(() => { loadingPopup.Close(); }); }
         }
@@ -138,31 +144,21 @@ namespace Pegel_Wetter_DFFUDC
         {
             await ShowLoadingPopup(async () => //soll Ladefenster öffnen
             {
-                await AddPinsRainfall(); //fügt geladene pins aus API in Liste hinzu
-
-                //fügt pins auf map hinzu
-                foreach (Pin pin in RfPinslist)
-                {
-                    MyMap_Test.Pins.Add(pin);
-                    pin.MarkerClicked += RfPin_Clicked; //jeder Pin ein Clickevent
-                }
-
+                await AddPinsRainfall(); //fügt geladene pins aus API in Liste hinzu, Läd bis Funktion beendet
             }); 
         }
 
-        //getRainfall in Liste
+        //getRainfall in Liste -> lines(array)
         private async Task AddPinsRainfall()
         {
             MyMap_Test.Pins.Clear();
 
             //fragt stationen ab
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
-            //var stations = await RfModel.GetRainStationsAsync(url);
             string[] lines = await RfApi.LoadFileFromUrlAsync(url);
 
-            //übergibt stationen an Methode, läd informationen in Liste aus stationen
-            var processedLines = RfModel.ProcessLines(lines);
-            LoadRainPins(processedLines); 
+            //übergibt stationenarray an Methode, läd informationen in Liste aus stationen
+            LoadRainPins(RfModel.ProcessLines(lines)); 
         }
 
         private void LoadRainPins(RainfallStations[] stations)
@@ -181,23 +177,32 @@ namespace Pegel_Wetter_DFFUDC
 
                     Pin RfPin = new Pin
                     {
+
                         Label = $"{station.StationName}, Date: {station.FromDate} to {station.ToDate},\n" +
-                                $"High: {station.StationHight}m,\n" +
-                                $"Addresse: {station.Latitude} + {station.Longitude}",
+                                $"High: {station.StationHight}m,\n",
+                        Address = station.StationID.ToString(),
                         Location = new Location(station.Latitude, station.Longitude) 
                     };
 
                     MyMap_Test.Pins.Add(RfPin);
+                    //RfPin.MarkerClicked += RfPin_Clicked; //jeder Pin ein Clickevent
+
+                }
+
+                if (stations.Length > 0)
+                {
+                    var RfPinLocation = new Location(stations[0].Latitude, stations[0].Longitude);
+                    MyMap_Test.MoveToRegion(MapSpan.FromCenterAndRadius(RfPinLocation, Distance.FromKilometers(100)));
+
                 }
             } 
         }
 
-        // Anzeige fehlerhaft
-        private void RfPin_Clicked(object sender, PinClickedEventArgs e)
-        {
-            //Anzeige wenn auf Pin geklickt
+        // Anzeige fehlerhaft, nicht vorhanden
+        private void RfPin_Clicked(object sender, PinClickedEventArgs e) //Anzeige wenn auf Pin geklickt
+        { 
             
-            //testwerte
+            
             var Rflat = RfStations.Latitude; var Rflong = RfStations.Longitude;
 
             if (sender is Pin pin)
@@ -205,7 +210,7 @@ namespace Pegel_Wetter_DFFUDC
                 location = pin.Location;
                 today = DateTime.Now;
                 
-                var details = $"Location: {location.ToString()} \n" +
+                var details = $"Location: {Rflat} + {Rflong} \n" +
                               $"Value: 'Wert einfügen'  cm \n" +
                               $"Date: {today}";
 
@@ -226,12 +231,7 @@ namespace Pegel_Wetter_DFFUDC
                 //fügt geladene pins aus API in Liste hinzu
                 await AddPinsWaterlevel();
 
-                //fügt pins auf map hinzu
-                foreach (Pin pin in WlPinslist)
-                {
-                    MyMap_Test.Pins.Add(pin);
-                    pin.MarkerClicked += WlPin_Clicked; //jeder Pin ein Clickevent
-                }
+                
             });
         }
 
@@ -247,23 +247,26 @@ namespace Pegel_Wetter_DFFUDC
             string testposition = "2.006"; //geht mit wert, Sophie fragen welche Variabe sinnvoll
             try
             {
-                if (testposition == null)
+                await WlModel.LoadWaterLevels();
+
+                if (WlModel.Positions == null)
                 {
                     await DisplayAlert("Fehler", "Die Liste ist leer. Daten können nicht ausgegeben werden", "Ok");
                 }
-                else if (testposition != null)
+                else if (WlModel.Positions != null)
                 {
-                    foreach (var x in testposition) //fehler in deklarierung
+                    foreach (var position in WlModel.Positions) //fehler in deklarierung
                     {
                         //erstellt Pins und speichert sie in Liste
-                        Pin wlPin = new Pin
+                        Pin WlPin = new Pin
                         {
-                            Label = "test", //position.longname,
-                            //Address = position.agency,
-                            //Location = new Location(position.latitude, position.longitude)
+                            Label = position.longname,
+                            Address = position.agency,
+                            Location = new Location(position.latitude, position.longitude)
                         };
 
-                        //WlPinslist.Add(wlPin);
+                        WlPinslist.Add(WlPin);
+                        WlPin.MarkerClicked += WlPin_Clicked; //jeder Pin ein Clickevent
                     }
                 }
                 
@@ -271,6 +274,7 @@ namespace Pegel_Wetter_DFFUDC
             catch (Exception ex) { await DisplayAlert("Ladefehler", "Pins konnten nicht geladen werden \n" + ex.Message, "schließen"); }
         }
 
+        //nicht aufgerufen, da bisher noch nicht funktioniert
         private async Task LoadWlPinsDate(DateTime date)
         {
             MyMap_Test.Pins.Clear();

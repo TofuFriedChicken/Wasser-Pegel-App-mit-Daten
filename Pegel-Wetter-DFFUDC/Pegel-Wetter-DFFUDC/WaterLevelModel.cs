@@ -32,7 +32,7 @@ namespace Pegel_Wetter_DFFUDC
             set
             {
                 _positions = value;
-                OnPropertyChanged();
+                //OnPropertyChanged();
             }
         }
         
