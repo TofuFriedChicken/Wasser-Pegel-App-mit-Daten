@@ -206,11 +206,9 @@ namespace Pegel_Wetter_DFFUDC
 
         private string DownloadZipFile(string fileUrl, string fileName)
         {
-            // Lokaler Pfad, um die heruntergeladene ZIP-Datei zu speichern
             string localPath = Path.Combine(Path.GetTempPath(), fileName);
             try
             {
-                // Verwenden von WebClient zum Herunterladen der Datei
                 using (var client = new System.Net.WebClient())
                 {
                     client.DownloadFile(fileUrl, localPath);
@@ -229,7 +227,6 @@ namespace Pegel_Wetter_DFFUDC
         {
             try
             {
-                // Öffnen der ZIP-Datei zur Lesung
                 using (ZipArchive archive = ZipFile.OpenRead(zipFilePath))
                 {
                     if (archive.Entries.Count == 0)
@@ -242,20 +239,22 @@ namespace Pegel_Wetter_DFFUDC
                     {
                         DisplayAlert($"Contents of: ",$"{lastEntry.FullName}:","close");
 
-                        reader.ReadLine();      // Überspringen der ersten Zeile (Header)
-                        List<string> firstThreeLines = new List<string>();      // Liste zum Speichern der ersten drei Zeilen
+                        reader.ReadLine();
+                        List<string> lastLines = new List<string>();
+                        Queue<string> lineQueue = new Queue<string>();      // Liste der 20 Werte
 
-                        // Lesen der ersten drei Datenzeilen -> ändern in lesen der letzten 20 Zeilen
-                        for (int i = 0; i < 3; i++)
+                        while (reader.Peek() >= 0)
                         {
-                            if (reader.Peek() >= 0)
+                            string line = reader.ReadLine();
+                            lineQueue.Enqueue(line);
+                            if (lineQueue.Count > 20) // Liest die letztes 20 Tage ein _ beginnend bei dem ersten also zb. 06.07
                             {
-                                string line = reader.ReadLine();
-                                firstThreeLines.Add(line);
+                                lineQueue.Dequeue();
                             }
                         }
-                        // Ausgeben der ersten drei Zeilen
-                        foreach (string l in firstThreeLines)
+                        lastLines = lineQueue.ToList();
+                        
+                        foreach (string l in lastLines)     // Ausgeben eingelesenen Daten - wird noch angepasst
                         {
                             string[] values = l.Split(';');
                             
@@ -269,7 +268,7 @@ namespace Pegel_Wetter_DFFUDC
             }
             catch (Exception ex)
             {
-                // Ausgabe einer Fehlermeldung, falls ein Fehler beim Extrahieren und Lesen auftritt
+                // Ausgabe einer Fehlermeldung, falls Fehler beim Extrahieren, Lesen auftritt
                 DisplayAlert($"Error extracting and reading ZIP file: ",$"{ex.Message}","close");
                 throw;
             }
