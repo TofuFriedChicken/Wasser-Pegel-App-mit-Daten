@@ -9,6 +9,7 @@ using Map = Microsoft.Maui.Controls.Maps.Map;
 using static Pegel_Wetter_DFFUDC.RainfallStation;
 using static Pegel_Wetter_DFFUDC.RainfallApi;
 using static Pegel_Wetter_DFFUDC.WaterLevelModel;
+using static Pegel_Wetter_DFFUDC.WaterLevelViewModel;
 using CommunityToolkit.Maui.Views;
 using System;
 //using Microsoft.Maui.Controls.Compatibility.Platform.Android;
@@ -27,6 +28,7 @@ namespace Pegel_Wetter_DFFUDC
 
         //Wl
         WaterLevelModel WlModel = new WaterLevelModel();
+        WaterLevelViewModel WlViewModel = new WaterLevelViewModel();
         private List<Pin> WlPinslist = new List<Pin>();
         
 
@@ -76,6 +78,7 @@ namespace Pegel_Wetter_DFFUDC
 
         private void UpdateTodayLabel() { DateLabel.Text = today.ToString("dddd, dd. MMMM yyyy"); /*form changeable*/}
 
+        // normal auch wieder sichtbar machen, bis 20 tage zurück, bei gewähltem Datum und WlMap_Clicked auf daten des tages springen
         private void DateBack_Clicked(object sender, EventArgs e)
         {
             if (today <= (DateTime.Today - TimeSpan.FromDays(20)))
@@ -206,6 +209,7 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
+
         //Waterlevel
         private async void waterlevelmap_Clicked(object sender, EventArgs e)
         {
@@ -236,34 +240,26 @@ namespace Pegel_Wetter_DFFUDC
 
         private async Task LoadWaterPins()
         {
+            string testposition = "2.006"; //geht mit wert, Sophie fragen welche Variabe sinnvoll
             try
             {
-                //Abruf des Datums -> muss neue methode gebaut werden
-                //await WlModel.LoadWaterLevels(date);
-
-                /*
-                DateBack.IsVisible = true;
-                DateForward.IsVisible = true;
-                */
-                
-
-                if (WlModel._positions == null)
+                if (testposition == null)
                 {
                     await DisplayAlert("Fehler", "Die Liste ist leer. Daten können nicht ausgegeben werden", "Ok");
                 }
-                else if (WlModel.Positions != null)
+                else if (testposition != null)
                 {
-                    foreach (var position in WlModel._positions) //exeption bei Button wlMap, gibt null zurück
+                    foreach (var position in testposition) //exeption bei Button wlMap, gibt null zurück
                     {
                         //erstellt Pins und speichert sie in Liste
                         Pin wlPin = new Pin
                         {
-                            Label = position.longname,
-                            Address = position.agency,
-                            Location = new Location(position.latitude, position.longitude)
+                            Label = "test", //position.longname,
+                            //Address = position.agency,
+                            //Location = new Location(position.latitude, position.longitude)
                         };
 
-                        WlPinslist.Add(wlPin);
+                        //WlPinslist.Add(wlPin);
                     }
                 }
                 

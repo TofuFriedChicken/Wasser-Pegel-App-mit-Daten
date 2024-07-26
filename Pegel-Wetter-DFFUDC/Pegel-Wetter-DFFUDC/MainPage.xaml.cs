@@ -137,14 +137,14 @@ namespace Pegel_Wetter_DFFUDC
         }
 
 
-        private void LoadRainPins(/*List<RainfallStation> stations*/)
+        private void LoadRainPins(List<RainfallStations> stations)
         {
             foreach (var station in stations)
             {
                 var pin = new Pin
                 {
-                    Label = station.Stationname,
-                    Address = $"{station.State}, High: {station.StationHeight}m",
+                    Label = station.StationName,
+                    Address = $"High: {station.StationHight}m",
                     Location = new Location(station.Latitude, station.Longitude)
                 };
 
