@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:Pegel_Wetter_DFFUDC"
              xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
              x:Class="Pegel_Wetter_DFFUDC.MainPage"
              BackgroundColor="LightGray"
              Title=" ">
@@ -18,7 +19,7 @@
 
         <!--define Frame and create buttons-->
         <Frame 
-            Grid.Row="0" BackgroundColor="DimGrey" HeightRequest="70" Margin="0,-50,0,0" Padding="2" >
+            Grid.Row="0" BackgroundColor="DimGrey" HeightRequest="70" Margin="-1,-55,-1,5" Padding="2" HorizontalOptions="FillAndExpand">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4*"/>
@@ -26,136 +27,137 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>    
+                </Grid.ColumnDefinitions>
                 <!--buttons-->
                 <StackLayout Grid.Column="0" Padding="1">
                     <Frame 
-                        BackgroundColor="DarkBlue" WidthRequest="640" HeightRequest="53" Padding="2" >
+                        BackgroundColor="DarkBlue" Margin="5,3,15,0" Padding="2" HorizontalOptions="FillAndExpand" >
                         <!--add three buttons in Frame-->
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="5*"/>
+                              
+                                <ColumnDefinition Width="4*"/>
                                 <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-                            <StackLayout Grid.Column="0">
+                          
+                            <FlexLayout Grid.Column="0">
                                 <Button 
                                     x:Name="swapDatesBut"
                                     Clicked="swapDatesBut_Clicked"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="swap throught dates"
-                                    TextColor="Black"
-                                    WidthRequest="200"
+                                    TextColor="Black"                               
                                     BorderWidth="1.5"
                                     BorderColor="Black"/>
-                            </StackLayout>
-                            <StackLayout Grid.Column="1">
+                            </FlexLayout>
+                            <FlexLayout Grid.Column="1">
                                 <Button 
                                     Clicked ="ShowWaterPins"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Waterlevel🌊"
-                                    TextColor="Black"
-                                    WidthRequest="130"
+                                    TextColor="Black"                                 
                                     BorderWidth="1.5"
                                     BorderColor="Black"/>
-                            </StackLayout>
-                            <StackLayout Grid.Column="2">
+                            </FlexLayout>
+                            <FlexLayout Grid.Column="2">
                                 <Button 
                                     Clicked="ShowRainPins"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Rainfall☂"
-                                    TextColor="Black"
-                                    WidthRequest="130"
+                                    TextColor="Black"                               
                                     BorderWidth="1.5"
                                     BorderColor="Black"/>
-                            </StackLayout>
-                            <StackLayout Grid.Column="3">
+                            </FlexLayout>
+                            <FlexLayout Grid.Column="3">
                                 <Button 
                                     Clicked="RemovePins_Clicked"
                                     Margin="1"
                                     BackgroundColor="IndianRed"
                                     Text="Clear"
-                                    TextColor="Black"
-                                    WidthRequest="80"
+                                    TextColor="Black"                                 
                                     BorderWidth="1.5"
                                     BorderColor="Black"/>
-                            </StackLayout>
+                            </FlexLayout>
                         </Grid>
                     </Frame>
                 </StackLayout>
-                
-                <StackLayout Grid.Column="1" Padding="5">
+
+                <FlexLayout Grid.Column="1" Padding="5">
                     <Button
                         x:Name="one"
                         Clicked="GoCurrentData"
-                        Margin="1"
+                        Margin="4"
                         BackgroundColor="LightSkyBlue"
                         Text="Current Data"
                         TextColor="Black"
-                        WidthRequest="160"
+                        WidthRequest="130"
+                        HorizontalOptions="FillAndExpand"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
-                </StackLayout>
-                <StackLayout Grid.Column="2" Padding="5">
+                </FlexLayout>
+                <FlexLayout Grid.Column="2" Padding="5">
                     <Button 
                         x:Name="two"
                         Clicked="GoAddData"
-                        Margin="1"
+                        Margin="4"
                         BackgroundColor="LightSkyBlue"
                         Text="Add Data"
                         TextColor="Black"
-                        WidthRequest="160"
+                        WidthRequest="130"
+                        HorizontalOptions="FillAndExpand"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
-                </StackLayout>
-                <StackLayout Grid.Column="3" Padding="5">
+                </FlexLayout>
+                <FlexLayout Grid.Column="3" Padding="5">
                     <Button 
                         x:Name="three"
                         Clicked="GoHistorie"
-                        Margin="1"
+                        Margin="4"
                         BackgroundColor="LightSkyBlue"
                         Text="Historie"
                         TextColor="Black"
-                        WidthRequest="160"
+                        WidthRequest="130"
+                        HorizontalOptions="Fill"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
-                </StackLayout>
-                <StackLayout Grid.Column="4" Padding="5">
+                </FlexLayout>
+                <FlexLayout Grid.Column="4" Padding="10">
                     <Button 
                         x:Name="five"
                         Clicked="GoDiagram"
-                        Margin="1"
+                        Margin="4"
                         BackgroundColor="LightSkyBlue"
                         Text="Diagram"
                         TextColor="Black"
-                        WidthRequest="160"
+                        WidthRequest="130"
+                        HorizontalOptions="Fill"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
-                </StackLayout>
+                    <!--davor waren alle Buttons auf: WidthRequest="150" -->
+                </FlexLayout>
             </Grid>
-            
-            
-            
+
+
+
         </Frame>
-   
+
         <!--map from BingMaps-->
         <maps:Map
             x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment">
+            <!--<maps:Map.Pins>
+                <maps:Pin.ImageSource>
+                    <FileImageSource File="waterlevel.png"/>
+                </maps:Pin.ImageSource>
+            </maps:Map.Pins>-->
         </maps:Map>
-        <!--HeightRequest="660" WidthRequest="1500"-->
+
 
     </Grid>
 
-
-            <!--binding
-    <ContentPage.BindingContext>
-        <local:WaterLevelViewModel/>
-
-    </ContentPage.BindingContext>-->
-    
 </ContentPage>
 

@@ -14,7 +14,8 @@ using System.Diagnostics;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    public class WaterLevelModel 
+    public class WaterLevelModel
+        
     {
         public WaterLevelApi _waterlevelApi;
         public ObservableCollection<Root> _positions;
