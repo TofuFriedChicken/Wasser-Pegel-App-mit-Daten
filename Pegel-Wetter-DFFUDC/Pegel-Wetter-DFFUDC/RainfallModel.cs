@@ -22,7 +22,7 @@ namespace Pegel_Wetter_DFFUDC
         {
             _rainfallApi = rainfallApi;
         }
-        public async Task<List<RainfallStation>> GetRainStationsAsync(string url)
+        public async Task<List<RainfallStations>> GetRainStationsAsync(string url)
         {
             return await _rainfallApi.GetRainStationsAsync(url);
         }

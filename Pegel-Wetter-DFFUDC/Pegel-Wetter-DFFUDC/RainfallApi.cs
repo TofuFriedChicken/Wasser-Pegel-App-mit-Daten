@@ -21,16 +21,16 @@ namespace Pegel_Wetter_DFFUDC
         {
             _client = new HttpClient();
         }
-        public async Task<List<RainfallStation>> GetRainStationsAsync(string url)
+        public async Task<List<RainfallStations>> GetRainStationsAsync(string url)
         {
             var response = await _client.GetStringAsync(url);
             return ParseStations(response);
         }
 
-        public List<RainfallStation> ParseStations(string data)
+        public List<RainfallStations> ParseStations(string data)
         {
             var lines = data.Split('\n');
-            var stations = new List<RainfallStation>();
+            var stations = new List<RainfallStations>();
 
             foreach (var line in lines.Skip(1)) // Skip header line + read lines
             {
@@ -55,21 +55,21 @@ namespace Pegel_Wetter_DFFUDC
                     int stationId = int.Parse(columns[0]);
                     if (stationId < 300 || stationId > 600) continue;
 
-                    var station = new RainfallStation
+                    var station = new RainfallStations
                     {
-                        StationId = stationId,
-                        FromDate = columns[1],
-                        ToDate = columns[2],
-                        StationHeight = int.Parse(columns[3]),
+                        StationID = stationId,
+                        FromDate = DateTime.Parse(columns[1]) , //columns[1],
+                        ToDate = DateTime.Parse(columns[2]), //columns[2],
+                        StationHight = int.Parse(columns[3]),
                         Latitude = double.Parse(columns[4]),
                         Longitude = double.Parse(columns[5]),
-                        Stationname = string.Join(" ", columns.Skip(6).Take(columns.Length - 8)),
-                        State = columns[columns.Length - 2],
-                        Abgabe = columns[columns.Length - 1]
+                        StationName = string.Join(" ", columns.Skip(6).Take(columns.Length - 8)),
+                        //State = columns[columns.Length - 2],
+                        //Abgabe = columns[columns.Length - 1]
                     };
 
                     stations.Add(station);
-                    Debug.WriteLine($"Parsed station: {station.Stationname}");      //kontrolle
+                    Debug.WriteLine($"Parsed station: {station.StationName}");      //kontrolle
                 }
                 catch (FormatException ex)
                 {

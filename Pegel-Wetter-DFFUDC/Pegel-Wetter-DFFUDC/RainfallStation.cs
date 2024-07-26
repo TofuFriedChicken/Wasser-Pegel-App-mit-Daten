@@ -21,6 +21,7 @@ namespace Pegel_Wetter_DFFUDC
 
     }
 
+    
     public class RainfallStation
     {
 
@@ -36,7 +37,7 @@ namespace Pegel_Wetter_DFFUDC
 
             public string Abgabe { get; set; }
        
-
     }
+    
 
 }

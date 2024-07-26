@@ -25,15 +25,18 @@ namespace Pegel_Wetter_DFFUDC
 
         private DateTime date;
 
-
+        //Wl
         WaterLevelModel WlModel = new WaterLevelModel();
         private List<Pin> WlPinslist = new List<Pin>();
         
 
-        //Rf Stationen anfragen
+        //Rf Stationen 
         RainfallModel RfModel = new RainfallModel(new RainfallApi()); //Api Key
-        RainfallApi RfApi = new RainfallApi();                                                              //
+        RainfallApi RfApi = new RainfallApi();
+        RainfallStations RfStations = new RainfallStations();
         private List<Pin> RfPinslist = new List<Pin>();
+
+        string[] lines = { };
 
         public swapDates()
         {
@@ -130,7 +133,18 @@ namespace Pegel_Wetter_DFFUDC
         //Rainfall      
         private async void rainfallmap_Clicked(object sender, EventArgs e)
         {
-            await ShowLoadingPopup(async () => { await AddPinsRainfall(); }); //soll Ladefenster öffnen
+            await ShowLoadingPopup(async () => //soll Ladefenster öffnen
+            {
+                await AddPinsRainfall(); //fügt geladene pins aus API in Liste hinzu
+
+                //fügt pins auf map hinzu
+                foreach (Pin pin in RfPinslist)
+                {
+                    MyMap_Test.Pins.Add(pin);
+                    pin.MarkerClicked += RfPin_Clicked; //jeder Pin ein Clickevent
+                }
+
+            }); 
         }
 
         //getRainfall in Liste
@@ -138,8 +152,6 @@ namespace Pegel_Wetter_DFFUDC
         {
             MyMap_Test.Pins.Clear();
 
-            //Liste von Tony/sophie
-            
             //fragt stationen ab
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
             //var stations = await RfModel.GetRainStationsAsync(url);
@@ -158,23 +170,40 @@ namespace Pegel_Wetter_DFFUDC
             }
             else if (stations != null) 
             {
-                foreach (RainfallApi lines in processedLines)
+                foreach (var station in stations)
                 {
+                    //testwerte
                     double latitudetest = 48.75845;
                     double longitudetest = 9.9855;
+
                     Pin RfPin = new Pin
                     {
-                        Label = lines.,
-                        Address = $"{station.State}, High: {station.StationHeight}m",
+                        Label = station.StationName.ToString(),
+                        //High: {station.StationHight}m",
+                        //Address = station.StationID.ToString(),
                         Location = new Location(station.Latitude, station.Longitude) //probleme beim button rf map mit latitude
                     };
 
-                    var stationlabel = station.Stationname;
                     MyMap_Test.Pins.Add(RfPin);
                 }
-            }   
-            
-            //parse to double bei sophie Daten ablesen
+            } 
+        }
+
+        private void RfPin_Clicked(object sender, PinClickedEventArgs e)
+        {
+            //Anzeige wenn auf Pin geklickt
+
+            if (sender is Pin pin)
+            {
+                location = pin.Location;
+                //var Rflat = RfStations.Latitude; var Rflong = RfStations.Longitude;
+                today = DateTime.Now;
+                var details = $"Location: {location.ToString()} \n" +
+                              $"Value: 'Wert einfügen'  cm \nDate: {today}";/*{RfModel.ProcessLines(lines[])}*/
+
+                DisplayAlert("Waterlevelstation", details, "Schließen");
+
+            }
         }
 
         //Waterlevel
