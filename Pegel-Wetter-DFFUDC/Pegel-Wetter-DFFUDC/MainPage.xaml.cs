@@ -168,7 +168,9 @@ namespace Pegel_Wetter_DFFUDC
                     Location = new Location(station.Latitude, station.Longitude)
                 };
                 germanMap.Pins.Add(pin);
-                pin.MarkerClicked += RainfallValues_Clicked;
+                //pin.MarkerClicked += RainfallValues_Clicked;
+                string StationID = station.StationID.ToString();
+                pin.MarkerClicked += (sender, e) => RainfallValues_Clicked(sender, e, StationID);
             }
             _visiblePinsMaybe = true;
             if (stations.Length > 0)
@@ -178,50 +180,31 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        //Rainfall History - 20 Days
-        private async void RainfallValues_Clicked(object sender, PinClickedEventArgs e)
+        //Rainfall History - 20 Historical - nochmal Schritt für Schritt für einfach weiterverwenden
+        private async void RainfallValues_Clicked(object sender, PinClickedEventArgs e, string Station_id)
         {
-
-            //if (sender is Pin pin && !string.IsNullOrEmpty(pin.Address))      //zur sicherheit erstmal behalten
-            //{
-            //    await RainValues(pin.Address); // um StationId als Argument in Adress
-            //}
-            //e.HideInfoWindow = true;
             try
             {
-                // Basis-URL des Verzeichnisses, das die ZIP-Dateien enthält
                 string baseUrl = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/";
-
-                // ID wird dynamisch bereitgestellt (z.B. durch Anklicken eines Pins)
-                string id = "00019";
-
-                // Erstellen des ZIP-Dateinamens basierend auf der ID
-                string zipFileName = $"tageswerte_RR_{id}_akt.zip";
-
-                // Erstellen der vollständigen URL zur ZIP-Datei
-                string zipFileUrl = $"{baseUrl}{zipFileName}";
-
-                // Herunterladen der ZIP-Datei von der URL
-                string localZipFilePath = DownloadZipFile(zipFileUrl, zipFileName);
+                string zipFileName = $"tageswerte_RR_00{Station_id}_akt.zip";            // Erstellen des ZIP-Dateinamens basierend auf der ID
+                string zipFileUrl = $"{baseUrl}{zipFileName}";                            // Erstellen der vollständigen URL zur ZIP-Datei
+                string localZipFilePath = DownloadZipFile(zipFileUrl, zipFileName);         // Herunterladen der ZIP-Datei von der URL
 
                 // Überprüfen, ob die ZIP-Datei erfolgreich heruntergeladen wurde
                 if (!File.Exists(localZipFilePath))
                 {
-                    Console.WriteLine("Error: ZIP file was not downloaded.");
+                    await DisplayAlert("Error: ZIP file was not downloaded.","ok","close");
                     return;
                 }
-
-                // Extrahieren und Lesen der letzten Datei im ZIP-Archiv
-                ExtractAndReadLastFileInZip(localZipFilePath);
+                ExtractAndReadLastFileInZip(localZipFilePath);      // Extrahieren und Lesen der letzten Datei im ZIP-Archiv
             }
             catch (Exception ex)
             {
-                // Ausgabe einer Fehlermeldung, falls eine Ausnahme auftritt
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                await DisplayAlert("An error occurred: ",$"{ex.Message}","close"); // falls eine Ausnahme auftritt - 
             }
         }
 
-        static string DownloadZipFile(string fileUrl, string fileName)
+        private string DownloadZipFile(string fileUrl, string fileName)
         {
             // Lokaler Pfad, um die heruntergeladene ZIP-Datei zu speichern
             string localPath = Path.Combine(Path.GetTempPath(), fileName);
@@ -232,13 +215,11 @@ namespace Pegel_Wetter_DFFUDC
                 {
                     client.DownloadFile(fileUrl, localPath);
                 }
-                // Bestätigung, dass die ZIP-Datei erfolgreich heruntergeladen wurde
-                Console.WriteLine("ZIP file downloaded successfully.");
+                DisplayAlert("ZIP file downloaded successfully.","ok","close"); // Bestätigung, dass die ZIP-Datei erfolgreich heruntergeladen wurde
             }
             catch (Exception ex)
             {
-                // Ausgabe einer Fehlermeldung, falls ein Fehler beim Herunterladen auftritt
-                Console.WriteLine($"Error downloading ZIP file: {ex.Message}");
+                DisplayAlert("Error downloading ZIP file: ",$"{ex.Message}","close");       // Ausgabe einer Fehlermeldung, falls ein Fehler beim Herunterladen auftritt
                 throw;
             }
             return localPath;
@@ -251,28 +232,20 @@ namespace Pegel_Wetter_DFFUDC
                 // Öffnen der ZIP-Datei zur Lesung
                 using (ZipArchive archive = ZipFile.OpenRead(zipFilePath))
                 {
-                    // Überprüfen, ob das ZIP-Archiv Einträge enthält
                     if (archive.Entries.Count == 0)
                     {
-                        Console.WriteLine("Error: The ZIP archive is empty.");
+                        DisplayAlert("Error: The ZIP archive is empty.","ok","Close");  // Überprüfen, ob das ZIP-Archiv Einträge enthält - machmal gibt es keine Messwerte mehr
                         return;
                     }
-
-                    // Auswählen des letzten Eintrags im ZIP-Archiv
-                    ZipArchiveEntry lastEntry = archive.Entries[archive.Entries.Count - 1];
-
-                    // Öffnen eines StreamReaders zum Lesen des Inhalts der Datei
-                    using (var reader = new StreamReader(lastEntry.Open()))
+                    ZipArchiveEntry lastEntry = archive.Entries[archive.Entries.Count - 1];     // Auswählen des letzten Eintrags im ZIP-Archiv - produkt_nieder_tag!!
+                    using (var reader = new StreamReader(lastEntry.Open()))                     // Öffnen eines StreamReaders zum Lesen des Inhalts der Datei
                     {
-                        Console.WriteLine($"Contents of {lastEntry.FullName}:");
+                        DisplayAlert($"Contents of: ",$"{lastEntry.FullName}:","close");
 
-                        // Überspringen der ersten Zeile (Header)
-                        reader.ReadLine();
+                        reader.ReadLine();      // Überspringen der ersten Zeile (Header)
+                        List<string> firstThreeLines = new List<string>();      // Liste zum Speichern der ersten drei Zeilen
 
-                        // Liste zum Speichern der ersten drei Zeilen
-                        List<string> firstThreeLines = new List<string>();
-
-                        // Lesen der ersten drei Datenzeilen
+                        // Lesen der ersten drei Datenzeilen -> ändern in lesen der letzten 20 Zeilen
                         for (int i = 0; i < 3; i++)
                         {
                             if (reader.Peek() >= 0)
@@ -281,18 +254,14 @@ namespace Pegel_Wetter_DFFUDC
                                 firstThreeLines.Add(line);
                             }
                         }
-
                         // Ausgeben der ersten drei Zeilen
                         foreach (string l in firstThreeLines)
                         {
-                            // Splitten der Zeile anhand des Trennzeichens (;)
                             string[] values = l.Split(';');
-
-                            // Speichern des aktuellen Datums und RS-Werts
-                            string currentDate = values[1];
+                            
+                            string currentDate = values[1];     // Speichern des aktuellen Datums und RS-Werts
                             string currentRSValue = values[3];
 
-                            // Ausgeben des aktuellen Datums und RS-Werts
                             this.DisplayAlert("Date: ", $"{currentDate} - RS Value: {currentRSValue}", "ok");  // Hier sind die RS Daten und das Datum dazu
                         }
                     }
@@ -301,79 +270,10 @@ namespace Pegel_Wetter_DFFUDC
             catch (Exception ex)
             {
                 // Ausgabe einer Fehlermeldung, falls ein Fehler beim Extrahieren und Lesen auftritt
-                Console.WriteLine($"Error extracting and reading ZIP file: {ex.Message}");
+                DisplayAlert($"Error extracting and reading ZIP file: ",$"{ex.Message}","close");
                 throw;
             }
-        
     }
-        //private async Task RainValues(string StationID)
-        //{
-        //    try
-        //    {
-        //        var rsValues = await GetRSValuesAsync(StationID);
-        //        string displayText = string.Join(Environment.NewLine, rsValues.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
-        //        await DisplayAlert($"RS Values for Station {StationID}", displayText, "OK");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
-        //    }
-        //}
-
-        //private async Task<Dictionary<string, string>> GetRSValuesAsync(string StationID)
-        //{
-        //    var rsValues = new Dictionary<string, string>();
-        //    string baseUrl = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/";
-        //    string endDate = DateTime.Now.AddDays(-1).ToString("yyyyMMdd");
-        //    string zipUrl = $"{baseUrl}produkt_nieder_tag_20230122_{endDate}_{StationID}.zip";
-
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        //string zipUrl = $"{baseUrl}tageswerte_RR_{StationID}_akt.zip";
-        //        byte[] zipBytes = await httpClient.GetByteArrayAsync(zipUrl);
-
-        //        using (var zipStream = new MemoryStream(zipBytes))
-        //        using (var archive = new ZipArchive(zipStream))
-        //        {
-        //            foreach (var entry in archive.Entries)
-        //            {
-        //                if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) && entry.FullName.Contains("produkt"))
-        //                {
-        //                    using (var reader = new StreamReader(entry.Open()))
-        //                    {
-        //                        while (!reader.EndOfStream)
-        //                        {
-        //                            string line = await reader.ReadLineAsync();
-        //                            if (line.StartsWith("STATIONS_ID") || string.IsNullOrWhiteSpace(line))
-        //                                continue;
-
-        //                            var columns = line.Split(';');
-        //                            if (columns.Length >= 3 && DateTime.TryParseExact(columns[1], "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime date) && date >= DateTime.Now.AddDays(-20))
-        //                            {
-        //                                string dateString = date.ToString("yyyy-MM-dd");
-        //                                if (double.TryParse(columns[3], out double rsValue))
-        //                                {
-        //                                    rsValues[dateString] = rsValue.ToString();
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //    }
-        //    var last20Days = Enumerable.Range(0, 20).Select(offset => DateTime.Now.AddDays(-offset).ToString("yyyy-MM-dd")).ToList();
-        //    foreach (var date in last20Days)
-        //    {
-        //        if (!rsValues.ContainsKey(date))
-        //        {
-        //            rsValues[date] = "No Value";
-        //        }
-        //    }
-
-        //    return rsValues;
-        //}
 
         // go to other Pages
         public async void GoCircleMode(object sender, EventArgs e)
