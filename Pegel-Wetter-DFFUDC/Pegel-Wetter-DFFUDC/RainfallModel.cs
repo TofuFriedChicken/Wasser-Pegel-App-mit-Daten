@@ -18,7 +18,7 @@ namespace Pegel_Wetter_DFFUDC
     {
         public RainfallViewModel[] ProcessLines(string[] lines)
         {
-            var processedLines = lines
+            var processedLines = lines  
                 .Skip(380)
                 .Take(580)
                 .Select(line =>

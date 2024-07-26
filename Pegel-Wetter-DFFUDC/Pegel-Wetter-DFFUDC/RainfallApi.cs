@@ -15,7 +15,6 @@ namespace Pegel_Wetter_DFFUDC
 {
     public class RainfallApi
     {
-
         public async Task<string[]> LoadFileFromUrlAsync(string url)
         {
             using HttpClient client = new HttpClient();
