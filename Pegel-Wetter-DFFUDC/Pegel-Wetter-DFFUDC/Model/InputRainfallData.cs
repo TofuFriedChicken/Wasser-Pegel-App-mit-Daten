@@ -1,7 +1,11 @@
+using System.Collections.ObjectModel;
+
 namespace Pegel_Wetter_DFFUDC.Model;
 
 public class InputRainfallData : IMeasurementData
 {
+    public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
+
     public InputRainfallData() { }
 
     private static readonly Lazy<InputRainfallData> lazy = new Lazy<InputRainfallData>(() => new InputRainfallData());

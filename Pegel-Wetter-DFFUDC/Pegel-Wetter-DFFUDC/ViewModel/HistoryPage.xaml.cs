@@ -1,13 +1,19 @@
+using HarfBuzzSharp;
 using Pegel_Wetter_DFFUDC.Model;
 using Pegel_Wetter_DFFUDC.ViewModel;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
+using System.Windows.Input;
 
 namespace Pegel_Wetter_DFFUDC;
 
 public partial class HistoryPage : ContentPage
 {
+
+    private static readonly Lazy<HistoryPage> lazy = new Lazy<HistoryPage>(() => new HistoryPage());
+
+    public static HistoryPage Instance { get { return lazy.Value; } }
 
     public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
 
@@ -52,9 +58,14 @@ public partial class HistoryPage : ContentPage
 
         ListofMainlist = new List<ClassofMainListforJumps>();
 
-        SaveCurrentMainlist();
+   //     List<ModelInputintoHistory> loadmainlist = HistoryPage.Instance.ListHistory.ToList();
 
-        SaveCurrentHistory();
+     //   List<InputRainfallData> loadhistorylist = HistoryPage.Instance.ListRainfallStation.ToList();
+
+
+  //      SaveCurrentMainlist();
+
+    //    SaveCurrentHistory();
 
         InitializeComponent();
 
@@ -62,6 +73,14 @@ public partial class HistoryPage : ContentPage
 
     }
 
+
+    public void InitializeData()
+    {
+        List<ModelInputintoHistory> loadmainlist = ListHistory.ToList();
+        List<InputRainfallData> loadhistorylist = ListRainfallStation.ToList();
+        SaveCurrentMainlist();
+        SaveCurrentHistory();
+    }
 
     public void SaveCurrentHistory()
     {
@@ -158,5 +177,17 @@ public partial class HistoryPage : ContentPage
     {
         JumpHistory();
     }
+
+    public ICommand DeleteCommand => new Command<ModelInputintoHistory>(RemoveChemical);
+
+
+    void RemoveChemical(ModelInputintoHistory listhistory)
+    {
+        if (ListHistory.Contains(listhistory))
+        {
+            ListHistory.Remove(listhistory);
+        }
+    }
+
 
 }
