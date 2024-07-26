@@ -181,85 +181,199 @@ namespace Pegel_Wetter_DFFUDC
         //Rainfall History - 20 Days
         private async void RainfallValues_Clicked(object sender, PinClickedEventArgs e)
         {
-            //string stationId = "00433"; //zum testen      // 2 Variante
-            //var processor = new FileProcessor();
-            //await processor.ProcessFileAsync(stationId);
 
-
-            if (sender is Pin pin && !string.IsNullOrEmpty(pin.Address))      //zur sicherheit erstmal behalten
-            {
-                await RainValues(pin.Address); // um StationId als Argument in Adress
-            }
-            e.HideInfoWindow = true;
-        }
-        private async Task RainValues(string StationID)
-        {
+            //if (sender is Pin pin && !string.IsNullOrEmpty(pin.Address))      //zur sicherheit erstmal behalten
+            //{
+            //    await RainValues(pin.Address); // um StationId als Argument in Adress
+            //}
+            //e.HideInfoWindow = true;
             try
             {
-                var rsValues = await GetRSValuesAsync(StationID);
-                string displayText = string.Join(Environment.NewLine, rsValues.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
-                await DisplayAlert($"RS Values for Station {StationID}", displayText, "OK");
+                // Basis-URL des Verzeichnisses, das die ZIP-Dateien enthält
+                string baseUrl = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/";
+
+                // ID wird dynamisch bereitgestellt (z.B. durch Anklicken eines Pins)
+                string id = "00019";
+
+                // Erstellen des ZIP-Dateinamens basierend auf der ID
+                string zipFileName = $"tageswerte_RR_{id}_akt.zip";
+
+                // Erstellen der vollständigen URL zur ZIP-Datei
+                string zipFileUrl = $"{baseUrl}{zipFileName}";
+
+                // Herunterladen der ZIP-Datei von der URL
+                string localZipFilePath = DownloadZipFile(zipFileUrl, zipFileName);
+
+                // Überprüfen, ob die ZIP-Datei erfolgreich heruntergeladen wurde
+                if (!File.Exists(localZipFilePath))
+                {
+                    Console.WriteLine("Error: ZIP file was not downloaded.");
+                    return;
+                }
+
+                // Extrahieren und Lesen der letzten Datei im ZIP-Archiv
+                ExtractAndReadLastFileInZip(localZipFilePath);
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+                // Ausgabe einer Fehlermeldung, falls eine Ausnahme auftritt
+                Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
 
-        private async Task<Dictionary<string, string>> GetRSValuesAsync(string StationID)
+        static string DownloadZipFile(string fileUrl, string fileName)
         {
-            var rsValues = new Dictionary<string, string>();
-            string baseUrl = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/";
-            string endDate = DateTime.Now.AddDays(-1).ToString("yyyyMMdd");
-            string zipUrl = $"{baseUrl}produkt_nieder_tag_20230122_{endDate}_{StationID}.zip";
-
-            using (var httpClient = new HttpClient())
+            // Lokaler Pfad, um die heruntergeladene ZIP-Datei zu speichern
+            string localPath = Path.Combine(Path.GetTempPath(), fileName);
+            try
             {
-                //string zipUrl = $"{baseUrl}tageswerte_RR_{StationID}_akt.zip";
-                byte[] zipBytes = await httpClient.GetByteArrayAsync(zipUrl);
-
-                using (var zipStream = new MemoryStream(zipBytes))
-                using (var archive = new ZipArchive(zipStream))
+                // Verwenden von WebClient zum Herunterladen der Datei
+                using (var client = new System.Net.WebClient())
                 {
-                    foreach (var entry in archive.Entries)
-                    {
-                        if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) && entry.FullName.Contains("produkt"))
-                        {
-                            using (var reader = new StreamReader(entry.Open()))
-                            {
-                                while (!reader.EndOfStream)
-                                {
-                                    string line = await reader.ReadLineAsync();
-                                    if (line.StartsWith("STATIONS_ID") || string.IsNullOrWhiteSpace(line))
-                                        continue;
+                    client.DownloadFile(fileUrl, localPath);
+                }
+                // Bestätigung, dass die ZIP-Datei erfolgreich heruntergeladen wurde
+                Console.WriteLine("ZIP file downloaded successfully.");
+            }
+            catch (Exception ex)
+            {
+                // Ausgabe einer Fehlermeldung, falls ein Fehler beim Herunterladen auftritt
+                Console.WriteLine($"Error downloading ZIP file: {ex.Message}");
+                throw;
+            }
+            return localPath;
+        }
 
-                                    var columns = line.Split(';');
-                                    if (columns.Length >= 3 && DateTime.TryParseExact(columns[1], "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime date) && date >= DateTime.Now.AddDays(-20))
-                                    {
-                                        string dateString = date.ToString("yyyy-MM-dd");
-                                        if (double.TryParse(columns[3], out double rsValue))
-                                        {
-                                            rsValues[dateString] = rsValue.ToString();
-                                        }
-                                    }
-                                }
+        public void ExtractAndReadLastFileInZip(string zipFilePath)
+        {
+            try
+            {
+                // Öffnen der ZIP-Datei zur Lesung
+                using (ZipArchive archive = ZipFile.OpenRead(zipFilePath))
+                {
+                    // Überprüfen, ob das ZIP-Archiv Einträge enthält
+                    if (archive.Entries.Count == 0)
+                    {
+                        Console.WriteLine("Error: The ZIP archive is empty.");
+                        return;
+                    }
+
+                    // Auswählen des letzten Eintrags im ZIP-Archiv
+                    ZipArchiveEntry lastEntry = archive.Entries[archive.Entries.Count - 1];
+
+                    // Öffnen eines StreamReaders zum Lesen des Inhalts der Datei
+                    using (var reader = new StreamReader(lastEntry.Open()))
+                    {
+                        Console.WriteLine($"Contents of {lastEntry.FullName}:");
+
+                        // Überspringen der ersten Zeile (Header)
+                        reader.ReadLine();
+
+                        // Liste zum Speichern der ersten drei Zeilen
+                        List<string> firstThreeLines = new List<string>();
+
+                        // Lesen der ersten drei Datenzeilen
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (reader.Peek() >= 0)
+                            {
+                                string line = reader.ReadLine();
+                                firstThreeLines.Add(line);
                             }
+                        }
+
+                        // Ausgeben der ersten drei Zeilen
+                        foreach (string l in firstThreeLines)
+                        {
+                            // Splitten der Zeile anhand des Trennzeichens (;)
+                            string[] values = l.Split(';');
+
+                            // Speichern des aktuellen Datums und RS-Werts
+                            string currentDate = values[1];
+                            string currentRSValue = values[3];
+
+                            // Ausgeben des aktuellen Datums und RS-Werts
+                            this.DisplayAlert("Date: ", $"{currentDate} - RS Value: {currentRSValue}", "ok");  // Hier sind die RS Daten und das Datum dazu
                         }
                     }
                 }
-
             }
-            var last20Days = Enumerable.Range(0, 20).Select(offset => DateTime.Now.AddDays(-offset).ToString("yyyy-MM-dd")).ToList();
-            foreach (var date in last20Days)
+            catch (Exception ex)
             {
-                if (!rsValues.ContainsKey(date))
-                {
-                    rsValues[date] = "No Value";
-                }
+                // Ausgabe einer Fehlermeldung, falls ein Fehler beim Extrahieren und Lesen auftritt
+                Console.WriteLine($"Error extracting and reading ZIP file: {ex.Message}");
+                throw;
             }
+        
+    }
+        //private async Task RainValues(string StationID)
+        //{
+        //    try
+        //    {
+        //        var rsValues = await GetRSValuesAsync(StationID);
+        //        string displayText = string.Join(Environment.NewLine, rsValues.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
+        //        await DisplayAlert($"RS Values for Station {StationID}", displayText, "OK");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+        //    }
+        //}
 
-            return rsValues;
-        }
+        //private async Task<Dictionary<string, string>> GetRSValuesAsync(string StationID)
+        //{
+        //    var rsValues = new Dictionary<string, string>();
+        //    string baseUrl = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/";
+        //    string endDate = DateTime.Now.AddDays(-1).ToString("yyyyMMdd");
+        //    string zipUrl = $"{baseUrl}produkt_nieder_tag_20230122_{endDate}_{StationID}.zip";
+
+        //    using (var httpClient = new HttpClient())
+        //    {
+        //        //string zipUrl = $"{baseUrl}tageswerte_RR_{StationID}_akt.zip";
+        //        byte[] zipBytes = await httpClient.GetByteArrayAsync(zipUrl);
+
+        //        using (var zipStream = new MemoryStream(zipBytes))
+        //        using (var archive = new ZipArchive(zipStream))
+        //        {
+        //            foreach (var entry in archive.Entries)
+        //            {
+        //                if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) && entry.FullName.Contains("produkt"))
+        //                {
+        //                    using (var reader = new StreamReader(entry.Open()))
+        //                    {
+        //                        while (!reader.EndOfStream)
+        //                        {
+        //                            string line = await reader.ReadLineAsync();
+        //                            if (line.StartsWith("STATIONS_ID") || string.IsNullOrWhiteSpace(line))
+        //                                continue;
+
+        //                            var columns = line.Split(';');
+        //                            if (columns.Length >= 3 && DateTime.TryParseExact(columns[1], "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime date) && date >= DateTime.Now.AddDays(-20))
+        //                            {
+        //                                string dateString = date.ToString("yyyy-MM-dd");
+        //                                if (double.TryParse(columns[3], out double rsValue))
+        //                                {
+        //                                    rsValues[dateString] = rsValue.ToString();
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //    }
+        //    var last20Days = Enumerable.Range(0, 20).Select(offset => DateTime.Now.AddDays(-offset).ToString("yyyy-MM-dd")).ToList();
+        //    foreach (var date in last20Days)
+        //    {
+        //        if (!rsValues.ContainsKey(date))
+        //        {
+        //            rsValues[date] = "No Value";
+        //        }
+        //    }
+
+        //    return rsValues;
+        //}
 
         // go to other Pages
         public async void GoCircleMode(object sender, EventArgs e)
