@@ -104,17 +104,16 @@ public partial class HistoryPage : ContentPage
     async private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
 
-        string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Edit");
-
-        if (e.SelectedItem is ModelInputintoHistory selectedItem)
+        if (e.SelectedItem is InputRainfallData selectedItem)
         {
+            string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Edit");
             switch (action)
             {
                 case "Return":
                     SaveCurrentHistory();
                     SaveCurrentMainlist();
                     HistoryMethodClass historyreturn = new HistoryMethodClass();
-                    historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItem);
+                    //historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItem);
                     break;
                 case "Edit":
                     SaveCurrentHistory();
@@ -122,13 +121,13 @@ public partial class HistoryPage : ContentPage
                     HistoryMethodClass historylistedit = new HistoryMethodClass();
                     // historylistedit.ListEdit(selectedItem.edittype);
                     break;
-                // case "Delete":
-                //     bool deleteData = await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Löschen", "Abbrechen");     //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24) 
-                //     if (deleteData)
-                //     {
-                //          use .Remove source: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.list-1.remove?view=net-8.0 (last visit: 14.07.24)
-                //     }
-                //     break;   
+                case "Delete":
+                    bool confirmation = await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Löschen", "Abbrechen");    //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24)
+                    if (confirmation)
+                    {
+                        ListRainfallStation.Remove(selectedItem);
+                    }
+                break; 
                 default:
                     break;
             }
