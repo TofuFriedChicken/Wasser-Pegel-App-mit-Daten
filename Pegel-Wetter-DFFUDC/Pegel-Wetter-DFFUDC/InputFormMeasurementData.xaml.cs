@@ -8,6 +8,9 @@ namespace Pegel_Wetter_DFFUDC;
 
 public partial class InputFormMeasurementData : ContentPage
 {
+  MainPage mainPage = new MainPage();
+  HistoryPage historyPage = new HistoryPage();
+
   public InputFormMeasurementData()
   {
     InitializeComponent();
@@ -135,10 +138,21 @@ public partial class InputFormMeasurementData : ContentPage
           measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
         };
 
-        HistoryPage historyPage = new HistoryPage();
+        mainPage.Appearing += (s, args) => { AddPinToMap(mainPage.Map); };        //source https://learn.microsoft.com/de-de/dotnet/api/microsoft.maui.controls.baseshellitem.appearing#microsoft-maui-controls-baseshellitem-appearing + help of ChatGPT (last visit: 27.07.24)
         historyPage.ListWaterlevelStation.Add(inputWaterlevelData);
-        Navigation.PushAsync(historyPage);
 
+			  bool alert = await DisplayAlert("Daten erfolgreich hinzugefügt.", "Wo möchtest du dir deine Daten anschauen?", "Messstation auf Karte anzeigen", "Daten in Liste anzeigen");
+
+			  if (alert)
+			  {
+				  await Navigation.PushAsync(mainPage); 
+			  }  
+        else
+        {
+          await Navigation.PushAsync(historyPage);
+        }
+        
+      
       }
       else
       {
@@ -177,9 +191,20 @@ public partial class InputFormMeasurementData : ContentPage
           measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
         };
 
-        HistoryPage historyPage = new HistoryPage();
+        mainPage.Appearing += (s, args) => { AddPinToMap(mainPage.Map); };        //source https://learn.microsoft.com/de-de/dotnet/api/microsoft.maui.controls.baseshellitem.appearing#microsoft-maui-controls-baseshellitem-appearing + help of ChatGPT (last visit: 27.07.24)
         historyPage.ListRainfallStation.Add(inputRainfallData);
-        Navigation.PushAsync(historyPage);
+        
+			  bool alert = await DisplayAlert("Daten erfolgreich hinzugefügt.", "Wo möchtest du dir deine Daten anschauen?", "Messstation auf Karte anzeigen", "Daten in Liste anzeigen");
+
+			  if (alert)
+			  {
+				  await Navigation.PushAsync(mainPage); 
+			  }  
+        else
+        {
+          await Navigation.PushAsync(historyPage);
+        }
+        
       }
       else
       {

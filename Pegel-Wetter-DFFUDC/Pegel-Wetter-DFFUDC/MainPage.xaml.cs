@@ -28,10 +28,13 @@ namespace Pegel_Wetter_DFFUDC
 
         private readonly RainfallModel _rainfallModel;
 
+        public Map Map { get; set; }
+
         public MainPage()
         {
             InitializeComponent();
 
+            
             var germanLocation = new Location(52.5200, 13.4050);     //center berlin + map adjustment
             var mapSpan = new MapSpan(germanLocation, 90.0, 180.0);
             germanMap.MoveToRegion(mapSpan);
@@ -45,9 +48,9 @@ namespace Pegel_Wetter_DFFUDC
             // Rainfall Pin
             _rainfallModel = new RainfallModel(new RainfallApi());
 
-            // Pin from input form
-            var station = new InputFormMeasurementData();
-            station.AddPinToMap(germanMap);
+            // for Pin from input form
+            Map = germanMap;
+            Content = Map;
 
         }
 
