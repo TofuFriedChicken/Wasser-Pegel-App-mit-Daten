@@ -27,6 +27,19 @@ namespace Pegel_Wetter_DFFUDC.Model
 
         public double measurementData { get; set; }
 
+        public string newedittype { get; set; }
+        public string newdatatype { get; set; }
+        
+        public string newmeasurementStationName { get; set; }
+
+        public double newlon { get; set; }
+        public double newlat { get; set; }
+
+        public DateTime newdate { get; set; }
+        public string newinformation { get; set; }
+
+        public double newmeasurementData { get; set; }
+
         public string StationDetail => $"{edittype}";
     }
 }

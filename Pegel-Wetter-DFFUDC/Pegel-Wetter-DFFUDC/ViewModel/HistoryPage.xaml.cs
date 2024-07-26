@@ -104,23 +104,19 @@ public partial class HistoryPage : ContentPage
     async private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
 
-        string action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Edit");
-
-        if (e.SelectedItem is ModelInputintoHistory selectedItem)
+        string action;
+        
+        if (e.SelectedItem is ModelInputintoHistory selectedItemhistory)
         {
+            action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return");
             switch (action)
             {
                 case "Return":
                     SaveCurrentHistory();
                     SaveCurrentMainlist();
                     HistoryMethodClass historyreturn = new HistoryMethodClass();
-                    historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItem);
-                    break;
-                case "Edit":
-                    SaveCurrentHistory();
-                    SaveCurrentMainlist();
-                    HistoryMethodClass historylistedit = new HistoryMethodClass();
-                    // historylistedit.ListEdit(selectedItem.edittype);
+                    historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItemhistory);
+                    // historyreturn.HistoryReturnElement(ModelInputintoHistory.GetSingletonHistoryList().ListHistory, InputRainfallData.GetSingletonRainfall().ListRainfallStation, selectedItemhistory);
                     break;
                 default:
                     break;
@@ -128,6 +124,28 @@ public partial class HistoryPage : ContentPage
 
         }
 
+        if (e.SelectedItem is InputRainfallData selectedItemmainlist)
+        {
+            action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Edit", "Detail");
+
+            switch (action)
+            {
+                case "Edit":
+                    SaveCurrentHistory();
+                    SaveCurrentMainlist();
+                   // History.Add(selectedItemmainlist); // Speichern der alten Werte in die History
+                    HistoryMethodClass listedit = new HistoryMethodClass();
+                    await Navigation.PushAsync(new EditListPage(selectedItemmainlist, ListHistory));
+                    break;
+                case "Detail":
+                    HistoryMethodClass listdetail = new HistoryMethodClass();
+                    await Navigation.PushAsync(new DetailPage(selectedItemmainlist));
+                    break;
+                default:
+                    break;
+            }
+
+        }
 
     }
 

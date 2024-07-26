@@ -14,8 +14,6 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
 {
     interface InterfaceforHistoryViewModel
     {
-        public void ListEdit(ModelInputintoHistory item);
-
         public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<InputRainfallData> inputrainfalldataparameter, ModelInputintoHistory selectedItem);
 
         public void ListItemShow(ModelInputintoHistory item);
@@ -25,13 +23,12 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
     {
         public ObservableCollection<ModelInputintoHistory>ListHistory { get; set; }
 
+        public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
+
         public string MeasurementStationName { get; set; }
         public string StationDetail { get; set; }
 
-        public void ListEdit(ModelInputintoHistory item)
-        {
 
-        }
         async public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<InputRainfallData> inputrainfalldataparameter, ModelInputintoHistory selectedItemparameter)
         {
             switch (selectedItemparameter.edittype)
@@ -39,7 +36,7 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
                 case "edited":
                     // man macht die speicherung rückängig
                     listHistoryparameter.Remove(selectedItemparameter);
-                    inputrainfalldataparameter.Remove(new InputRainfallData 
+                    inputrainfalldataparameter.Add(new InputRainfallData 
                     { 
                         measurementStationName = selectedItemparameter.measurementStationName,
                         lon = selectedItemparameter.lon,
