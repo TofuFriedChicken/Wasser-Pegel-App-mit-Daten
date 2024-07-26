@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO.Compression;
 using System;
 using CommunityToolkit.Maui.Views;
+using System.Text;
 
 
 //Code behind
@@ -253,7 +254,9 @@ namespace Pegel_Wetter_DFFUDC
                             }
                         }
                         lastLines = lineQueue.ToList();
-                        
+
+                        List<string> displayMessages = new List<string>();
+
                         foreach (string l in lastLines)     // Ausgeben eingelesenen Daten - wird noch angepasst
                         {
                             string[] values = l.Split(';');
@@ -261,8 +264,12 @@ namespace Pegel_Wetter_DFFUDC
                             string currentDate = values[1];     // Speichern des aktuellen Datums und RS-Werts
                             string currentRSValue = values[3];
 
-                            this.DisplayAlert("Date: ", $"{currentDate} - RS Value: {currentRSValue}", "ok");  // Hier sind die RS Daten und das Datum dazu
+                            displayMessages.Add($"Date: {currentDate} – RS Value: {currentRSValue}");
+                            //this.DisplayAlert("Date: ", $"{currentDate} - RS Value: {currentRSValue}", "ok");  // Hier sind die RS Daten und das Datum dazu
                         }
+                        string finalMessage = string.Join(Environment.NewLine, displayMessages);
+                        //DisplayAlert("Date: ", $"{currentDate} - RS Value: {currentRSValue}", "ok");  // Hier sind die RS Daten und das Datum dazu
+                        this.DisplayAlert("Summary of Last 20 Data Entries", finalMessage, "OK");
                     }
                 }
             }
