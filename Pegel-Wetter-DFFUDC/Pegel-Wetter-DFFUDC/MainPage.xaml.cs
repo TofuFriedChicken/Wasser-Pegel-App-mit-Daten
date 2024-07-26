@@ -31,8 +31,6 @@ namespace Pegel_Wetter_DFFUDC
         private readonly RainfallApi _rainfallApi; 
         private readonly RainfallModel _rainfallModel;
 
-        private readonly DataFetcher _dataFetcher = new DataFetcher();
-
         public MainPage()
         {
             InitializeComponent();
@@ -49,7 +47,6 @@ namespace Pegel_Wetter_DFFUDC
 
             _rainfallApi = new RainfallApi();   // Rainfall Pin
             _rainfallModel = new RainfallModel();
-
 
         }
 
@@ -83,7 +80,7 @@ namespace Pegel_Wetter_DFFUDC
                         Label = position.longname,
                         Address = position.agency, 
                         Location = new Location(position.latitude, position.longitude),
-                        ImageSource = "waterlevel.png"
+                        PinIcon = "waterlevel.png"
                     };
                     _loadedPins.Add(pin);
                 }
@@ -184,7 +181,12 @@ namespace Pegel_Wetter_DFFUDC
         //Rainfall History - 20 Days
         private async void RainfallValues_Clicked(object sender, PinClickedEventArgs e)
         {
-            if (sender is Pin pin && !string.IsNullOrEmpty(pin.Address))
+            //string stationId = "00433"; //zum testen      // 2 Variante
+            //var processor = new FileProcessor();
+            //await processor.ProcessFileAsync(stationId);
+
+
+            if (sender is Pin pin && !string.IsNullOrEmpty(pin.Address))      //zur sicherheit erstmal behalten
             {
                 await RainValues(pin.Address); // um StationId als Argument in Adress
             }
@@ -216,35 +218,35 @@ namespace Pegel_Wetter_DFFUDC
                 //string zipUrl = $"{baseUrl}tageswerte_RR_{StationID}_akt.zip";
                 byte[] zipBytes = await httpClient.GetByteArrayAsync(zipUrl);
 
-                    using (var zipStream = new MemoryStream(zipBytes))
-                    using (var archive = new ZipArchive(zipStream))
+                using (var zipStream = new MemoryStream(zipBytes))
+                using (var archive = new ZipArchive(zipStream))
+                {
+                    foreach (var entry in archive.Entries)
                     {
-                        foreach (var entry in archive.Entries)
+                        if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) && entry.FullName.Contains("produkt"))
                         {
-                            if (entry.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) && entry.FullName.Contains("produkt"))
+                            using (var reader = new StreamReader(entry.Open()))
                             {
-                                using (var reader = new StreamReader(entry.Open()))
+                                while (!reader.EndOfStream)
                                 {
-                                    while (!reader.EndOfStream)
-                                    {
-                                        string line = await reader.ReadLineAsync();
-                                        if (line.StartsWith("STATIONS_ID") || string.IsNullOrWhiteSpace(line))
-                                            continue;
+                                    string line = await reader.ReadLineAsync();
+                                    if (line.StartsWith("STATIONS_ID") || string.IsNullOrWhiteSpace(line))
+                                        continue;
 
-                                        var columns = line.Split(';');
-                                        if (columns.Length >= 3 && DateTime.TryParseExact(columns[1], "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime date) && date >= DateTime.Now.AddDays(-20))
+                                    var columns = line.Split(';');
+                                    if (columns.Length >= 3 && DateTime.TryParseExact(columns[1], "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out DateTime date) && date >= DateTime.Now.AddDays(-20))
+                                    {
+                                        string dateString = date.ToString("yyyy-MM-dd");
+                                        if (double.TryParse(columns[3], out double rsValue))
                                         {
-                                            string dateString = date.ToString("yyyy-MM-dd");
-                                            if (double.TryParse(columns[3], out double rsValue))
-                                            {
-                                                rsValues[dateString] = rsValue.ToString();
-                                            }
+                                            rsValues[dateString] = rsValue.ToString();
                                         }
                                     }
                                 }
                             }
                         }
                     }
+                }
 
             }
             var last20Days = Enumerable.Range(0, 20).Select(offset => DateTime.Now.AddDays(-offset).ToString("yyyy-MM-dd")).ToList();
