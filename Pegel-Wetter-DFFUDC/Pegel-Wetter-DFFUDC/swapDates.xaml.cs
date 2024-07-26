@@ -181,10 +181,10 @@ namespace Pegel_Wetter_DFFUDC
 
                     Pin RfPin = new Pin
                     {
-                        Label = station.StationName.ToString(),
-                        //High: {station.StationHight}m",
-                        //Address = station.StationID.ToString(),
-                        Location = new Location(station.Latitude, station.Longitude) //probleme beim button rf map mit latitude
+                        Label = $"{station.StationName}, Date: {station.FromDate} to {station.ToDate},\n" +
+                                $"High: {station.StationHight}m,\n" +
+                                $"Addresse: {station.Latitude} + {station.Longitude}",
+                        Location = new Location(station.Latitude, station.Longitude) 
                     };
 
                     MyMap_Test.Pins.Add(RfPin);
@@ -192,19 +192,24 @@ namespace Pegel_Wetter_DFFUDC
             } 
         }
 
+        // Anzeige fehlerhaft
         private void RfPin_Clicked(object sender, PinClickedEventArgs e)
         {
             //Anzeige wenn auf Pin geklickt
+            
+            //testwerte
+            var Rflat = RfStations.Latitude; var Rflong = RfStations.Longitude;
 
             if (sender is Pin pin)
             {
                 location = pin.Location;
-                //var Rflat = RfStations.Latitude; var Rflong = RfStations.Longitude;
                 today = DateTime.Now;
+                
                 var details = $"Location: {location.ToString()} \n" +
-                              $"Value: 'Wert einfügen'  cm \nDate: {today}";/*{RfModel.ProcessLines(lines[])}*/
+                              $"Value: 'Wert einfügen'  cm \n" +
+                              $"Date: {today}";
 
-                DisplayAlert("Waterlevelstation", details, "Schließen");
+                DisplayAlert("Waterlevelstation", details, "Schließen"); //deatils nicht korrekt ausgegeben
 
             }
         }
@@ -230,7 +235,6 @@ namespace Pegel_Wetter_DFFUDC
             });
         }
 
-        //getWaterlevel in Listenform (von Sophie feature 1.1)
         private async Task AddPinsWaterlevel()
         {
             MyMap_Test.Pins.Clear();
@@ -249,7 +253,7 @@ namespace Pegel_Wetter_DFFUDC
                 }
                 else if (testposition != null)
                 {
-                    foreach (var position in testposition) //exeption bei Button wlMap, gibt null zurück
+                    foreach (var x in testposition) //fehler in deklarierung
                     {
                         //erstellt Pins und speichert sie in Liste
                         Pin wlPin = new Pin
