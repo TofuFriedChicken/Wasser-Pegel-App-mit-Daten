@@ -28,11 +28,8 @@ namespace Pegel_Wetter_DFFUDC
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 
-                })
-                .ConfigureMauiHandlers(handlers =>   // for costumize pins
-                 {
-                     handlers.AddHandler(typeof(Map), typeof(CustomMapHandler));
-                 });
+                });
+
             builder.Services.AddSingleton<ModelInputintoHistory>();
             builder.Services.AddSingleton<Model.RainfallViewModeldummy>();
 

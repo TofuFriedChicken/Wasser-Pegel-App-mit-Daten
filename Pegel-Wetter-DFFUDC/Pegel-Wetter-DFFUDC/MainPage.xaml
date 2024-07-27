@@ -11,13 +11,14 @@
 
 
     <Grid>
+        
         <!--1. for Frame, containing the Label + 2. for Map, taking the remeining space-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--define Frame and create buttons-->
+        <!--define Frame and create buttons for other pages-->
         <Frame 
             Grid.Row="0" BackgroundColor="DimGrey" HeightRequest="70" Margin="-1,-55,-1,5" Padding="2" HorizontalOptions="FillAndExpand">
             <Grid>
@@ -28,11 +29,10 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <!--buttons-->
                 <StackLayout Grid.Column="0" Padding="1">
                     <Frame 
                         BackgroundColor="DarkBlue" Margin="5,3,15,0" Padding="2" HorizontalOptions="FillAndExpand" >
-                        <!--add three buttons in Frame-->
+                        <!--add four buttons in Frame-->
                         <Grid>
                             <Grid.ColumnDefinitions>
                               
@@ -65,7 +65,7 @@
                             </FlexLayout>
                             <FlexLayout Grid.Column="2">
                                 <Button 
-                                    Clicked="ShowRainPins"
+                                    Clicked="LoadRainPins"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="Rainfall☂"
@@ -138,26 +138,17 @@
                         HorizontalOptions="Fill"
                         BorderWidth="1.5"
                         BorderColor="Black"/>
-                    <!--davor waren alle Buttons auf: WidthRequest="150" -->
                 </FlexLayout>
             </Grid>
 
 
-
         </Frame>
 
-        <!--map from BingMaps-->
-        <maps:Map
-            x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment">
-            <!--<maps:Map.Pins>
-                <maps:Pin.ImageSource>
-                    <FileImageSource File="waterlevel.png"/>
-                </maps:Pin.ImageSource>
-            </maps:Map.Pins>-->
-        </maps:Map>
+        <maps:Map x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment"/>
 
 
     </Grid>
+    
 
 </ContentPage>
 
