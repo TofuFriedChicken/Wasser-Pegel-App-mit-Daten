@@ -17,6 +17,8 @@ public partial class HistoryPage : ContentPage
 
     public ObservableCollection<RainfallModel> ListRainfallStation => DataStore.Instance.ListRainfallStation;
 
+    public ObservableCollection<WaterLevelModel.Root> ListWaterlevelStation => DataStore.Instance.ListWaterlevelStation;
+
     public ObservableCollection<ModelInputintoHistory> ListHistory => DataStore.Instance.ListHistory;
 
     private List<ClassofHistoryforJumps> ListofListHistoryofEdits { get; set; }
@@ -32,11 +34,11 @@ public partial class HistoryPage : ContentPage
         ListofListHistoryofEdits = new List<ClassofHistoryforJumps>();
 
         ListofMainlist = new List<ClassofMainListforJumps>();
+        BindingContext = this;
 
 
         InitializeComponent();
 
-        BindingContext = this;
 
     }
 
@@ -144,17 +146,17 @@ public partial class HistoryPage : ContentPage
     {
         JumpHistory();
     }
+    /*
+    public ICommand DeleteCommand => new Command<ModelInputintoHistory>(RemoveListMembers);
 
-    public ICommand DeleteCommand => new Command<ModelInputintoHistory>(RemoveChemical);
 
-
-    void RemoveChemical(ModelInputintoHistory listhistory)
+    void RemoveListMembers(ModelInputintoHistory listhistory)
     {
         if (ListHistory.Contains(listhistory))
         {
             ListHistory.Remove(listhistory);
         }
     }
-
+    */
 
 }

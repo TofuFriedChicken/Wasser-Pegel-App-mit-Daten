@@ -20,6 +20,8 @@ namespace Pegel_Wetter_DFFUDC
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string StationName { get; set; }
+        public string StationDetail => $"{StationName} Longitude {Longitude} Latitude {Latitude}";
+
 
     }
 

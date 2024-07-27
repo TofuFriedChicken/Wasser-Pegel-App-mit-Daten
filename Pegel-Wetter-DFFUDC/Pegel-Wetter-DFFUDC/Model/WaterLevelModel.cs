@@ -51,6 +51,9 @@ namespace Pegel_Wetter_DFFUDC.Model
             public List<Timeseries> Timeseries { get; set; }
             //public List<CurrentMeasurement> timeseries { get; set; }
             public CurrentMeasurement currentMeasurement { get; set; }
+
+            public string StationDetail => $"{longname} Longitude {longitude} Latitude {latitude}";
+
         }
         public class Water
         {

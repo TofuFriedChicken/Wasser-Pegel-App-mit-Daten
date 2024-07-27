@@ -33,45 +33,12 @@ public partial class EditListPage : ContentPage
         this.selectedItem = selectedItem;
         this.listHistory = listHistory;
         BindingContext = selectedItem;
-        /*
-                if ( EditButtonClicked == true)
-                {
-                    listHistory.Add(new ModelInputintoHistory
-                    {
-                        edittype = "edited",
-                        datatype = selectedItem.datatype,
-                        measurementStationName = selectedItem.measurementStationName,
-                        lon = selectedItem.lon,
-                        lat = selectedItem.lat,
-                        date = selectedItem.date,
-                        information = selectedItem.information,
-                        measurementData = selectedItem.measurementData,
-
-                        newmeasurementStationName = measurementStationNameEntry.Text,
-                        newlon = double.Parse(lonEntry.Text),
-                        newlat = double.Parse(latEntry.Text),
-                        newdate = DateTime.Parse(dateEntry.Text),
-                        newinformation = informationEntry.Text,
-                        newmeasurementData = double.Parse(measurementDataEntry.Text)
-
-                    });
-                }
-        
-        */
-        // elemente sollen dvor schon gespeichert werden
-
-
+ 
         premeasurementStationName = selectedItem.StationName;
 
         prelon = selectedItem.Longitude;
 
         prelat = selectedItem.Latitude;
-
-  //      predate = selectedItem.date;
-
-    //    preinformation = selectedItem.information;
-
-      //  premeasurementData = selectedItem.measurementData;
 
     }
 
@@ -86,8 +53,6 @@ public partial class EditListPage : ContentPage
             lon = prelon,
             lat = prelat,
             date = predate,
-    //        information = preinformation,
-      //      measurementData = premeasurementData,
 
             newmeasurementStationName = measurementStationNameEntry.Text,
             newlon = double.Parse(lonEntry.Text),
@@ -98,35 +63,11 @@ public partial class EditListPage : ContentPage
 
 
         });
-
-        /*
-        HistoryPage.Instance.ListHistory.Add(new ModelInputintoHistory
-        {
-            edittype = "edited",
-            datatype = predatatype,
-            measurementStationName = premeasurementStationName,
-            lon = prelon,
-            lat = prelat,
-            date = predate,
-            information = preinformation,
-            measurementData = premeasurementData,
-
-            newmeasurementStationName = measurementStationNameEntry.Text,
-            newlon = double.Parse(lonEntry.Text),
-            newlat = double.Parse(latEntry.Text),
-            newdate = DateTime.Parse(dateEntry.Text),
-            newinformation = informationEntry.Text,
-            newmeasurementData = double.Parse(measurementDataEntry.Text)
-        });
-        */
 
         selectedItem.StationName = measurementStationNameEntry.Text;
         selectedItem.Longitude = double.Parse(lonEntry.Text);
         selectedItem.Latitude = double.Parse(latEntry.Text);
         selectedItem.FromDate = DateTime.Parse(dateEntry.Text);
-     //   selectedItem.information = informationEntry.Text;
-   //     selectedItem.measurementData = double.Parse(measurementDataEntry.Text);
-
 
         Navigation.PopAsync();
     }

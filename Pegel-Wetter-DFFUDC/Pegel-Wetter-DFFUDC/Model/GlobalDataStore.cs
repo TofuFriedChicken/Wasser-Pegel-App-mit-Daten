@@ -28,28 +28,33 @@ namespace Pegel_Wetter_DFFUDC.Model
 
             ListRainfallStation = new ObservableCollection<RainfallModel>
             {
-              new RainfallModel { datatype="rainfall", StationName = "Alice", Longitude =4, Latitude=256, },
+              new RainfallModel {datatype="rainfall", StationName = "Alice", Longitude =4, Latitude=256, },
               new RainfallModel {datatype = "rainfall", StationName = "Alice", Longitude = 4, Latitude = 256},
               new RainfallModel {datatype = "rainfall", StationName = "Alice", Longitude = 4, Latitude = 256},
-              new RainfallModel {datatype = "waterlevel", StationName = "hehe2", Longitude = 3, Latitude = 123},
+              new RainfallModel {datatype = "rainfall", StationName = "hehe2", Longitude = 3, Latitude = 123},
         };
 
             ListWaterlevelStation = new ObservableCollection<WaterLevelModel.Root>
         {
-              new WaterLevelModel.Root{datatype="waterlevel", shortname = "hehe", longitude = 3, latitude = 123},
+              new WaterLevelModel.Root{datatype="waterlevel", longname = "hehe", longitude = 3, latitude = 123},
+              new WaterLevelModel.Root{datatype="waterlevel", longname = "hehe", longitude = 3, latitude = 123},
+              new WaterLevelModel.Root{datatype="waterlevel", longname = "hehe", longitude = 3, latitude = 123},
+
+
         };
 
             ListHistory = new ObservableCollection<ModelInputintoHistory>()
-        {
-                          new ModelInputintoHistory {edittype="deleted", datatype="waterlevel", measurementStationName = "hehe3", lon = 3, lat = 123, information = "123", measurementData = 123 },
+            {
+                new ModelInputintoHistory{edittype = "added",datatype = "waterfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
+                new ModelInputintoHistory{edittype = "edited",datatype = "waterfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
+                new ModelInputintoHistory{edittype = "added",datatype = "rainfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
+                new ModelInputintoHistory{edittype = "deleted",datatype = "rainfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
+                new ModelInputintoHistory{edittype = "added",datatype = "waterfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
+                new ModelInputintoHistory{edittype = "edited",datatype = "rainfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
+                new ModelInputintoHistory{edittype = "added",datatype = "waterfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
+                new ModelInputintoHistory{edittype = "deleted",datatype = "rainfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
 
-              new ModelInputintoHistory {edittype="edited", datatype="rainfall", measurementStationName = "hehe1", lon = 3, lat = 123, information = "123", measurementData = 123 },
-              new ModelInputintoHistory {edittype="added", datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, information = "123", measurementData = 123 },
-              new ModelInputintoHistory {edittype="deleted", datatype="waterlevel", measurementStationName = "hehe3", lon = 3, lat = 123, information = "123", measurementData = 123 },
-              new ModelInputintoHistory {edittype="edited", datatype="rainfall", measurementStationName = "hehe1", lon = 3, lat = 123, information = "123", measurementData = 123 },
-              new ModelInputintoHistory {edittype="added", datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, information = "123", measurementData = 123 },
-
-        };
+            };
 
 
         }

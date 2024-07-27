@@ -13,6 +13,7 @@
                 <Button Text="&lt;-" Clicked="OnHistoryBackwardClick" BackgroundColor="LightGray" WidthRequest="40" />
             </StackLayout>
 
+
             <ListView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" ItemsSource="{Binding ListRainfallStation}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray">
                 <!--ItemSelected="OnItemSelected"-->
                 <ListView.ItemTemplate>
@@ -28,7 +29,30 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding measurementStationName}" FontAttributes="Bold" BackgroundColor="DarkGray" />
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding StationName}" FontAttributes="Bold" BackgroundColor="DarkGray" />
+                                <Label Grid.Row="1" Grid.Column="0" Text="{Binding StationDetail}" TextColor="White"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <ListView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" ItemsSource="{Binding ListWaterfallStation}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray">
+                <!--ItemSelected="OnItemSelected"-->
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding longname}" FontAttributes="Bold" BackgroundColor="DarkGray" />
                                 <Label Grid.Row="1" Grid.Column="0" Text="{Binding StationDetail}" TextColor="White"/>
                             </Grid>
                         </ViewCell>
