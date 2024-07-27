@@ -2,19 +2,19 @@ using System.Collections.ObjectModel;
 
 namespace Pegel_Wetter_DFFUDC.Model;
 
-public class RainfallViewModeldummy : IMeasurementData
+public class RainfallModeldummy : IMeasurementData
 {
     //  public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
 
-    public bool Equals(RainfallViewModeldummy other)
+    public bool Equals(RainfallModeldummy other)
     {
         if (other == null) return false;
         return (this.measurementStationName.Equals(other.measurementStationName));
     }
 
-    private static readonly Lazy<RainfallViewModeldummy> lazy = new Lazy<RainfallViewModeldummy>(() => new RainfallViewModeldummy());
+    private static readonly Lazy<RainfallModeldummy> lazy = new Lazy<RainfallModeldummy>(() => new RainfallModeldummy());
 
-    public static RainfallViewModeldummy Instance { get { return lazy.Value; } }
+    public static RainfallModeldummy Instance { get { return lazy.Value; } }
 
     public string datatype { get; set; }
 

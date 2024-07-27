@@ -15,6 +15,10 @@ namespace Pegel_Wetter_DFFUDC.Model
 
         public ObservableCollection<RainfallModel> ListRainfallStation { get; set; }
         public ObservableCollection<WaterLevelModel.Root> ListWaterlevelStation { get; set; }
+
+        public ObservableCollection<RainfallModeldummy> ListRainfallStationDummy { get; set; }
+        public ObservableCollection<WaterlevelModeldummy> ListWaterlevelStationDummy { get; set; }
+
         public ObservableCollection<ModelInputintoHistory> ListHistory { get; set; }
 
         private DataStore()
