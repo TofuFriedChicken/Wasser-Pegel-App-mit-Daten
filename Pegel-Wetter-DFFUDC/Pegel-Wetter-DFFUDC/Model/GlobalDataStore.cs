@@ -29,6 +29,10 @@ namespace Pegel_Wetter_DFFUDC.Model
 
             ListHistory = new ObservableCollection<ModelInputintoHistory>();
 
+            ListRainfallStationDummy = new ObservableCollection<RainfallModeldummy>();
+
+            ListWaterlevelStationDummy = new ObservableCollection<WaterlevelModeldummy>();
+
 
             ListRainfallStation = new ObservableCollection<RainfallModel>
             {
