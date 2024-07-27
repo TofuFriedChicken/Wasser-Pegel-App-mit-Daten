@@ -10,11 +10,12 @@ namespace Pegel_Wetter_DFFUDC.ViewModel;
 
 public partial class EditListPage : ContentPage
 {
-    private Model.RainfallViewModeldummy selectedItem;
+    private RainfallModel selectedItem;
     ObservableCollection<ModelInputintoHistory> listHistory;
-    public static string predatatype;
 
     public static string premeasurementStationName;
+
+    public static string predatatype;
 
     public static double prelon;
 
@@ -22,11 +23,11 @@ public partial class EditListPage : ContentPage
 
     public static DateTime predate;
 
-    public static string preinformation;
+  //  public static string preinformation;
 
-    public static double premeasurementData;
+  //  public static double premeasurementData;
 
-    public EditListPage(Model.RainfallViewModeldummy selectedItem, ObservableCollection<ModelInputintoHistory> listHistory)
+    public EditListPage(RainfallModel selectedItem, ObservableCollection<ModelInputintoHistory> listHistory)
     {
         InitializeComponent();
         this.selectedItem = selectedItem;
@@ -59,19 +60,18 @@ public partial class EditListPage : ContentPage
         */
         // elemente sollen dvor schon gespeichert werden
 
-        predatatype = selectedItem.datatype;
 
-        premeasurementStationName = selectedItem.measurementStationName;
+        premeasurementStationName = selectedItem.StationName;
 
-        prelon = selectedItem.lon;
+        prelon = selectedItem.Longitude;
 
-        prelat = selectedItem.lat;
+        prelat = selectedItem.Latitude;
 
-        predate = selectedItem.date;
+  //      predate = selectedItem.date;
 
-        preinformation = selectedItem.information;
+    //    preinformation = selectedItem.information;
 
-        premeasurementData = selectedItem.measurementData;
+      //  premeasurementData = selectedItem.measurementData;
 
     }
 
@@ -86,8 +86,8 @@ public partial class EditListPage : ContentPage
             lon = prelon,
             lat = prelat,
             date = predate,
-            information = preinformation,
-            measurementData = premeasurementData,
+    //        information = preinformation,
+      //      measurementData = premeasurementData,
 
             newmeasurementStationName = measurementStationNameEntry.Text,
             newlon = double.Parse(lonEntry.Text),
@@ -120,12 +120,12 @@ public partial class EditListPage : ContentPage
         });
         */
 
-        selectedItem.measurementStationName = measurementStationNameEntry.Text;
-        selectedItem.lon = double.Parse(lonEntry.Text);
-        selectedItem.lat = double.Parse(latEntry.Text);
-        selectedItem.date = DateTime.Parse(dateEntry.Text);
-        selectedItem.information = informationEntry.Text;
-        selectedItem.measurementData = double.Parse(measurementDataEntry.Text);
+        selectedItem.StationName = measurementStationNameEntry.Text;
+        selectedItem.Longitude = double.Parse(lonEntry.Text);
+        selectedItem.Latitude = double.Parse(latEntry.Text);
+        selectedItem.FromDate = DateTime.Parse(dateEntry.Text);
+     //   selectedItem.information = informationEntry.Text;
+   //     selectedItem.measurementData = double.Parse(measurementDataEntry.Text);
 
 
         Navigation.PopAsync();

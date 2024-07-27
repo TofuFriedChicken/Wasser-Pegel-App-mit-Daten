@@ -15,7 +15,7 @@ public partial class HistoryPage : ContentPage
 
     public static HistoryPage Instance { get { return lazy.Value; } }
 
-    public ObservableCollection<Model.RainfallViewModeldummy> ListRainfallStation => DataStore.Instance.ListRainfallStation;
+    public ObservableCollection<RainfallModel> ListRainfallStation => DataStore.Instance.ListRainfallStation;
 
     public ObservableCollection<ModelInputintoHistory> ListHistory => DataStore.Instance.ListHistory;
 
@@ -23,7 +23,7 @@ public partial class HistoryPage : ContentPage
 
     private List<ClassofMainListforJumps> ListofMainlist { get; set; }
 
-    private List<RainfallViewModel> RainfallDataset { get; set; }
+    private List<RainfallModel> RainfallDataset { get; set; }
 
 
     public HistoryPage()
@@ -44,7 +44,7 @@ public partial class HistoryPage : ContentPage
     public void InitializeData()
     {
         List<ModelInputintoHistory> loadmainlist = ListHistory.ToList();
-        List<Model.RainfallViewModeldummy> loadhistorylist = ListRainfallStation.ToList();
+        List<RainfallModel> loadhistorylist = ListRainfallStation.ToList();
         SaveCurrentMainlist();
         SaveCurrentHistory();
     }
@@ -110,7 +110,7 @@ public partial class HistoryPage : ContentPage
 
         }
 
-        if (e.SelectedItem is Model.RainfallViewModeldummy selectedItemmainlist)
+        if (e.SelectedItem is RainfallModel selectedItemmainlist)
         {
             action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Edit", "Detail");
 

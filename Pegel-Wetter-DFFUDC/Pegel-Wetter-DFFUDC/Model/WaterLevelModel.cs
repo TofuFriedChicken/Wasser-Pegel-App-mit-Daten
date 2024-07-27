@@ -13,6 +13,8 @@ namespace Pegel_Wetter_DFFUDC.Model
 {
     public class WaterLevelModel
     {
+        public string datatype { get; set; }
+
 
         // Root myDeserializedClass = JsonConvert.DeserializeObject<List<Root>>(myJsonResponse);
         //public class Comment
@@ -37,6 +39,8 @@ namespace Pegel_Wetter_DFFUDC.Model
         {
             //public string uuid { get; set; }
             //public string number { get; set; }
+            public string datatype { get; set; }
+
             public string shortname { get; set; }
             public string longname { get; set; }
             //public double km { get; set; }

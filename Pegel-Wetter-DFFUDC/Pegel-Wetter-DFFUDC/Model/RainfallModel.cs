@@ -11,7 +11,8 @@ namespace Pegel_Wetter_DFFUDC
     public class RainfallModel
 
     {
-
+        public string edittype { get; set; }
+        public string datatype { get; set; }
         public int StationID { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }

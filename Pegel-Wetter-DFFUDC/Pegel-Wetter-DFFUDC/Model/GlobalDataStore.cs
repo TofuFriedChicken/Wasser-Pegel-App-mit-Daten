@@ -13,30 +13,30 @@ namespace Pegel_Wetter_DFFUDC.Model
 
         public static DataStore Instance => lazy.Value;
 
-        public ObservableCollection<RainfallViewModeldummy> ListRainfallStation { get; set; }
-        public ObservableCollection<WaterlevelViewModeldummy> ListWaterlevelStation { get; set; }
+        public ObservableCollection<RainfallModel> ListRainfallStation { get; set; }
+        public ObservableCollection<WaterLevelModel.Root> ListWaterlevelStation { get; set; }
         public ObservableCollection<ModelInputintoHistory> ListHistory { get; set; }
 
         private DataStore()
         {
-            ListRainfallStation = new ObservableCollection<RainfallViewModeldummy>();
+            ListRainfallStation = new ObservableCollection<RainfallModel>();
 
-            ListWaterlevelStation = new ObservableCollection<WaterlevelViewModeldummy>();
+            ListWaterlevelStation = new ObservableCollection<WaterLevelModel.Root>();
 
             ListHistory = new ObservableCollection<ModelInputintoHistory>();
 
 
-            ListRainfallStation = new ObservableCollection<RainfallViewModeldummy>
+            ListRainfallStation = new ObservableCollection<RainfallModel>
             {
-              new RainfallViewModeldummy { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
-              new RainfallViewModeldummy { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
-              new RainfallViewModeldummy { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
-              new RainfallViewModeldummy { datatype="waterlevel", measurementStationName = "hehe2", lon = 3, lat = 123, information = "123", measurementData = 123 },
+              new RainfallModel { datatype="rainfall", StationName = "Alice", Longitude =4, Latitude=256, },
+              new RainfallModel {datatype = "rainfall", StationName = "Alice", Longitude = 4, Latitude = 256},
+              new RainfallModel {datatype = "rainfall", StationName = "Alice", Longitude = 4, Latitude = 256},
+              new RainfallModel {datatype = "waterlevel", StationName = "hehe2", Longitude = 3, Latitude = 123},
         };
 
-            ListWaterlevelStation = new ObservableCollection<WaterlevelViewModeldummy>()
+            ListWaterlevelStation = new ObservableCollection<WaterLevelModel.Root>
         {
-              new WaterlevelViewModeldummy {datatype="waterlevel", measurementStationName = "hehe", lon = 3, lat = 123, information = "123", measurementData = 123 },
+              new WaterLevelModel.Root{datatype="waterlevel", shortname = "hehe", longitude = 3, latitude = 123},
         };
 
             ListHistory = new ObservableCollection<ModelInputintoHistory>()
