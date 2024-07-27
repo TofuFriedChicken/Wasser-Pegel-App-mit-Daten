@@ -18,8 +18,9 @@ using Newtonsoft.Json;
 namespace Pegel_Wetter_DFFUDC
 {
     public class WaterLevelViewModel
-        
     {
+        public WaterLevelApi _waterlevelApi;
+        public ObservableCollection<Root> _positions;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -46,7 +47,10 @@ namespace Pegel_Wetter_DFFUDC
         }
 
 
-
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
 
     }
