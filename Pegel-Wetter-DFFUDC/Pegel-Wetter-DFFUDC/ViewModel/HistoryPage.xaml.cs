@@ -102,7 +102,7 @@ public partial class HistoryPage : ContentPage
         // history list
         if (e.SelectedItem is ModelInputintoHistory selectedItemhistory)
         {
-            action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return");
+            action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Return", "Delete");
             switch (action)
             {
                 case "Return":
@@ -112,6 +112,13 @@ public partial class HistoryPage : ContentPage
                     historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItemhistory);
                     // historyreturn.HistoryReturnElement(ModelInputintoHistory.GetSingletonHistoryList().ListHistory, InputRainfallData.GetSingletonRainfall().ListRainfallStation, selectedItemhistory);
                     break;
+                case "Delete":
+                    bool confirmation = await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Löschen", "Abbrechen");    //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24)
+                    if (confirmation)
+                    {
+                        ListHistory.Remove(selectedItemhistory);
+                    }
+                    break;    
                 default:
                     break;
             }
