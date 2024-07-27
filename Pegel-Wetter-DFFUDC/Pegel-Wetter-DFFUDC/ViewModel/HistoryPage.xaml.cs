@@ -15,7 +15,7 @@ public partial class HistoryPage : ContentPage
 
     public static HistoryPage Instance { get { return lazy.Value; } }
 
-    public ObservableCollection<InputRainfallData> ListRainfallStation => DataStore.Instance.ListRainfallStation;
+    public ObservableCollection<Model.RainfallViewModeldummy> ListRainfallStation => DataStore.Instance.ListRainfallStation;
 
     public ObservableCollection<ModelInputintoHistory> ListHistory => DataStore.Instance.ListHistory;
 
@@ -44,7 +44,7 @@ public partial class HistoryPage : ContentPage
     public void InitializeData()
     {
         List<ModelInputintoHistory> loadmainlist = ListHistory.ToList();
-        List<InputRainfallData> loadhistorylist = ListRainfallStation.ToList();
+        List<Model.RainfallViewModeldummy> loadhistorylist = ListRainfallStation.ToList();
         SaveCurrentMainlist();
         SaveCurrentHistory();
     }
@@ -110,7 +110,7 @@ public partial class HistoryPage : ContentPage
 
         }
 
-        if (e.SelectedItem is InputRainfallData selectedItemmainlist)
+        if (e.SelectedItem is Model.RainfallViewModeldummy selectedItemmainlist)
         {
             action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Edit", "Detail");
 
@@ -119,7 +119,7 @@ public partial class HistoryPage : ContentPage
                 case "Edit":
                     SaveCurrentHistory();
                     SaveCurrentMainlist();
-                   // History.Add(selectedItemmainlist); // Speichern der alten Werte in die History
+                    // History.Add(selectedItemmainlist); // Speichern der alten Werte in die History
                     HistoryMethodClass listedit = new HistoryMethodClass();
                     await Navigation.PushAsync(new EditListPage(selectedItemmainlist, ListHistory));
                     break;

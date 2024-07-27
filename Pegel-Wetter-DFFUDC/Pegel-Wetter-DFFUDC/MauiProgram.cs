@@ -34,7 +34,7 @@ namespace Pegel_Wetter_DFFUDC
                      handlers.AddHandler(typeof(Map), typeof(CustomMapHandler));
                  });
             builder.Services.AddSingleton<ModelInputintoHistory>();
-            builder.Services.AddSingleton<InputRainfallData>();
+            builder.Services.AddSingleton<Model.RainfallViewModeldummy>();
 
 
 

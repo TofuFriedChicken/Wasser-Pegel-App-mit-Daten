@@ -4,18 +4,19 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Pegel_Wetter_DFFUDC.Model;
 
 namespace Pegel_Wetter_DFFUDC
 {
     public class WaterLevelCashing
     {
-        private Dictionary<string, WaterLevelViewModel> _cache = new Dictionary<string, WaterLevelViewModel>();
-        public WaterLevelViewModel Get(string key)
+        private Dictionary<string, Model.WaterLevelModel> _cache = new Dictionary<string, Model.WaterLevelModel>();
+        public Model.WaterLevelModel Get(string key)
         {
             _cache.TryGetValue(key, out var pinData);
             return pinData;
         }
-        public void Add(string key, WaterLevelViewModel pinData)
+        public void Add(string key, Model.WaterLevelModel pinData)
         {
             if (!_cache.ContainsKey(key))
             {

@@ -14,7 +14,7 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
 {
     interface InterfaceforHistoryViewModel
     {
-        public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<InputRainfallData> inputrainfalldataparameter, ModelInputintoHistory selectedItem);
+        public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<Model.RainfallViewModeldummy> inputrainfalldataparameter, ModelInputintoHistory selectedItem);
 
         public void ListItemShow(ModelInputintoHistory item);
     }
@@ -23,13 +23,13 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
     {
         public ObservableCollection<ModelInputintoHistory>ListHistory { get; set; }
 
-        public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
+        public ObservableCollection<Model.RainfallViewModeldummy> ListRainfallStation { get; set; }
 
         public string MeasurementStationName { get; set; }
         public string StationDetail { get; set; }
 
 
-        async public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<InputRainfallData> inputrainfalldataparameter, ModelInputintoHistory selectedItemparameter)
+        async public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<Model.RainfallViewModeldummy> inputrainfalldataparameter, ModelInputintoHistory selectedItemparameter)
         {
             switch (selectedItemparameter.edittype)
             {
@@ -41,7 +41,7 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
                         inputrainfalldataparameter.Remove(itemedited);
                     }
 
-                    inputrainfalldataparameter.Add(new InputRainfallData 
+                    inputrainfalldataparameter.Add(new Model.RainfallViewModeldummy 
                     { 
                         measurementStationName = selectedItemparameter.measurementStationName,
                         lon = selectedItemparameter.lon,
@@ -72,7 +72,7 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
                     break;
                 case "deleted":
                     listHistoryparameter.Remove(selectedItemparameter);
-                    inputrainfalldataparameter.Add(new InputRainfallData
+                    inputrainfalldataparameter.Add(new Model.RainfallViewModeldummy
                     {
                         datatype = selectedItemparameter.datatype,
                         measurementStationName = "delete return",

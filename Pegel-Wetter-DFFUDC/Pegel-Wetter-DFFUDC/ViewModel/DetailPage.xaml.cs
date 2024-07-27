@@ -4,7 +4,7 @@ namespace Pegel_Wetter_DFFUDC.ViewModel;
 
 public partial class DetailPage : ContentPage
 {
-	public DetailPage(InputRainfallData selectedItem)
+	public DetailPage(Model.RainfallViewModeldummy selectedItem)
 	{
 		InitializeComponent();
         BindingContext = selectedItem; 

@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Pegel_Wetter_DFFUDC
+namespace Pegel_Wetter_DFFUDC.Model
 {
-    public class WaterLevelViewModel 
+    public class WaterLevelModel
     {
 
         // Root myDeserializedClass = JsonConvert.DeserializeObject<List<Root>>(myJsonResponse);

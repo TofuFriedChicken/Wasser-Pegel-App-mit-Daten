@@ -10,7 +10,7 @@ namespace Pegel_Wetter_DFFUDC.ViewModel;
 
 public partial class EditListPage : ContentPage
 {
-    private InputRainfallData selectedItem;
+    private Model.RainfallViewModeldummy selectedItem;
     ObservableCollection<ModelInputintoHistory> listHistory;
     public static string predatatype;
 
@@ -26,7 +26,7 @@ public partial class EditListPage : ContentPage
 
     public static double premeasurementData;
 
-    public EditListPage(InputRainfallData selectedItem, ObservableCollection<ModelInputintoHistory> listHistory)
+    public EditListPage(Model.RainfallViewModeldummy selectedItem, ObservableCollection<ModelInputintoHistory> listHistory)
     {
         InitializeComponent();
         this.selectedItem = selectedItem;

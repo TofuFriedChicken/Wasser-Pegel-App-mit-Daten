@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
-using static Pegel_Wetter_DFFUDC.WaterLevelViewModel;
+using static Pegel_Wetter_DFFUDC.Model.WaterLevelModel;
 using System.Text.Json;
 using System.Collections;
 using System.Diagnostics;
@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    public class WaterLevelModel
+    public class WaterLevelViewModel
         
     {
         public WaterLevelApi _waterlevelApi;
@@ -22,7 +22,7 @@ namespace Pegel_Wetter_DFFUDC
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public WaterLevelModel()
+        public WaterLevelViewModel()
         {
             _waterlevelApi = new WaterLevelApi();
         }

@@ -25,12 +25,12 @@ namespace Pegel_Wetter_DFFUDC
 {
     public partial class MainPage : ContentPage
     {
-        WaterLevelModel _model;
+        WaterLevelViewModel _model;
         public bool _visiblePinsMaybe;
         private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
 
         private readonly RainfallApi _rainfallApi; 
-        private readonly RainfallModel _rainfallModel;
+        private readonly RainfallViewModel _rainfallModel;
 
         public MainPage()
         {
@@ -42,12 +42,12 @@ namespace Pegel_Wetter_DFFUDC
             SizeAdjustment(this, EventArgs.Empty);
             _visiblePinsMaybe = false;
 
-            _model = new WaterLevelModel();     // WaterLevel Pin
+            _model = new WaterLevelViewModel();     // WaterLevel Pin
             BindingContext = _model;
             LoadWaterPins();
 
             _rainfallApi = new RainfallApi();      // Rainfall Pin
-            _rainfallModel = new RainfallModel();
+            _rainfallModel = new RainfallViewModel();
 
             HistoryPage.Instance.InitializeData();  // Initialisiere die Daten der HistoryPage
             BindingContext = HistoryPage.Instance;
@@ -164,7 +164,7 @@ namespace Pegel_Wetter_DFFUDC
             AddPinsToMap(processedLines);
         }
 
-        private void AddPinsToMap(RainfallViewModel[] stations)
+        private void AddPinsToMap(RainfallModel[] stations)
         {
             foreach (var station in stations)
             {

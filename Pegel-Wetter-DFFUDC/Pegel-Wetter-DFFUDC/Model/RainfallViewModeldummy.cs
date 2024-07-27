@@ -2,16 +2,19 @@ using System.Collections.ObjectModel;
 
 namespace Pegel_Wetter_DFFUDC.Model;
 
-public class InputWaterlevelData : IMeasurementData
+public class RainfallViewModeldummy : IMeasurementData
 {
-  //  public ObservableCollection<InputWaterlevelData> ListWaterlevelStation { get; set; }
+    //  public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
 
-    public InputWaterlevelData() { }
+    public bool Equals(RainfallViewModeldummy other)
+    {
+        if (other == null) return false;
+        return (this.measurementStationName.Equals(other.measurementStationName));
+    }
 
-    private static readonly Lazy<InputWaterlevelData> lazy = new Lazy<InputWaterlevelData>(() => new InputWaterlevelData());
+    private static readonly Lazy<RainfallViewModeldummy> lazy = new Lazy<RainfallViewModeldummy>(() => new RainfallViewModeldummy());
 
-    public static InputWaterlevelData Instance { get { return lazy.Value; } }
-
+    public static RainfallViewModeldummy Instance { get { return lazy.Value; } }
 
     public string datatype { get; set; }
 
@@ -26,5 +29,4 @@ public class InputWaterlevelData : IMeasurementData
     public double measurementData { get; set; }
 
     public string StationDetail => $"Messart: {datatype} Stationsname: {measurementStationName} Longitude: {lon} Latitude: {lat} Datum: {date} Information: {information} Messdaten: {measurementData}";
-
 }

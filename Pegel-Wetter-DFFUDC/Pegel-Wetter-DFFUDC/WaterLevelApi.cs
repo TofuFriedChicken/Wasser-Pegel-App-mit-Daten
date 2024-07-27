@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Pegel_Wetter_DFFUDC.WaterLevelViewModel;
+using static Pegel_Wetter_DFFUDC.Model.WaterLevelModel;
 
 namespace Pegel_Wetter_DFFUDC
 {
