@@ -4,25 +4,28 @@
              x:Class="Pegel_Wetter_DFFUDC.InputFormMeasurementData">
 
 
-<VerticalStackLayout Margin="40" Spacing="25" HorizontalOptions="Center">
-
-<Label Text="Eigene Daten hinzufügen" FontSize="35"/>
-<Label Text="Was möchtest du hinzufügen?" FontSize="18"/>
+  <VerticalStackLayout Margin="40" Spacing="25" HorizontalOptions="Center">
 
 
-<!-- Source Picker: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0  (last visit: 28.06.24)-->
-<Picker x:Name="picker" SelectedIndexChanged="OnPickerSelectedIndexChanged">
+<!-- Choose which data you want to add -->
+  <Label Text="Eigene Daten hinzufügen" FontSize="35"/>
+  <Label Text="Was möchtest du hinzufügen?" FontSize="18"/>
+
+  <!-- Source Picker: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0  (last visit: 28.06.24)-->
+  <Picker x:Name="picker" SelectedIndexChanged="OnPickerSelectedIndexChanged">
   <Picker.ItemsSource>
     <x:Array Type="{x:Type x:String}">
       <x:String>Pegelstand</x:String>
       <x:String>Niederschlag</x:String>
     </x:Array>
   </Picker.ItemsSource>
-</Picker>
+  </Picker>
+
+
 
 <!-- Form Water Level-->
-<!-- Source Visibility: https://learn.microsoft.com/en-us/answers/questions/1160894/net-maui-how-to-show-or-hide-(-collapsed-)-content (last visit: 30.06.24)-->
-<StackLayout x:Name="waterLevelForm" IsVisible="False" Spacing="25">     
+  <!-- Source Visibility: https://learn.microsoft.com/en-us/answers/questions/1160894/net-maui-how-to-show-or-hide-(-collapsed-)-content (last visit: 30.06.24)-->
+  <StackLayout x:Name="waterLevelForm" IsVisible="False" Spacing="25">     
 
   <Label Text="Name der Messstation:" FontSize="18"/>
   <Entry x:Name="inputMeasurementStationNameW" Placeholder="..." MaxLength="100"/>
@@ -31,7 +34,7 @@
   <Entry x:Name="inputLonW" Placeholder="Längengrad" MaxLength="20"/>
   <Entry x:Name="inputLatW" Placeholder="Breitengrad" MaxLength="20"/>
 
-<!-- Source DatePicker: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/datepicker?view=net-maui-8.0 (last visit: 13.07.24)-->
+  <!-- Source DatePicker: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/datepicker?view=net-maui-8.0 (last visit: 13.07.24)-->
   <Label Text="Tag der Messung:" FontSize="18"/>
   <DatePicker x:Name="datePickerW" DateSelected="OnDateClicked"/>  
 
@@ -43,10 +46,12 @@
 
   <Button x:Name="addButtonW" Text="Hinzufügen" Clicked="OnAddClicked" Background="#2980B9"/>
 
-</StackLayout>
+  </StackLayout>
+
+
 
 <!-- Form Rainfall-->
-<StackLayout x:Name="rainfallForm" IsVisible="False" Spacing="25">     
+  <StackLayout x:Name="rainfallForm" IsVisible="False" Spacing="25">     
 
   <Label Text="Name der Messstation:" FontSize="18"/>
   <Entry x:Name="inputMeasurementStationNameR" Placeholder="..." MaxLength="100"/>
@@ -66,8 +71,8 @@
 
   <Button x:Name="addButtonR" Text="Hinzufügen" Clicked="OnAddClicked" Background="#2980B9"/>
 
-</StackLayout>
+  </StackLayout>
 
 
-</VerticalStackLayout>
+  </VerticalStackLayout>
 </ContentPage>

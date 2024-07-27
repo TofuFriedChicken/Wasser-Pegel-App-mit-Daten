@@ -8,22 +8,26 @@ namespace Pegel_Wetter_DFFUDC;
 
 public partial class InputFormMeasurementData : ContentPage
 {
+
+  //other App pages
   MainPage mainPage = new MainPage();
   HistoryPage historyPage = new HistoryPage();
+
 
   public InputFormMeasurementData()
   {
     InitializeComponent();
-
   }
 
+
+  // Picker for different input forms
   string dataType = "";
   private void OnPickerSelectedIndexChanged(object sender, EventArgs e)     //source eventhandler https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0 (last visit: 30.06.24)
   {
     var picker = (Picker)sender;
     int selectedIndex = picker.SelectedIndex;
 
-    if (selectedIndex != -1)
+    if (selectedIndex != -1)            //picker has default value -1 (= no item selected)
     {
       string selectedItem = (string)picker.ItemsSource[selectedIndex];
 
@@ -49,13 +53,14 @@ public partial class InputFormMeasurementData : ContentPage
   }
 
 
+  // Date Picker 
   DateTime measurementDataDate = DateTime.Today;
   public async void OnDateClicked(object sender, DateChangedEventArgs e)      //method source: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/datepicker?view=net-maui-8.0#localize-a-datepicker-on-windows, https://learn.microsoft.com/en-us/dotnet/api/microsoft.maui.controls.datechangedeventargs.-ctor?view=net-maui-8.0#microsoft-maui-controls-datechangedeventargs-ctor(system-datetime-system-datetime) and help of ChatGPT (last visit websites: 15.07.24)
   {
     DateTime selectedDate = e.NewDate;
     DateTime today = DateTime.Today;
 
-    if (selectedDate > today)
+    if (selectedDate > today)                     //check date selection
     {
       datePickerW.MaximumDate = DateTime.Today;                   //source date picker: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/datepicker?view=net-maui-8.0#localize-a-datepicker-on-windows  (last visit: 15.07.24)
       datePickerR.MaximumDate = DateTime.Today;
@@ -64,12 +69,14 @@ public partial class InputFormMeasurementData : ContentPage
     else 
     {
       measurementDataDate = e.NewDate;
-    }
-    
+    }   
   }
 
+
+  // Add Pin for measurement station
   public void AddPinToMap(Map map)
   {
+    //Waterlevel Pin
     if (waterLevelForm.IsVisible && !string.IsNullOrWhiteSpace(inputLonW.Text) && !string.IsNullOrWhiteSpace(inputLatW.Text))
     {
       string measurementStationName = inputMeasurementStationNameW.Text;
@@ -85,6 +92,7 @@ public partial class InputFormMeasurementData : ContentPage
       map.Pins.Add(pinW);
     }
 
+    //Rainfall Pin
     if (rainfallForm.IsVisible && !string.IsNullOrWhiteSpace(inputLonR.Text) && !string.IsNullOrWhiteSpace(inputLatR.Text))
     {
       string measurementStationName = inputMeasurementStationNameR.Text;
@@ -103,7 +111,7 @@ public partial class InputFormMeasurementData : ContentPage
   }
 
 
-
+  // get data from input fields
   public async void OnAddClicked(object sender, EventArgs e)
   {
     //check for valid input
@@ -125,6 +133,8 @@ public partial class InputFormMeasurementData : ContentPage
         inputMeasurementDataW.TextColor = Colors.Red;
       }
 
+
+      //get water level data
       if (Double.TryParse(inputLonW.Text, out _) && Double.TryParse(inputLatW.Text, out _) && Double.TryParse(inputMeasurementDataW.Text, out _))
       {
         InputWaterlevelData inputWaterlevelData = new InputWaterlevelData
@@ -138,11 +148,13 @@ public partial class InputFormMeasurementData : ContentPage
           measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
         };
 
+        //add water level data to map and list 
         mainPage.Appearing += (s, args) => { AddPinToMap(mainPage.Map); };        //source https://learn.microsoft.com/de-de/dotnet/api/microsoft.maui.controls.baseshellitem.appearing#microsoft-maui-controls-baseshellitem-appearing + help of ChatGPT (last visit: 27.07.24)
         historyPage.ListWaterlevelStation.Add(inputWaterlevelData);
 
 			  bool alert = await DisplayAlert("Daten erfolgreich hinzugefügt.", "Wo möchtest du dir deine Daten anschauen?", "Messstation auf Karte anzeigen", "Daten in Liste anzeigen");
 
+        //select next step
 			  if (alert)
 			  {
 				  await Navigation.PushAsync(mainPage); 
@@ -151,8 +163,7 @@ public partial class InputFormMeasurementData : ContentPage
         {
           await Navigation.PushAsync(historyPage);
         }
-        
-      
+              
       }
       else
       {
@@ -162,6 +173,7 @@ public partial class InputFormMeasurementData : ContentPage
     }
     else if (rainfallForm.IsVisible && !string.IsNullOrWhiteSpace(inputMeasurementStationNameR.Text) && !string.IsNullOrWhiteSpace(inputLonR.Text) && !string.IsNullOrWhiteSpace(inputLatR.Text) && !string.IsNullOrWhiteSpace(inputInformationR.Text) && !string.IsNullOrWhiteSpace(inputMeasurementDataR.Text))
     {
+      //check for valid input
       if (!Double.TryParse(inputLonR.Text, out _))
       {
         inputLonR.TextColor = Colors.Red;
@@ -177,7 +189,7 @@ public partial class InputFormMeasurementData : ContentPage
         inputMeasurementDataR.TextColor = Colors.Red;
       }
 
-
+      //get rainfall data
       if (Double.TryParse(inputLonR.Text, out _) && Double.TryParse(inputLatR.Text, out _) && Double.TryParse(inputMeasurementDataR.Text, out _))
       {
         InputRainfallData inputRainfallData = new InputRainfallData
@@ -191,11 +203,13 @@ public partial class InputFormMeasurementData : ContentPage
           measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
         };
 
+        //add rainfall data to map and list
         mainPage.Appearing += (s, args) => { AddPinToMap(mainPage.Map); };        //source https://learn.microsoft.com/de-de/dotnet/api/microsoft.maui.controls.baseshellitem.appearing#microsoft-maui-controls-baseshellitem-appearing + help of ChatGPT (last visit: 27.07.24)
         historyPage.ListRainfallStation.Add(inputRainfallData);
         
 			  bool alert = await DisplayAlert("Daten erfolgreich hinzugefügt.", "Wo möchtest du dir deine Daten anschauen?", "Messstation auf Karte anzeigen", "Daten in Liste anzeigen");
 
+        //select next step
 			  if (alert)
 			  {
 				  await Navigation.PushAsync(mainPage); 
