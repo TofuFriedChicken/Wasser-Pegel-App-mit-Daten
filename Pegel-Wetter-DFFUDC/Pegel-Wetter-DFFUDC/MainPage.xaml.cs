@@ -46,6 +46,11 @@ namespace Pegel_Wetter_DFFUDC
             _rainfallApi = new RainfallApi();      // Rainfall Pin
             _rainfallModel = new RainfallViewModel();
 
+            HistoryPage.Instance.InitializeData();  // Initialisiere die Daten der HistoryPage
+            BindingContext = HistoryPage.Instance;
+
+
+
         }
 
         private void OnOpenListClicked(object sender, EventArgs e)
@@ -60,7 +65,8 @@ namespace Pegel_Wetter_DFFUDC
 
         private void OnHistoryPageClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new HistoryPage());
+          //  Navigation.PushAsync(new HistoryPage());
+            Navigation.PushAsync(HistoryPage.Instance);
         }
 
         // Waterlevel Pins:

@@ -14,9 +14,7 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
 {
     interface InterfaceforHistoryViewModel
     {
-        public void ListEdit(ModelInputintoHistory item);
-
-        public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<InputRainfallData> inputrainfalldataparameter, ModelInputintoHistory selectedItem);
+        public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<RainfallModel> inputrainfalldataparameter, ModelInputintoHistory selectedItem);
 
         public void ListItemShow(ModelInputintoHistory item);
     }
@@ -25,31 +23,41 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
     {
         public ObservableCollection<ModelInputintoHistory>ListHistory { get; set; }
 
+        public ObservableCollection<RainfallModel> ListRainfallStation { get; set; }
+
         public string MeasurementStationName { get; set; }
         public string StationDetail { get; set; }
 
-        public void ListEdit(ModelInputintoHistory item)
-        {
 
-        }
-        async public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<InputRainfallData> inputrainfalldataparameter, ModelInputintoHistory selectedItemparameter)
+        async public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<RainfallModel> inputrainfalldataparameter, ModelInputintoHistory selectedItemparameter)
         {
             switch (selectedItemparameter.edittype)
             {
                 case "edited":
-                    // man macht die speicherung rückängig
                     listHistoryparameter.Remove(selectedItemparameter);
-                    inputrainfalldataparameter.Remove(new InputRainfallData 
-                    { 
-                        measurementStationName = selectedItemparameter.measurementStationName,
-                        lon = selectedItemparameter.lon,
-                        lat = selectedItemparameter.lat,
-                        date = selectedItemparameter.date,
-                        information = selectedItemparameter.information,
-                        measurementData = selectedItemparameter.measurementData
+                    var itemedited = inputrainfalldataparameter.FirstOrDefault(item => item.StationName == selectedItemparameter.measurementStationName);
+                    if (itemedited != null)
+                    {
+                        inputrainfalldataparameter.Remove(itemedited);
+                    }
+
+                    inputrainfalldataparameter.Add(new RainfallModel
+                    {
+                        StationName = selectedItemparameter.measurementStationName,
+                        Longitude = selectedItemparameter.lon,
+                        Latitude = selectedItemparameter.lat,
+                        FromDate = selectedItemparameter.date,
+                   //     information = selectedItemparameter.information,
+                   //     measurementData = selectedItemparameter.measurementData
                     });
                     break;
                 case "added": // in der normalen Liste sollte ein Item erscheinen welches von InputAdd geadded wird. "ListAdd() objects werden dann übertragen in List und ListHistory, wobei in ListHistory das object noch datatype hinzubekommt"
+                    var itemToRemove = inputrainfalldataparameter.FirstOrDefault(item => item.StationName == selectedItemparameter.measurementStationName);
+                    if (itemToRemove != null)
+                    {
+                        inputrainfalldataparameter.Remove(itemToRemove);
+                    }
+                    /*
                     listHistoryparameter.Remove(selectedItemparameter);
                     inputrainfalldataparameter.Remove(new InputRainfallData
                     {
@@ -60,18 +68,19 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
                         information = selectedItemparameter.information,
                         measurementData = selectedItemparameter.measurementData
                     });
+                    */
                     break;
                 case "deleted":
                     listHistoryparameter.Remove(selectedItemparameter);
-                    inputrainfalldataparameter.Add(new InputRainfallData
+                    inputrainfalldataparameter.Add(new RainfallModel
                     {
                         datatype = selectedItemparameter.datatype,
-                        measurementStationName = "delete return",
-                        lon = selectedItemparameter.lon,
-                        lat = selectedItemparameter.lat,
-                        date = selectedItemparameter.date,
-                        information = selectedItemparameter.information,
-                        measurementData = selectedItemparameter.measurementData
+                        StationName = selectedItemparameter.measurementStationName,
+                        Longitude = selectedItemparameter.lon,
+                        Latitude = selectedItemparameter.lat,
+                        FromDate = selectedItemparameter.date,
+                 //       information = selectedItemparameter.information,
+                 //       measurementData = selectedItemparameter.measurementData
 
                     });
                     break;

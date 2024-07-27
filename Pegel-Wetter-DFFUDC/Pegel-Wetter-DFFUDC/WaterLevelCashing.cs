@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Pegel_Wetter_DFFUDC.Model;
 
 namespace Pegel_Wetter_DFFUDC
 {

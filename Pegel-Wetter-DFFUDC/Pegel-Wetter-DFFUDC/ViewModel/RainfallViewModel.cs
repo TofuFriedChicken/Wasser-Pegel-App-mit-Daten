@@ -20,7 +20,7 @@ namespace Pegel_Wetter_DFFUDC
         {
             var processedLines = lines  
                 .Skip(380)
-                .Take(680)
+                .Take(580)
                 .Select(line =>
                 {
                     var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);

@@ -1,16 +1,24 @@
-﻿
+﻿using Microsoft.Maui.Controls.Maps;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Formats.Asn1;
+using System.Globalization;
+using System.IO.Compression;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Pegel_Wetter_DFFUDC
 {
     public class RainfallModel
-    {
 
+    {
+        public string edittype { get; set; }
+        public string datatype { get; set; }
         public int StationID { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
@@ -18,7 +26,10 @@ namespace Pegel_Wetter_DFFUDC
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string StationName { get; set; }
+        public string StationDetail => $"{StationName} Longitude {Longitude} Latitude {Latitude}";
 
     }
-
 }
+
+
+
