@@ -8,19 +8,18 @@ using System.Threading.Tasks;
 
 namespace Pegel_Wetter_DFFUDC
 {
-  
-        public class CustomPin : Pin
+    // Quelle:https://vladislavantonyuk.github.io/articles/Customize-map-pins-in-.NET-MAUI/
+    public class CustomPin : Pin
+    {
+        public static readonly BindableProperty ImageSourceProperty =
+        BindableProperty.Create(nameof(ImageSource), typeof(ImageSource), typeof(CustomPin));
+
+        public ImageSource? ImageSource
         {
-        //public static readonly BindableProperty ImageSourceProperty = BindableProperty.Create(nameof(ImageSource), typeof(ImageSource), typeof(CustomPin);
-
-        //public ImageSource? ImageSource
-        //{
-        //    get => (ImageSource?)GetValue(ImageSourceProperty);
-        //    set => SetValue(ImageSourceProperty, value);
-        //}
-        public string PinIcon { get; set; }
+            get => (ImageSource?)GetValue(ImageSourceProperty);
+            set => SetValue(ImageSourceProperty, value);
         }
-
+    }
+}
 
     
-}

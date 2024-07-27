@@ -11,6 +11,7 @@
 
 
     <Grid>
+        
         <!--1. for Frame, containing the Label + 2. for Map, taking the remeining space-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -149,15 +150,15 @@
         <!--map from BingMaps-->
         <maps:Map
             x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment">
-            <!--<maps:Map.Pins>
-                <maps:Pin.ImageSource>
-                    <FileImageSource File="waterlevel.png"/>
-                </maps:Pin.ImageSource>
-            </maps:Map.Pins>-->
         </maps:Map>
-
+        <WebView x:Name="htmlWebView"
+       IsVisible="True"
+       HorizontalOptions="Center"
+       VerticalOptions="Center"
+         BackgroundColor="Transparent"/>
 
     </Grid>
+    
 
 </ContentPage>
 

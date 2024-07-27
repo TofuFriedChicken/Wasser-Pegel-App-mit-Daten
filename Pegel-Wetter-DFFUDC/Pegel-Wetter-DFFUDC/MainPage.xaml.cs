@@ -2,7 +2,6 @@ using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Maps;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -10,14 +9,12 @@ using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Net.NetworkInformation;
 using static Microsoft.Maui.ApplicationModel.Permissions;
-using System.Reflection;
-using CsvHelper;
-using System.Globalization;
 using System.IO.Compression;
 using System;
 using CommunityToolkit.Maui.Views;
 using System.Text;
-
+using System.Net.Http;
+using System.Reflection;
 
 //Code behind
 
@@ -81,7 +78,7 @@ namespace Pegel_Wetter_DFFUDC
                         Label = position.longname,
                         Address = position.agency, 
                         Location = new Location(position.latitude, position.longitude),
-                        PinIcon = "waterlevel.png"
+                        ImageSource = ImageSource.FromResource("Pegel_Wetter_DFFUDC.Recources.Images.waterlevel.png")
                     };
                     _loadedPins.Add(pin);
                 }
@@ -92,29 +89,75 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        private async Task ShowLoadingPopup(Func<Task> loadDataFunc) // er erkennt bei mir ShowPopup und Close nicht
-        {
-            //var loadingPopup = new Popup
-            //{
-            //    Content = new VerticalStackLayout
-            //    {
-            //        Padding = new Thickness(50),
-            //        BackgroundColor = Colors.White,
-            //        Children = { new ActivityIndicator { IsRunning = true, Color = Colors.Black }, new Label { Text = "One second, pins are set", TextColor = Colors.Black } }
-            //    }
-            //};
+      
 
-            //MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen*/ });
-
-            //try { await loadDataFunc(); }
-            //catch (Exception ex) { await MainThread.InvokeOnMainThreadAsync(async () => { await DisplayAlert("Fehler", "Es ist ein Fehler aufgetreten. \nLaden nicht erfolgreich.\n" + ex.Message, "OK"); }); }
-            //finally { MainThread.BeginInvokeOnMainThread(() => { loadingPopup.Close(); }); }
-        }
-   
-        private async void ShowWaterPins(object sender, EventArgs e)    // vielleicht noch WaterPins in ShowWater Pins, abhängig von LoadingPopup
+        private async void ShowWaterPins(object sender, EventArgs e)   
         {
-            await WaterPins();
+            //await ShowLoadingPopup(async () => { await WaterPins(); });
+            //WaterPins();
+            try
+            {
+                htmlWebView.IsVisible = true;
+
+                // Lade die HTML-Datei als eingebettete Ressource
+                var assembly = Assembly.GetExecutingAssembly();
+                //var resourceName = "C:\\PrüfungProgMapII\\Pegel-Wetter-DFFUDC\\Pegel-Wetter-DFFUDC\\Resources\\Raw\\pacman.gif";
+                var resourceName = "Pegel_Wetter_DFFUDC.Resources.Raw.pacman.gif";
+
+                var resourceNames = assembly.GetManifestResourceNames();
+                if (!resourceNames.Contains(resourceName))
+                {
+                    await DisplayAlert("Fehler", "Ressource nicht gefunden: " + resourceName, "OK");
+                    // Liste aller Ressourcen anzeigen
+                    string allResources = string.Join("\n", resourceNames);
+                    await DisplayAlert("Verfügbare Ressourcen", allResources, "OK");
+                    return;
+                }
+
+                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    if (stream == null)
+                    {
+                        await DisplayAlert("Fehler", "Stream ist null", "OK");
+                        return;
+                    }
+
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        string htmlContent = await reader.ReadToEndAsync();
+
+                        // Debugging: Überprüfe, ob HTML-Inhalt geladen wurde
+                        if (string.IsNullOrWhiteSpace(htmlContent))
+                        {
+                            await DisplayAlert("Fehler", "HTML-Inhalt ist leer", "OK");
+                            return;
+                        }
+
+                        htmlWebView.Source = new HtmlWebViewSource
+                        {
+                            Html = htmlContent
+                        };
+                    }
+                }
+                await WaterPins();
+
+                // Verstecke das GIF
+                htmlWebView.IsVisible = false;
+            }
+            catch (Exception ex)
+            {
+                // Fehlerbehandlung
+                await DisplayAlert("Error garnicht geklappt", ex.Message, "OK");
+                htmlWebView.IsVisible = false;
+            }
+
         }
+        //private async Task<string> GetGifUrlFromApiAsync()
+        //{
+        //    var apiUrl = "https://rb.gy/58zvid"; // Ersetze durch deine API-URL
+        //    var response = await _httpClient.GetStringAsync(apiUrl);
+        //    return response; // Angenommen, die API gibt die URL als einfachen String zurück
+        //}
         private async Task WaterPins()
         {
             foreach (var pin in _loadedPins)

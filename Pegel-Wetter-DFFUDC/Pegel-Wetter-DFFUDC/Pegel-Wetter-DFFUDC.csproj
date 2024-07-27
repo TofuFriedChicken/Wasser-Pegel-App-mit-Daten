@@ -57,7 +57,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiAsset Remove="Resources\Raw\pacman.gif" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Resources\Images\waterlevel.png" />
+	  <None Remove="Resources\Raw\pacman.gif" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Raw\pacman.gif" />
 	</ItemGroup>
 
 	<ItemGroup>
