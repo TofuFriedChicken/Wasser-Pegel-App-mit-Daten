@@ -9,11 +9,11 @@ namespace Pegel_Wetter_DFFUDC.Model
 {
     public class ClassofMainListforJumps
     {
-        public ObservableCollection<InputRainfallData> MainlistScreenshot { get; set; }
+        public ObservableCollection<RainfallModel> MainlistScreenshot { get; set; }
 
-        public ClassofMainListforJumps(ObservableCollection<InputRainfallData> MainlistHistory)
+        public ClassofMainListforJumps(ObservableCollection<RainfallModel> MainlistHistory)
         {
-            MainlistScreenshot = new ObservableCollection<InputRainfallData>(MainlistHistory);
+            MainlistScreenshot = new ObservableCollection<RainfallModel>(MainlistHistory);
         }
     }
 }
