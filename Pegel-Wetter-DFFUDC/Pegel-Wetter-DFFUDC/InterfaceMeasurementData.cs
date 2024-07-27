@@ -13,6 +13,3 @@ interface IMeasurementData
     public double measurementData { get; set; }
 
 }
-
-
-

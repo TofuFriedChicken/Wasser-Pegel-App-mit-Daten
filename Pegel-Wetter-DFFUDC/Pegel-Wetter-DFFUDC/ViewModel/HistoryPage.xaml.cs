@@ -115,7 +115,7 @@ public partial class HistoryPage : ContentPage
                     bool confirmation = await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Löschen", "Abbrechen");    //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24)
                     if (confirmation)
                     {
-                        ListRainfallStation.Remove(selectedItem);
+                        //ListRainfallStation.Remove(selectedItem);
                     }
                 break; 
                 default:
