@@ -40,7 +40,7 @@
             </ListView>
 
             <!-- Waterlevel Liste -->
-            <ListView x:Name="WaterlevelListView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding ListWaterfallStation}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray" IsVisible="False">
+            <ListView x:Name="WaterlevelListView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding ListWaterlevelStation}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray" IsVisible="False">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
