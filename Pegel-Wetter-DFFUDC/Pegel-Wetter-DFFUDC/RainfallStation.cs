@@ -10,7 +10,6 @@ namespace Pegel_Wetter_DFFUDC
 {
     public class RainfallStations
     {
-
         public int StationID { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
@@ -22,6 +21,7 @@ namespace Pegel_Wetter_DFFUDC
     }
 
     
+
     public class RainfallStation
     {
 

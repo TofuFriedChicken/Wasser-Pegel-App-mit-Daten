@@ -14,7 +14,7 @@
 
         <HorizontalStackLayout HorizontalOptions="End">
 
-            <Button x:Name="DateBack" IsVisible="False" BackgroundColor="White" TextColor="Blue" Text="back" Clicked="DateBack_Clicked"/>
+            <Button x:Name="DateBack" BackgroundColor="White" TextColor="Blue" Text="back" Clicked="DateBack_Clicked"/>
 
             <Frame CornerRadius = "10" BackgroundColor="White">
 
@@ -22,7 +22,7 @@
 
             </Frame>
 
-            <Button x:Name="DateForward" IsVisible="False" BackgroundColor="White" TextColor="Blue" Text="forward" Clicked="DateForward_Clicked"/>
+            <Button x:Name="DateForward" BackgroundColor="White" TextColor="Blue" Text="forward" Clicked="DateForward_Clicked"/>
 
         </HorizontalStackLayout>
 
@@ -38,7 +38,7 @@
             <!--create map-->
             <maps:Map x:Name="MyMap_Test"
                     SizeChanged="CurrentMapSizeUpdate"
-                    MapType="Street" >
+                    MapType="Satellite" >
             </maps:Map>
 
     </VerticalStackLayout>
