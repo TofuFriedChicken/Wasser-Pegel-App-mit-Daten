@@ -108,7 +108,7 @@ public partial class HistoryPage : ContentPage
                     SaveCurrentHistory();
                     SaveCurrentMainlist();
                     HistoryMethodClass historyreturn = new HistoryMethodClass();
-                  //  historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItemhistory);
+                    historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItemhistory);
                     // historyreturn.HistoryReturnElement(ModelInputintoHistory.GetSingletonHistoryList().ListHistory, InputRainfallData.GetSingletonRainfall().ListRainfallStation, selectedItemhistory);
                     break;
                 default:
@@ -126,7 +126,7 @@ public partial class HistoryPage : ContentPage
                 case "Edit":
                     SaveCurrentHistory();
                     SaveCurrentMainlist();
-                    // History.Add(selectedItemmainlist); // Speichern der alten Werte in die History
+                   // History.Add(selectedItemmainlist); // Speichern der alten Werte in die History
                     HistoryMethodClass listedit = new HistoryMethodClass();
                     await Navigation.PushAsync(new EditListPage(selectedItemmainlist, ListHistory));
                     break;
@@ -140,6 +140,18 @@ public partial class HistoryPage : ContentPage
 
         }
 
+    }
+
+    private void OnRainfallButtonClick(object sender, EventArgs e)
+    {
+        RainfallListView.IsVisible = true;
+        WaterlevelListView.IsVisible = false;
+    }
+
+    private void OnWaterlevelButtonClick(object sender, EventArgs e)
+    {
+        RainfallListView.IsVisible = false;
+        WaterlevelListView.IsVisible = true;
     }
 
     private void OnHistoryFowardClick(object sender, EventArgs e)
