@@ -4,9 +4,13 @@ namespace Pegel_Wetter_DFFUDC.Model;
 
 public class InputRainfallData : IMeasurementData
 {
- //  public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
+    //  public ObservableCollection<InputRainfallData> ListRainfallStation { get; set; }
 
-    public InputRainfallData() { }
+    public bool Equals(InputRainfallData other)
+    {
+        if (other == null) return false;
+        return (this.measurementStationName.Equals(other.measurementStationName));
+    }
 
     private static readonly Lazy<InputRainfallData> lazy = new Lazy<InputRainfallData>(() => new InputRainfallData());
 

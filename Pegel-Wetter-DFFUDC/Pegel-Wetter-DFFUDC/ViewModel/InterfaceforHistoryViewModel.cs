@@ -34,8 +34,13 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
             switch (selectedItemparameter.edittype)
             {
                 case "edited":
-                    // man macht die speicherung rückängig
                     listHistoryparameter.Remove(selectedItemparameter);
+                    var itemedited = inputrainfalldataparameter.FirstOrDefault(item => item.measurementStationName == selectedItemparameter.newmeasurementStationName);
+                    if (itemedited != null)
+                    {
+                        inputrainfalldataparameter.Remove(itemedited);
+                    }
+
                     inputrainfalldataparameter.Add(new InputRainfallData 
                     { 
                         measurementStationName = selectedItemparameter.measurementStationName,
@@ -47,6 +52,12 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
                     });
                     break;
                 case "added": // in der normalen Liste sollte ein Item erscheinen welches von InputAdd geadded wird. "ListAdd() objects werden dann übertragen in List und ListHistory, wobei in ListHistory das object noch datatype hinzubekommt"
+                    var itemToRemove = inputrainfalldataparameter.FirstOrDefault(item => item.measurementStationName == selectedItemparameter.measurementStationName);
+                    if (itemToRemove != null)
+                    {
+                        inputrainfalldataparameter.Remove(itemToRemove);
+                    }
+                    /*
                     listHistoryparameter.Remove(selectedItemparameter);
                     inputrainfalldataparameter.Remove(new InputRainfallData
                     {
@@ -57,6 +68,7 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
                         information = selectedItemparameter.information,
                         measurementData = selectedItemparameter.measurementData
                     });
+                    */
                     break;
                 case "deleted":
                     listHistoryparameter.Remove(selectedItemparameter);
