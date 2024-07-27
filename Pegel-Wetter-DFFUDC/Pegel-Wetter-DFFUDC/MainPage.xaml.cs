@@ -16,6 +16,7 @@ using System.Text;
 using System.Net.Http;
 using System.Reflection;
 
+
 //Code behind
 
 namespace Pegel_Wetter_DFFUDC
@@ -23,8 +24,8 @@ namespace Pegel_Wetter_DFFUDC
     public partial class MainPage : ContentPage
     {
         WaterLevelModel _model;
-        public bool _visiblePinsMaybe;
-        private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
+        public bool _visiblePinsBoth;
+        private List<Pin> _loadedPinsW = new List<Pin>();    // list for the WaterPins
 
         private readonly RainfallApi _rainfallApi; 
         private readonly RainfallModel _rainfallModel;
@@ -37,11 +38,11 @@ namespace Pegel_Wetter_DFFUDC
             var mapSpan = new MapSpan(germanLocation, 90.0, 180.0);
             germanMap.MoveToRegion(mapSpan);
             SizeAdjustment(this, EventArgs.Empty);
-            _visiblePinsMaybe = false;
+            _visiblePinsBoth = false;
 
             _model = new WaterLevelModel();     // WaterLevel Pin
             BindingContext = _model;
-            LoadWaterPins();
+            CreateWaterPins();
 
             _rainfallApi = new RainfallApi();      // Rainfall Pin
             _rainfallModel = new RainfallModel();
@@ -63,8 +64,8 @@ namespace Pegel_Wetter_DFFUDC
             Navigation.PushAsync(new HistoryPage());
         }
 
-        // Ab hier sind die Waterlevel Pins:
-        private async void LoadWaterPins()     
+        // Waterlevel Pins:
+        private async void CreateWaterPins()     
         {
             try
             { 
@@ -80,7 +81,7 @@ namespace Pegel_Wetter_DFFUDC
                         Location = new Location(position.latitude, position.longitude),
                         ImageSource = ImageSource.FromResource("Pegel_Wetter_DFFUDC.Recources.Images.waterlevel.png")
                     };
-                    _loadedPins.Add(pin);
+                    _loadedPinsW.Add(pin);
                 }
             }
             catch (Exception ex)
@@ -89,84 +90,49 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-      
-
-        private async void ShowWaterPins(object sender, EventArgs e)   
+        public async void ShowWaterPins(object sender, EventArgs e)   // Complicated alternative after the eternal failure of pop-ups and mop-ups and GIFS
         {
-            //await ShowLoadingPopup(async () => { await WaterPins(); });
-            //WaterPins();
-            try
+            var modalPage = new ContentPage
             {
-                htmlWebView.IsVisible = true;
-
-                // Lade die HTML-Datei als eingebettete Ressource
-                var assembly = Assembly.GetExecutingAssembly();
-                //var resourceName = "C:\\PrüfungProgMapII\\Pegel-Wetter-DFFUDC\\Pegel-Wetter-DFFUDC\\Resources\\Raw\\pacman.gif";
-                var resourceName = "Pegel_Wetter_DFFUDC.Resources.Raw.pacman.gif";
-
-                var resourceNames = assembly.GetManifestResourceNames();
-                if (!resourceNames.Contains(resourceName))
+                Content = new StackLayout
                 {
-                    await DisplayAlert("Fehler", "Ressource nicht gefunden: " + resourceName, "OK");
-                    // Liste aller Ressourcen anzeigen
-                    string allResources = string.Join("\n", resourceNames);
-                    await DisplayAlert("Verfügbare Ressourcen", allResources, "OK");
-                    return;
-                }
-
-                using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+                    Padding = new Thickness(60),
+                    BackgroundColor = Colors.LightBlue,
+                    Children =
                 {
-                    if (stream == null)
+                    new ActivityIndicator { IsRunning = true, Color = Colors.Black },
+                    new Label { Text = "Keine Sorgen, gleich geht es weiter. \n" +
+                    "Diese Seite sehen Sie nur bis alle Messstationen zu den deutschlandweiten Pegelständen gesetzt sind. " +
+                    "\nDas kann ein wenig dauern, wir haben alles unter Kontrolle." },
+                    new Image
                     {
-                        await DisplayAlert("Fehler", "Stream ist null", "OK");
-                        return;
+                        Source = "maploaded.png",
+                        WidthRequest = 350, 
+                        HeightRequest = 350,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center
                     }
-
-                    using (StreamReader reader = new StreamReader(stream))
-                    {
-                        string htmlContent = await reader.ReadToEndAsync();
-
-                        // Debugging: Überprüfe, ob HTML-Inhalt geladen wurde
-                        if (string.IsNullOrWhiteSpace(htmlContent))
-                        {
-                            await DisplayAlert("Fehler", "HTML-Inhalt ist leer", "OK");
-                            return;
-                        }
-
-                        htmlWebView.Source = new HtmlWebViewSource
-                        {
-                            Html = htmlContent
-                        };
-                    }
+                    // Quelle: /www.flaticon.com/free-sticker/map_9821275
                 }
-                await WaterPins();
+                }
+            };
+            await Navigation.PushModalAsync(modalPage);
 
-                // Verstecke das GIF
-                htmlWebView.IsVisible = false;
-            }
-            catch (Exception ex)
-            {
-                // Fehlerbehandlung
-                await DisplayAlert("Error garnicht geklappt", ex.Message, "OK");
-                htmlWebView.IsVisible = false;
-            }
+            await Task.Delay(2000);     
+            await Navigation.PopModalAsync();
+            await WaterPins();
 
         }
-        //private async Task<string> GetGifUrlFromApiAsync()
-        //{
-        //    var apiUrl = "https://rb.gy/58zvid"; // Ersetze durch deine API-URL
-        //    var response = await _httpClient.GetStringAsync(apiUrl);
-        //    return response; // Angenommen, die API gibt die URL als einfachen String zurück
-        //}
+     
         private async Task WaterPins()
         {
-            foreach (var pin in _loadedPins)
+            foreach (var pin in _loadedPinsW)
             {
 
                 germanMap.Pins.Add(pin);
                 pin.MarkerClicked += WaterlevelValues_Clicked;
             }
-            _visiblePinsMaybe = true;
+            _visiblePinsBoth = true;
         }
 
         private async void WaterlevelValues_Clicked(object sender, EventArgs e)
@@ -184,18 +150,51 @@ namespace Pegel_Wetter_DFFUDC
 
         private void RemovePins_Clicked(object sender, EventArgs e)         // remove all pins
         {
-            if (_visiblePinsMaybe == true)
+            if (_visiblePinsBoth == true)
             {
                 germanMap.Pins.Clear();
-                _visiblePinsMaybe = false;
+                _visiblePinsBoth = false;
             }
         }
 
-        // ab hier die Rainfall Pins
-        private async void ShowRainPins(object sender, EventArgs e)
+        // Rainfall Pins:
+        public async void LoadRainPins(object sender, EventArgs e)  //loading Page
+        {
+            var modalPage = new ContentPage
+            {
+                Content = new StackLayout
+                {
+                    Padding = new Thickness(60),
+                    BackgroundColor = Colors.LightSteelBlue,
+                    Children =
+                {
+                    new ActivityIndicator { IsRunning = true, Color = Colors.Black },
+                    new Label { Text = "Keine Sorgen, gleich geht es weiter. \n" +
+                    "Diese Seite sehen Sie nur bis alle Messstationen zu den deutschlandweiten Niederschlägen gesetzt sind. " +
+                    "\nGleich geht es weiter, wir haben alles unter Kontrolle." },
+                    new Image
+                    {
+                        Source = "loading_pic.PNG",
+                        WidthRequest = 400,
+                        HeightRequest = 400,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Start
+                    }
+                    // Quelle: www.pinterest.de/pin/848224911048205613
+                }
+                }
+            };
+            await Navigation.PushModalAsync(modalPage);
+
+            await Task.Delay(3000);                 // der muss noch etwas länger bleiben
+            await Navigation.PopModalAsync();
+            await RainPins();
+
+        }
+        private async Task RainPins()
         {
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/RR_Tageswerte_Beschreibung_Stationen.txt";
-            string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);  // Methode in neuer Klasse
+            string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);  // Methode in neuer Klasse ??
             var processedLines = _rainfallModel.ProcessLines(lines);
             
             AddPinsToMap(processedLines);
@@ -215,7 +214,7 @@ namespace Pegel_Wetter_DFFUDC
                 string StationID = station.StationID.ToString();        
                 pin.MarkerClicked += (sender, e) => RainfallValues_Clicked(sender, e, StationID);
             }
-            _visiblePinsMaybe = true;
+            _visiblePinsBoth = true;
             if (stations.Length > 0)
             {
                 var centerPosition = new Location(stations[0].Latitude, stations[0].Longitude);
@@ -223,27 +222,26 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        //Rainfall History - 20 Historical - nochmal Schritt für Schritt für einfach weiterverwenden
+        //Rainfall History - 20 Historical 
         private async void RainfallValues_Clicked(object sender, PinClickedEventArgs e, string Station_id)
         {
             try
             {
                 string baseUrl = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/";
-                string zipFileName = $"tageswerte_RR_00{Station_id}_akt.zip";            // Erstellen des ZIP-Dateinamens basierend auf der ID
-                string zipFileUrl = $"{baseUrl}{zipFileName}";                            // Erstellen der vollständigen URL zur ZIP-Datei
-                string localZipFilePath = DownloadZipFile(zipFileUrl, zipFileName);         // Herunterladen der ZIP-Datei von der URL !
+                string zipFileName = $"tageswerte_RR_00{Station_id}_akt.zip";            
+                string zipFileUrl = $"{baseUrl}{zipFileName}";                           
+                string localZipFilePath = DownloadZipFile(zipFileUrl, zipFileName);        
 
-                // Überprüfen, ob die ZIP-Datei erfolgreich heruntergeladen wurde
                 if (!File.Exists(localZipFilePath))
                 {
-                    await DisplayAlert("Fehler:", "Zip File konnte nicht runtergeladen werden", "Ok");
+                    await DisplayAlert("Fehler:", "Hier gibt es keine aktuellen Daten zu", "Ok");
                     return;
                 }
-                ExtractAndReadLastFileInZip(localZipFilePath);      // Extrahieren und Lesen der letzten Datei im ZIP-Archiv
+                ExtractAndReadLastFileInZip(localZipFilePath);    
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Fehler ist aufgetreten:",$"{ex.Message}","Ok"); // falls eine Ausnahme auftritt - 
+                await DisplayAlert("Fehler ist aufgetreten:",$"{ex.Message}","Ok"); 
             }
         }
 
@@ -256,12 +254,10 @@ namespace Pegel_Wetter_DFFUDC
                 {
                     client.DownloadFile(fileUrl, localPath);
                 }
-                //DisplayAlert("ZIP file downloaded successfully.","ok","close"); // Bestätigung, dass die ZIP-Datei erfolgreich heruntergeladen wurde
             }
             catch (Exception ex)
             {
-                DisplayAlert("Fehler beim laden des Zip Files",$"{ex.Message}","Ok");       // Ausgabe einer Fehlermeldung, falls ein Fehler beim Herunterladen auftritt
-                throw;
+                DisplayAlert("Fehler beim laden des Zip Files",$"{ex.Message}","Ok");    
             }
             return localPath;
         }
@@ -274,17 +270,17 @@ namespace Pegel_Wetter_DFFUDC
                 {
                     if (archive.Entries.Count == 0)
                     {
-                        DisplayAlert("Fehler:","Zip Archive sind leer.","Ok");  // Überprüfen, ob das ZIP-Archiv Einträge enthält - machmal gibt es keine Messwerte mehr
+                        DisplayAlert("Fehler:","Zip Archive sind leer.","Ok"); 
                         return;
                     }
-                    ZipArchiveEntry lastEntry = archive.Entries[archive.Entries.Count - 1];   // Auswählen des letzten Eintrags im ZIP-Archiv - produkt_nieder_tag!
+                    ZipArchiveEntry lastEntry = archive.Entries[archive.Entries.Count - 1];  
                     using (var reader = new StreamReader(lastEntry.Open()))                   
                     {
                         DisplayAlert($"Daten aus: ",$"{lastEntry.FullName}","Ok");
 
                         reader.ReadLine();
                         List<string> lastLines = new List<string>();
-                        Queue<string> lineQueue = new Queue<string>();      // Liste der 20 Werte
+                        Queue<string> lineQueue = new Queue<string>();      // List of 20 recent values
 
                         while (reader.Peek() >= 0)
                         {
@@ -297,16 +293,15 @@ namespace Pegel_Wetter_DFFUDC
                         }
                         lastLines = lineQueue.ToList();
 
-                        List<string> displayMessages = new List<string>();  // um am ended die Werte gelistet ausgeben zu können
+                        List<string> displayMessages = new List<string>(); 
                         foreach (string l in lastLines)  
                         {
                             string[] values = l.Split(';');
                             
-                            string currentDate = values[1];     // Speichern des aktuellen Datums (1 Spalte) und RS-Werts (3 Spalte)
+                            string currentDate = values[1];     // Save current date (1 column) and RS value (3 column)
                             string currentRSValue = values[3];
 
                             displayMessages.Add($"Datum: {currentDate}  –  Niederschlag: {currentRSValue}");
-                            // var currentDate = DateTime.Now.ToString("dd.MM.yyyy"); <- für die Ausgabe
                         }
                         string finalMessage = string.Join(Environment.NewLine, displayMessages);
                         this.DisplayAlert("Niederschlag der letzten 20 Tage:", finalMessage, "Ok");

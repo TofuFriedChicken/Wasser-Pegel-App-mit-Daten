@@ -61,6 +61,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\loading_pic.PNG" />
+	  <None Remove="Resources\Images\maploaded.png" />
 	  <None Remove="Resources\Images\waterlevel.png" />
 	  <None Remove="Resources\Raw\pacman.gif" />
 	</ItemGroup>
