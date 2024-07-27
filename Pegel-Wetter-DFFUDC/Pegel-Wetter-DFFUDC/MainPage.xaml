@@ -144,9 +144,8 @@
 
         </Frame>
 
-        <maps:Map
-            x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment">
-        </maps:Map>
+        <maps:Map x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment"/>
+
 
     </Grid>
     

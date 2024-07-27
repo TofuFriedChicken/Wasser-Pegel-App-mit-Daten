@@ -23,12 +23,12 @@ namespace Pegel_Wetter_DFFUDC
 {
     public partial class MainPage : ContentPage
     {
-        WaterLevelModel _model;
+        WaterLevelViewModel _model;
         public bool _visiblePinsBoth;
         private List<Pin> _loadedPinsW = new List<Pin>();    // list for the WaterPins
 
         private readonly RainfallApi _rainfallApi; 
-        private readonly RainfallModel _rainfallModel;
+        private readonly RainfallViewModel _rainfallModel;
 
         public MainPage()
         {
@@ -40,12 +40,12 @@ namespace Pegel_Wetter_DFFUDC
             SizeAdjustment(this, EventArgs.Empty);
             _visiblePinsBoth = false;
 
-            _model = new WaterLevelModel();     // WaterLevel Pin
+            _model = new WaterLevelViewModel();     // WaterLevel Pin
             BindingContext = _model;
             CreateWaterPins();
 
             _rainfallApi = new RainfallApi();      // Rainfall Pin
-            _rainfallModel = new RainfallModel();
+            _rainfallModel = new RainfallViewModel();
 
         }
 
@@ -79,7 +79,6 @@ namespace Pegel_Wetter_DFFUDC
                         Label = position.longname,
                         Address = position.agency, 
                         Location = new Location(position.latitude, position.longitude),
-                        ImageSource = ImageSource.FromResource("Pegel_Wetter_DFFUDC.Recources.Images.waterlevel.png")
                     };
                     _loadedPinsW.Add(pin);
                 }
@@ -106,13 +105,13 @@ namespace Pegel_Wetter_DFFUDC
                     "\nDas kann ein wenig dauern, wir haben alles unter Kontrolle." },
                     new Image
                     {
-                        Source = "maploaded.png",
-                        WidthRequest = 350, 
-                        HeightRequest = 350,
+                        Source = "loading_pic.PNG",
+                        WidthRequest = 450, 
+                        HeightRequest = 450,
                         HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center
                     }
-                    // Quelle: /www.flaticon.com/free-sticker/map_9821275
+                    // Quelle: www.pinterest.de/pin/848224911048205613
                 }
                 }
             };
@@ -174,19 +173,19 @@ namespace Pegel_Wetter_DFFUDC
                     "\nGleich geht es weiter, wir haben alles unter Kontrolle." },
                     new Image
                     {
-                        Source = "loading_pic.PNG",
-                        WidthRequest = 400,
-                        HeightRequest = 400,
+                        Source = "loadpins.png",
+                        WidthRequest = 500,
+                        HeightRequest = 500,
                         HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Start
                     }
-                    // Quelle: www.pinterest.de/pin/848224911048205613
+                    // Quelle: pixabay.com/vectors/map-pin-icon-map-pin-travel-1272165/
                 }
                 }
             };
             await Navigation.PushModalAsync(modalPage);
 
-            await Task.Delay(3000);                 // der muss noch etwas länger bleiben
+            await Task.Delay(2000);                 // der muss noch etwas länger bleiben
             await Navigation.PopModalAsync();
             await RainPins();
 
@@ -200,7 +199,7 @@ namespace Pegel_Wetter_DFFUDC
             AddPinsToMap(processedLines);
         }
 
-        private void AddPinsToMap(RainfallViewModel[] stations)
+        private void AddPinsToMap(RainfallModel[] stations)
         {
             foreach (var station in stations)
             {
@@ -234,7 +233,7 @@ namespace Pegel_Wetter_DFFUDC
 
                 if (!File.Exists(localZipFilePath))
                 {
-                    await DisplayAlert("Fehler:", "Hier gibt es keine aktuellen Daten zu", "Ok");
+                    await DisplayAlert("Keine Messungen:", "Hierzu gibt es keine aktuellen Daten", "Ok");
                     return;
                 }
                 ExtractAndReadLastFileInZip(localZipFilePath);    

@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    // Quelle: vladislavantonyuk.github.io/articles/Customize-map-pins-in-.NET-MAUI/
-    // Quelle Pin: www.flaticon.com/free-icon/location_7945007?term=pin+marker&page=1&position=18&origin=tag&related_id=7945007
     public class CustomPin : Pin
     {
         public static readonly BindableProperty ImageSourceProperty =
@@ -21,6 +19,7 @@ namespace Pegel_Wetter_DFFUDC
             set => SetValue(ImageSourceProperty, value);
         }
     }
+
 }
 
-    
+

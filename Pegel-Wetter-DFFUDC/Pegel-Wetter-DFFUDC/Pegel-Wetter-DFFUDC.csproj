@@ -57,18 +57,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiAsset Remove="Resources\Raw\pacman.gif" />
+	  <MauiImage Remove="Resources\Images\location.png" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\loading_pic.PNG" />
-	  <None Remove="Resources\Images\maploaded.png" />
-	  <None Remove="Resources\Images\waterlevel.png" />
-	  <None Remove="Resources\Raw\pacman.gif" />
+	  <None Remove="Resources\Images\loadpins.png" />
+	  <None Remove="Resources\Images\location.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\Raw\pacman.gif" />
+	  <EmbeddedResource Include="Resources\Images\location.png" />
 	</ItemGroup>
 
 	<ItemGroup>
