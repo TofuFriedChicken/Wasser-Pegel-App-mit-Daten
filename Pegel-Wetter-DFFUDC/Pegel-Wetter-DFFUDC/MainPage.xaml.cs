@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Net.NetworkInformation;
-using static Microsoft.Maui.ApplicationModel.Permissions;
 using System.IO.Compression;
 using System;
 using CommunityToolkit.Maui.Views;
@@ -79,6 +78,7 @@ namespace Pegel_Wetter_DFFUDC
                         Label = position.longname,
                         Address = position.agency, 
                         Location = new Location(position.latitude, position.longitude),
+                       
                     };
                     _loadedPinsW.Add(pin);
                 }
@@ -100,18 +100,18 @@ namespace Pegel_Wetter_DFFUDC
                     Children =
                 {
                     new ActivityIndicator { IsRunning = true, Color = Colors.Black },
-                    new Label { Text = "Keine Sorgen, gleich geht es weiter. \n" +
-                    "Diese Seite sehen Sie nur bis alle Messstationen zu den deutschlandweiten Pegelständen gesetzt sind. " +
+                    new Label { Text = "Keine Sorge, gleich geht es weiter. \n" +
+                    "Diese Seite sehen Sie nur solange alle Messstationen zu den deutschlandweiten Pegelständen gesetzt werden. " +
                     "\nDas kann ein wenig dauern, wir haben alles unter Kontrolle." },
                     new Image
                     {
-                        Source = "loading_pic.PNG",
-                        WidthRequest = 450, 
-                        HeightRequest = 450,
+                        Source = "loadpins.png",
+                        WidthRequest = 500, 
+                        HeightRequest = 500,
                         HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center
                     }
-                    // Quelle: www.pinterest.de/pin/848224911048205613
+                    // Quelle: pixabay.com/vectors/map-pin-icon-map-pin-travel-1272165/
                 }
                 }
             };
@@ -168,24 +168,24 @@ namespace Pegel_Wetter_DFFUDC
                     Children =
                 {
                     new ActivityIndicator { IsRunning = true, Color = Colors.Black },
-                    new Label { Text = "Keine Sorgen, gleich geht es weiter. \n" +
-                    "Diese Seite sehen Sie nur bis alle Messstationen zu den deutschlandweiten Niederschlägen gesetzt sind. " +
+                    new Label { Text = "Keine Sorge, gleich geht es weiter. \n" +
+                    "Diese Seite sehen Sie nur solange alle Messstationen zu den deutschlandweiten Niederschlägen gesetzt werden. " +
                     "\nGleich geht es weiter, wir haben alles unter Kontrolle." },
                     new Image
                     {
-                        Source = "loadpins.png",
+                        Source = "loading_pic.PNG",
                         WidthRequest = 500,
                         HeightRequest = 500,
                         HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Start
                     }
-                    // Quelle: pixabay.com/vectors/map-pin-icon-map-pin-travel-1272165/
+                    // Quelle: www.pinterest.de/pin/848224911048205613
                 }
                 }
             };
             await Navigation.PushModalAsync(modalPage);
 
-            await Task.Delay(2000);                 // der muss noch etwas länger bleiben
+            await Task.Delay(5000);               
             await Navigation.PopModalAsync();
             await RainPins();
 
@@ -193,7 +193,7 @@ namespace Pegel_Wetter_DFFUDC
         private async Task RainPins()
         {
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/RR_Tageswerte_Beschreibung_Stationen.txt";
-            string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);  // Methode in neuer Klasse ??
+            string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);  
             var processedLines = _rainfallModel.ProcessLines(lines);
             
             AddPinsToMap(processedLines);
@@ -214,11 +214,6 @@ namespace Pegel_Wetter_DFFUDC
                 pin.MarkerClicked += (sender, e) => RainfallValues_Clicked(sender, e, StationID);
             }
             _visiblePinsBoth = true;
-            if (stations.Length > 0)
-            {
-                var centerPosition = new Location(stations[0].Latitude, stations[0].Longitude);
-                germanMap.MoveToRegion(MapSpan.FromCenterAndRadius(centerPosition, Distance.FromKilometers(100)));
-            }
         }
 
         //Rainfall History - 20 Historical 
@@ -285,7 +280,7 @@ namespace Pegel_Wetter_DFFUDC
                         {
                             string line = reader.ReadLine();
                             lineQueue.Enqueue(line);
-                            if (lineQueue.Count > 20) // Liest die letztes 20 Tage ein _ beginnend bei dem ersten also zb. 06.07
+                            if (lineQueue.Count > 20) 
                             {
                                 lineQueue.Dequeue();
                             }
