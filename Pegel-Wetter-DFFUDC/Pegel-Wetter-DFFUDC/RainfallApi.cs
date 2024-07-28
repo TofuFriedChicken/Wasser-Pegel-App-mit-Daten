@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static Pegel_Wetter_DFFUDC.RainfallStation;
 using System.Globalization;
 using Microsoft.Maui.Controls.Maps;
 using System.Diagnostics;
