@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Pegel_Wetter_DFFUDC.WaterLevelViewModel;
+using static Pegel_Wetter_DFFUDC.Model.WaterLevelModel;
 
 namespace Pegel_Wetter_DFFUDC
 {
@@ -17,6 +17,14 @@ namespace Pegel_Wetter_DFFUDC
         }
         public async Task<List<Root>> GetWaterLevelsAsync()
         {
+            var url = "https://pegelonline.wsv.de/webservices/rest-api/v2/stations.json?includeTimeseries=true&includeCurrentMeasurement=true";
+            var response = await _httpClient.GetStringAsync(url);
+            return JsonConvert.DeserializeObject<List<Root>>(response);
+        }
+
+        public async Task<List<Root>> GetWaterLevelsForDateAsync(DateTime date)
+        {
+            string dateString = date.ToString("f");
             var url = "https://pegelonline.wsv.de/webservices/rest-api/v2/stations.json?includeTimeseries=true&includeCurrentMeasurement=true";
             var response = await _httpClient.GetStringAsync(url);
             return JsonConvert.DeserializeObject<List<Root>>(response);

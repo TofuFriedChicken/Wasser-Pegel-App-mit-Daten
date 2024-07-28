@@ -1,0 +1,397 @@
+﻿using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Devices.Sensors;
+using Microsoft.Maui.Maps;
+using CommunityToolkit.Maui.Maps;
+using System.Net.NetworkInformation;
+using CommunityToolkit.Maui;
+using static Pegel_Wetter_DFFUDC.swapDates;
+using Map = Microsoft.Maui.Controls.Maps.Map;
+using EventArgs = System.EventArgs;
+using static Pegel_Wetter_DFFUDC.RainfallStation;
+using static Pegel_Wetter_DFFUDC.RainfallApi;
+using static Pegel_Wetter_DFFUDC.WaterLevelModel;
+using static Pegel_Wetter_DFFUDC.WaterLevelViewModel;
+using CommunityToolkit.Maui.Views;
+using System;
+using LiveChartsCore.Behaviours.Events;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Maps.Handlers;
+using static SkiaSharp.HarfBuzz.SKShaper;
+using Windows.System;
+using System.Runtime.InteropServices;
+using System.Linq;
+//using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+//using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+//using Javax.Security.Auth;
+
+
+namespace Pegel_Wetter_DFFUDC
+{
+    public partial class swapDates : ContentPage
+    {
+        private DateTime today = DateTime.Today;
+        Location location = new Location(52.5162, 13.3777); //current Berlin
+
+        private DateTime date;
+
+        private bool WlPinsVisible = false;
+        
+
+        //Wl
+        WaterLevelModel WlModel = new WaterLevelModel();
+        WaterLevelViewModel WlViewModel = new WaterLevelViewModel();
+        private List<Pin> WlPinslist = new List<Pin>();
+        
+
+        //Rf Stationen 
+        RainfallModel RfModel = new RainfallModel(new RainfallApi()); //Api Key
+        RainfallApi RfApi = new RainfallApi();
+        RainfallStations RfStations = new RainfallStations();
+        private List<Pin> RfPinslist = new List<Pin>();
+
+        string[] lines = { };
+
+        public swapDates()
+        {
+            InitializeComponent();
+
+            //startpoint, based on variable location
+            MyMap_Test.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromMeters(1000)));
+
+            //Testkreis, Aufgabe weggefallen
+            var circle = new Circle()
+            {
+                Center = location,
+                Radius = Distance.FromMeters(100000),
+                StrokeColor = Color.FromArgb("0000FF"),
+                StrokeWidth = 8,
+                FillColor = Color.FromArgb("ADD8E6")
+            };
+            MyMap_Test.MapElements.Add(circle);
+
+            Pin testpin = new Pin
+            {
+                Label = "Berlin",
+                Address = "testpin for messuring station",
+                Type = PinType.Place,
+                Location = new Location(52.5162, 13.3777)
+            };
+            //MyMap_Test.Pins.Add(testpin);
+
+            UpdateTodayLabel(); //current date 
+
+            RfStations = new RainfallStations();
+
+            UpdateButtonVisible(); // Initial call to set button visibility
+            
+        }
+
+        private void CurrentMapSizeUpdate(object sender, EventArgs e)
+        {
+            //update Mapsize based on current windowsize
+            MyMap_Test.WidthRequest = this.Width;
+            MyMap_Test.HeightRequest = this.Height;
+        }
+
+        private void UpdateButtonVisible()
+        {
+            if (WlPinsVisible == true)
+            {
+                // Macht Buttons klickbar
+                DateBack.IsVisible = true;
+                DateForward.IsVisible = true;
+            }
+            else if (WlPinsVisible == false)
+            {
+                DateBack.IsVisible = false;
+                DateForward.IsVisible = false;
+            }
+        }
+
+        private void UpdateTodayLabel() { DateLabel.Text = today.ToString("dddd, dd. MMMM yyyy"); /*form changeable*/}
+
+        // normal auch wieder sichtbar machen, bis 20 tage zurck, bei gewhltem Datum und WlMap_Clicked auf daten des tages springen
+        private async void DateBack_Clicked(object sender, EventArgs e)
+        {
+            if (today <= (DateTime.Today - TimeSpan.FromDays(20)))
+            {
+                await DisplayAlert("Fehler", "Daten werden nur von den letzten 20 Tagen abgerufen.", "Schlieen");
+            }
+            else if (today > (DateTime.Today - TimeSpan.FromDays(20))) 
+            {
+                today = today.AddDays(-1); //1 day to past
+                UpdateTodayLabel();
+
+                //await LoadWlPinsDate(today);
+                UpdateButtonVisible();
+            }
+        }
+
+        private async void DateForward_Clicked(object sender, EventArgs e)
+        {
+            //shouldn't see/click to future dates
+            if (today == DateTime.Today)
+            {
+                //Unittest
+                await DisplayAlert("Fehler", "Du bist beim aktuellen Datum angekommen.", "Schlieen");
+            }
+            else
+            {
+                today = today.AddDays(1); //1 day to future
+                UpdateTodayLabel();
+
+                //await LoadWlPinsDate(today); //ld Pins fr aktuelles datum
+                UpdateButtonVisible(); //aktualisiert Sichtbarkeit Buttons
+            }
+        }
+
+        //Quelle ChatGPT 4.0, 25.07.2024; mitlerweile mehrfach verndert
+        public async Task ShowLoadingPopup(Func<Task> loadedFunction)
+        {
+            //Popup Ladefenster definiert
+            var loadingPopup = new Popup
+            {
+                Content = new VerticalStackLayout
+                {
+                    Padding = new Thickness(50),
+                    BackgroundColor = Colors.White,
+                    Children = { new ActivityIndicator { IsRunning = true, Color = Colors.Black }, new Label { Text = "Pins werden geladen", TextColor = Colors.Black } }
+                }
+            };
+
+            MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen*/ });
+
+            try { await loadedFunction(); }
+            catch (Exception ex) { await MainThread.InvokeOnMainThreadAsync(async () => { await DisplayAlert("Fehler", "Es ist ein Fehler aufgetreten. \nLaden nicht erfolgreich.\n" + ex.Message, "OK"); }); }
+            finally { MainThread.BeginInvokeOnMainThread(() => { loadingPopup.Close(); }); }
+        }
+
+
+        //Rainfall      
+        private async void rainfallmap_Clicked(object sender, EventArgs e)
+        {
+            WlPinsVisible = false;
+            UpdateButtonVisible();
+
+            await ShowLoadingPopup(async () => //soll Ladefenster ffnen
+            {
+                await AddPinsRainfall(); //fgt geladene pins aus API in Liste hinzu, Ld bis Funktion beendet
+            }); 
+        }
+
+        //getRainfall in Liste -> lines(array)
+        private async Task AddPinsRainfall()
+        {
+            //fragt stationen ab
+            string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
+            string[] lines = await RfApi.LoadFileFromUrlAsync(url); //Array von Arrays sinvoller oder Liste
+
+            //bergibt stationenarray an Methode, ld informationen in Liste aus stationen
+            LoadRainPins(RfModel.ProcessLines(lines)); 
+        }
+
+        private void LoadRainPins(RainfallStations[] stations)
+        {
+
+            MyMap_Test.Pins.Clear();
+            RfPinslist.Clear();
+
+            WlPinsVisible = false;
+
+            if (stations == null)
+            {
+                DisplayAlert("Fehler", "Die Liste ist leer. Daten knnen nicht ausgegeben werden", "Ok");
+                return;
+            }
+            else if (stations != null) 
+            {
+                foreach (var station in stations)
+                {
+                    //testwerte
+                    double latitudetest = 48.75845;
+                    double longitudetest = 9.9855;
+
+                    Pin RfPin = new Pin
+                    {
+
+                        Label = $"{station.StationName},\n" +
+                                $"Date: {station.FromDate} to {station.ToDate},\n" +
+                                $"High: {station.StationHight}m,\n",
+                        Address = station.StationID.ToString(),
+                        Location = new Location(station.Latitude, station.Longitude) 
+                    };
+
+                    //MyMap_Test.Pins.Add(RfPin);
+                    RfPinslist.Add(RfPin);
+                }
+
+                /*
+                if (stations.Length > 0)
+                {
+                    var RfPinLocation = new Location(stations[0].Latitude, stations[0].Longitude);
+                    MyMap_Test.MoveToRegion(MapSpan.FromCenterAndRadius(RfPinLocation, Distance.FromKilometers(100)));
+
+                }
+                */
+
+                foreach (var RfPin in RfPinslist) //Fehler, hngt sich mit haltepunkten auf, reagiert nivht mehr
+                {
+                    MyMap_Test.Pins.Add(RfPin);   // Zeigt Pins nicht an
+                    //RfPin.MarkerClicked += RfPin_Clicked(RfPin, RfPin.MarkerClicked); //jeder Pin ein Clickevent
+                }
+            } 
+        }
+
+        // Anzeige fehlerhaft, nicht vorhanden
+        private void RfPin_Clicked(object sender, PinClickedEventArgs e) //Anzeige wenn auf Pin geklickt
+        {
+            //var station = RainfallStations.station;
+            foreach (var pin in RfPinslist)
+            {
+                if (pin != null) 
+                { 
+                    var details = $"Location: {pin.Address} \n" +
+                              $"Value: 'Wert einfgen'  cm \n" +    //nicht vollstndig
+                              $"Date: {today}";
+
+                    DisplayAlert("Waterlevelstation", details, "Schlieen"); //deatils nicht korrekt ausgegeben
+                }
+            }
+            
+        }
+
+
+        //Waterlevel
+        private async void waterlevelmap_Clicked(object sender, EventArgs e)
+        {
+            WlPinsVisible = true;
+            UpdateButtonVisible();
+
+            //zeigt Ladefenster solange (() => {Funktion}) ld     Lambda = (parameters) =>"goes to" {expression_or_statement_block} -> zum schreiben anonymer Funktionen (= Funktionen ohne Name, die gleich definiert werden, oft einmalig/kurzfristig)
+            
+            await ShowLoadingPopup(async () =>
+            {   /* sollte aktuelles datum abfragen und aktualisieren*/
+
+                //fgt geladene pins aus API in Liste hinzu
+                await AddPinsWaterlevel();
+
+            });
+        }
+
+        private async Task AddPinsWaterlevel()
+        {
+            await LoadWaterPins();
+        }
+
+        private async Task LoadWaterPins()
+        {
+            //testwerte
+            string testposition = "2.006"; 
+
+            try
+            {
+                await WlModel.LoadWaterLevels();
+
+                if (WlModel.Positions == null)
+                {
+                    await DisplayAlert("Fehler", "Die Liste ist leer. Daten knnen nicht ausgegeben werden", "Ok");
+                    return;
+                }
+               
+                WlPinslist.Clear();
+
+                foreach (var position in WlModel.Positions) //fehler in deklarierung
+                {
+                    //erstellt Pins und speichert sie in Liste
+                    Pin WlPin = new Pin
+                    {
+                        Label = position.longname,
+                        Address = position.agency,
+                        Location = new Location(position.latitude, position.longitude)
+                    };
+
+                    WlPinslist.Add(WlPin);
+                    WlPin.MarkerClicked += WlPin_Clicked; //jeder Pin ein Clickevent
+                }
+
+                foreach (var pin in WlPinslist) 
+                {
+                    MyMap_Test.Pins.Add(pin);
+                }
+
+
+            }
+            catch (Exception ex) { await DisplayAlert("Ladefehler", "Pins konnten nicht geladen werden \n" + ex.Message, "schlieen"); }
+
+            // Pins zur Karte hinzufgen
+            foreach (var WlPin in WlPinslist) 
+            {
+                MyMap_Test.Pins.Add(WlPin);
+            }
+
+        }
+
+        //zeigt Pins nicht an
+        private async Task LoadWlPinsDate(DateTime date)
+        {
+
+            MyMap_Test.Pins.Clear();
+            WlPinslist.Clear();
+
+            await WlModel.LoadWaterLevelForDate(date); //Datum abfrage von Sophie
+
+            try
+            {
+                if (WlModel.Positions == null || WlModel.Positions.Count == 0)
+                {
+                    await DisplayAlert("Fehler", "Keine Daten fr das ausgewhlte Datum verfgbar.", "Ok");
+                    return;
+                }
+                else if (WlModel.Positions != null)
+                {
+                    foreach (var position in WlModel.Positions) 
+                    {
+                        //erstellt Pins und speichert sie in Liste
+                        Pin WlPin = new Pin
+                        {
+                            Label = $" {position.longname}, {position.shortname}\n" +
+                            $"Messwerte: {position.currentMeasurement.Value}, {position.currentMeasurement.Timestamp}",
+                            Address = position.agency,
+                            Location = new Location(position.latitude, position.longitude)
+                        };
+
+                        WlPinslist.Add(WlPin);
+                        WlPin.MarkerClicked += WlPin_Clicked; //jeder Pin ein Clickevent
+                    }
+                }
+            }
+            catch (Exception ex) { await DisplayAlert("Ladefehler", "Pins konnten nicht geladen werden \n" + ex.Message, "schlieen"); }
+
+
+            // Pins zur Karte hinzufgen
+            foreach (var WlPin in WlPinslist)
+            {
+                MyMap_Test.Pins.Add(WlPin);
+            }
+        }
+
+        private void WlPin_Clicked(object sender, PinClickedEventArgs e)
+        {
+            //Anzeige wenn auf Pin geklickt
+
+            if (sender is Pin pin)
+            {
+                var position = WlModel.Positions.FirstOrDefault(p => p.latitude == pin.Location.Latitude && p.longitude == pin.Location.Longitude);
+                
+                if (position != null)
+                {
+                    var details = $"Location: {position.latitude} + {position.longitude} \n" +
+                              $"Value: {position.currentMeasurement.Value} cm \nDate: {position.currentMeasurement.Timestamp}";
+
+                    DisplayAlert("Waterlevelstation", details, "Schlieen");
+                }
+            }
+        }
+    }
+}
+
