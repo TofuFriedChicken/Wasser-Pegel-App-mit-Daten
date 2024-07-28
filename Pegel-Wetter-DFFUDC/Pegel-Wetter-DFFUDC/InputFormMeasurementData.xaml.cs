@@ -150,7 +150,7 @@ public partial class InputFormMeasurementData : ContentPage
 
         //add water level data to map and list 
         mainPage.Appearing += (s, args) => { AddPinToMap(mainPage.Map); };        //source https://learn.microsoft.com/de-de/dotnet/api/microsoft.maui.controls.baseshellitem.appearing#microsoft-maui-controls-baseshellitem-appearing + help of ChatGPT (last visit: 27.07.24)
-        //historyPage.ListWaterlevelStation.Add(inputWaterlevelData);
+        historyPage.OwnListWaterlevelData.Add(inputWaterlevelData);
 
 			  bool alert = await DisplayAlert("Daten erfolgreich hinzugefügt.", "Wo möchtest du dir deine Daten anschauen?", "Messstation auf Karte anzeigen", "Daten in Liste anzeigen");
 
@@ -205,7 +205,7 @@ public partial class InputFormMeasurementData : ContentPage
 
         //add rainfall data to map and list
         mainPage.Appearing += (s, args) => { AddPinToMap(mainPage.Map); };        //source https://learn.microsoft.com/de-de/dotnet/api/microsoft.maui.controls.baseshellitem.appearing#microsoft-maui-controls-baseshellitem-appearing + help of ChatGPT (last visit: 27.07.24)
-        //historyPage.ListRainfallStation.Add(inputRainfallData);
+        historyPage.OwnListRainfallData.Add(inputRainfallData);
         
 			  bool alert = await DisplayAlert("Daten erfolgreich hinzugefügt.", "Wo möchtest du dir deine Daten anschauen?", "Messstation auf Karte anzeigen", "Daten in Liste anzeigen");
 

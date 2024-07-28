@@ -33,6 +33,13 @@ public partial class HistoryPage : ContentPage
     private List<RainfallModel> RainfallDataset { get; set; }
 
 
+    //Lists from input form data
+    public ObservableCollection<InputRainfallData> OwnListRainfallData { get; set; }
+
+    public ObservableCollection<InputWaterlevelData> OwnListWaterlevelData { get; set; }
+
+
+
     public HistoryPage()
     {
 
@@ -40,6 +47,19 @@ public partial class HistoryPage : ContentPage
 
         ListofMainlist = new List<ClassofMainListforJumps>();
         BindingContext = this;
+
+        //Lists from input form data
+        OwnListRainfallData = new ObservableCollection<InputRainfallData>
+        {
+            new InputRainfallData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
+        };
+        OwnListWaterlevelData = new ObservableCollection<InputWaterlevelData>
+        {
+            new InputWaterlevelData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
+        };
+
+
+
 
 
         InitializeComponent();
