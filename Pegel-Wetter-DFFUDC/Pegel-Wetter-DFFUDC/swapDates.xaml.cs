@@ -1,10 +1,10 @@
-//using Microsoft.Maui.Controls.Maps;
+using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Devices.Sensors;
-//using Microsoft.Maui.Maps;
-//using CommunityToolkit.Maui.Maps;
+using Microsoft.Maui.Maps;
+using CommunityToolkit.Maui.Maps;
 using System.Net.NetworkInformation;
 using static Pegel_Wetter_DFFUDC.swapDates;
-//using Map = Microsoft.Maui.Controls.Maps.Map;
+using Map = Microsoft.Maui.Controls.Maps.Map;
 
 
 namespace Pegel_Wetter_DFFUDC
@@ -19,37 +19,37 @@ namespace Pegel_Wetter_DFFUDC
             InitializeComponent();
 
             //startpoint, based on variable location
-            // MyMap_Test.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromMeters(1000)));
+            MyMap_Test.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromMeters(1000)));
 
-            // var circle = new Circle()
-            // {
-            //     Center = location,
-            //     Radius = Distance.FromMeters(100000),
-            //     StrokeColor = Color.FromArgb("0000FF"),
-            //     StrokeWidth = 8,
-            //     FillColor = Color.FromArgb("ADD8E6")
-            // };
-            // MyMap_Test.MapElements.Add(circle);
+            var circle = new Circle()
+            {
+                Center = location,
+                Radius = Distance.FromMeters(100000),
+                StrokeColor = Color.FromArgb("0000FF"),
+                StrokeWidth = 8,
+                FillColor = Color.FromArgb("ADD8E6")
+            };
+            MyMap_Test.MapElements.Add(circle);
 
-            // Pin testpin = new Pin
-            // {
-            //     Label = "Berlin",
-            //     Address = "testpin for messuring station",
-            //     Type = PinType.Place,
-            //     Location = new Location(52.5162, 13.3777)
-            // };
-            // MyMap_Test.Pins.Add(testpin);
+            Pin testpin = new Pin
+            {
+                Label = "Berlin",
+                Address = "testpin for messuring station",
+                Type = PinType.Place,
+                Location = new Location(52.5162, 13.3777)
+            };
+            MyMap_Test.Pins.Add(testpin);
 
-            // UpdateTodayLabel(); //current date 
+            UpdateTodayLabel(); //current date 
         }
 
 
-        // private void CurrentMapSizeUpdate(object sender, EventArgs e)
-        // {
-        //     //update Mapsize based on current windowsize
-        //     MyMap_Test.WidthRequest = this.Width;
-        //     MyMap_Test.HeightRequest = this.Height;
-        // }
+        private void CurrentMapSizeUpdate(object sender, EventArgs e)
+        {
+            //update Mapsize based on current windowsize
+            MyMap_Test.WidthRequest = this.Width;
+            MyMap_Test.HeightRequest = this.Height;
+        }
 
         
         private void UpdateTodayLabel() { DateLabel.Text = today.ToString("dddd, dd. MMMM yyyy"); /*form changeable*/}
@@ -77,23 +77,25 @@ namespace Pegel_Wetter_DFFUDC
         }
 
         //getWaterlevel in Listenform (von Sophie feature 1.1)
-        // private void AddPinsWaterlevel()
-        // {
-        //     MyMap_Test.Pins.Clear();
+        private void AddPinsWaterlevel()
+        {
+            MyMap_Test.Pins.Clear();
 
-        //     //datum auslesen und nur tagesaktuelle daten in detailfenster anzeigen bei mouseover
+            //datum auslesen und nur tagesaktuelle daten in detailfenster anzeigen bei mouseover
 
-        //     /*
-        //     foreach (var item in collection)
-        //     {
-        //         Pins erzeugen
-        //     }*/
-        // }
+            /*
+            foreach (var item in collection)
+            {
+                Pins erzeugen
+            }*/
+        }
 
-        //private void rainfallmap_Clicked(object sender, EventArgs e) { AddPinsWaterlevel(); /*aktuelles datum abfragen und aktualisieren*/}
+        private void rainfallmap_Clicked(object sender, EventArgs e) { AddPinsWaterlevel(); /*aktuelles datum abfragen und aktualisieren*/}
 
         //getWaterlevel in Listenform (von Sophie feature 1.1)
-        //// private void waterlevelmap_Clicked(object sender, EventArgs e) { AddPinsRainfall(); }
+        private void AddPinsRainfall() { MyMap_Test.Pins.Clear(); }
+
+        private void waterlevelmap_Clicked(object sender, EventArgs e) { AddPinsRainfall(); }
 
 
     }

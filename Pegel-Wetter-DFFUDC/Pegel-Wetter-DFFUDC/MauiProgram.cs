@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Pegel_Wetter_DFFUDC.Model;
-//using CommunityToolkit.Maui.Maps;
-//using Microsoft.Maui.Maps;
+using CommunityToolkit.Maui.Maps;
+using Microsoft.Maui.Maps;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace Pegel_Wetter_DFFUDC
@@ -14,7 +14,7 @@ namespace Pegel_Wetter_DFFUDC
             builder
                 .UseSkiaSharp(true)
                 .UseMauiApp<App>()
-                //.UseMauiCommunityToolkitMaps("beoVW2DRXJmNKDNXAU3a~q9N4iCClq08h7W7Z_LEFYA~AgM5IrnYZ6nogeA56gnZWzZqEOiCQWUEFGmWHr34e8fZhygfdT8EAEo44VQptTmE")
+                .UseMauiCommunityToolkitMaps("beoVW2DRXJmNKDNXAU3a~q9N4iCClq08h7W7Z_LEFYA~AgM5IrnYZ6nogeA56gnZWzZqEOiCQWUEFGmWHr34e8fZhygfdT8EAEo44VQptTmE")
 
                 /* Johanna
                 //API key for bingmaps
