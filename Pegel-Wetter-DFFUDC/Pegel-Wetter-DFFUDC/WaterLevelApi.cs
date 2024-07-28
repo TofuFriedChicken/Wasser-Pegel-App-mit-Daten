@@ -21,6 +21,14 @@ namespace Pegel_Wetter_DFFUDC
             var response = await _httpClient.GetStringAsync(url);
             return JsonConvert.DeserializeObject<List<Root>>(response);
         }
+
+        public async Task<List<Root>> GetWaterLevelsForDateAsync(DateTime date)
+        {
+            string dateString = date.ToString("f");
+            var url = "https://pegelonline.wsv.de/webservices/rest-api/v2/stations.json?includeTimeseries=true&includeCurrentMeasurement=true";
+            var response = await _httpClient.GetStringAsync(url);
+            return JsonConvert.DeserializeObject<List<Root>>(response);
+        }
     }
 
 }

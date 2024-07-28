@@ -54,6 +54,7 @@ namespace Pegel_Wetter_DFFUDC
         }
 
         private void OnOpenListClicked(object sender, EventArgs e)
+
         {
             Navigation.PushAsync(new TestList());
         }
@@ -97,6 +98,7 @@ namespace Pegel_Wetter_DFFUDC
 
         public async void ShowWaterPins(object sender, EventArgs e)   // Complicated alternative after the eternal failure of pop-ups and mop-ups and GIFS
         {
+            germanMap.Pins.Clear();
             var modalPage = new ContentPage
             {
                 Content = new StackLayout
@@ -160,11 +162,17 @@ namespace Pegel_Wetter_DFFUDC
                 germanMap.Pins.Clear();
                 _visiblePinsBoth = false;
             }
+            else
+            {
+                //Unittest
+                DisplayAlert("Information", "Nichts zum entfernen vorhanden.", "schlieﬂen");
+            }
         }
 
         // Rainfall Pins:
         public async void LoadRainPins(object sender, EventArgs e)  //loading Page
         {
+            germanMap.Pins.Clear();
             var modalPage = new ContentPage
             {
                 Content = new StackLayout
@@ -349,7 +357,7 @@ namespace Pegel_Wetter_DFFUDC
 
         private async void swapDatesBut_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new swapDates());
+           // await Navigation.PushAsync(new swapDates());
         }       
     }
 }

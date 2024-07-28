@@ -19,6 +19,11 @@ public partial class HistoryPage : ContentPage
 
     public ObservableCollection<RainfallModel> ListRainfallStation => DataStore.Instance.ListRainfallStation;
 
+ //   public ObservableCollection<RainfallModeldummy> ListRainfallStationdummy => DataStore.Instance.ListRainfallStationdummy;
+
+ //   public ObservableCollection<WaterlevelModeldummy> ListWaterfallStationdummy => DataStore.Instance.ListWaterfallStationdummy;
+
+
     public ObservableCollection<WaterLevelModel.Root> ListWaterlevelStation => DataStore.Instance.ListWaterlevelStation;
 
     public ObservableCollection<ModelInputintoHistory> ListHistory => DataStore.Instance.ListHistory;
