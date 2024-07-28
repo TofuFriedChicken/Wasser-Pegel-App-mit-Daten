@@ -98,6 +98,7 @@ namespace Pegel_Wetter_DFFUDC
 
         public async void ShowWaterPins(object sender, EventArgs e)   // Complicated alternative after the eternal failure of pop-ups and mop-ups and GIFS
         {
+            germanMap.Pins.Clear();
             var modalPage = new ContentPage
             {
                 Content = new StackLayout
@@ -171,6 +172,7 @@ namespace Pegel_Wetter_DFFUDC
         // Rainfall Pins:
         public async void LoadRainPins(object sender, EventArgs e)  //loading Page
         {
+            germanMap.Pins.Clear();
             var modalPage = new ContentPage
             {
                 Content = new StackLayout
