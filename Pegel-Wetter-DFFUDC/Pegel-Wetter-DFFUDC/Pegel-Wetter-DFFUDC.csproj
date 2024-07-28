@@ -90,6 +90,9 @@
 	</ItemGroup> -->
 
 	<ItemGroup>
+	  <MauiXaml Update="SwapDates.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="ViewModel\DetailPageRain.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
