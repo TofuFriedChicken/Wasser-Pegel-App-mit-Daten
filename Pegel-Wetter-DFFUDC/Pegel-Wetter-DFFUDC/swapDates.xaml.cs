@@ -98,8 +98,13 @@ namespace Pegel_Wetter_DFFUDC
             if (WlPinsVisible == true)
             {
                 // Macht Buttons klickbar
-                DateBack.IsEnabled = DateBack.IsVisible;
-                DateForward.IsEnabled = DateForward.IsVisible;
+                DateBack.IsVisible = true;
+                DateForward.IsVisible = true;
+            }
+            else if (WlPinsVisible == false)
+            {
+                DateBack.IsVisible = false;
+                DateForward.IsVisible = false;
             }
         }
 
@@ -141,7 +146,7 @@ namespace Pegel_Wetter_DFFUDC
         }
 
         //Quelle ChatGPT 4.0, 25.07.2024; mitlerweile mehrfach verändert
-        private async Task ShowLoadingPopup(Func<Task> loadedFunction)
+        public async Task ShowLoadingPopup(Func<Task> loadedFunction)
         {
             //Popup Ladefenster definiert
             var loadingPopup = new Popup
@@ -179,7 +184,7 @@ namespace Pegel_Wetter_DFFUDC
         {
             //fragt stationen ab
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
-            string[] lines = await RfApi.LoadFileFromUrlAsync(url);
+            string[] lines = await RfApi.LoadFileFromUrlAsync(url); //Array von Arrays sinvoller oder Liste
 
             //übergibt stationenarray an Methode, läd informationen in Liste aus stationen
             LoadRainPins(RfModel.ProcessLines(lines)); 
@@ -216,10 +221,8 @@ namespace Pegel_Wetter_DFFUDC
                         Location = new Location(station.Latitude, station.Longitude) 
                     };
 
-                    MyMap_Test.Pins.Add(RfPin);
+                    //MyMap_Test.Pins.Add(RfPin);
                     RfPinslist.Add(RfPin);
-                    //RfPin.MarkerClicked += RfPin_Clicked(); //jeder Pin ein Clickevent
-
                 }
 
                 /*
@@ -231,9 +234,10 @@ namespace Pegel_Wetter_DFFUDC
                 }
                 */
 
-                foreach (var pin in RfPinslist)
+                foreach (var RfPin in RfPinslist) //Fehler, hängt sich mit haltepunkten auf, reagiert nivht mehr
                 {
-                    MyMap_Test.Pins.Add(pin);   // Zeigt Pins nicht an
+                    MyMap_Test.Pins.Add(RfPin);   // Zeigt Pins nicht an
+                    //RfPin.MarkerClicked += RfPin_Clicked(RfPin, RfPin.MarkerClicked); //jeder Pin ein Clickevent
                 }
             } 
         }
@@ -276,8 +280,6 @@ namespace Pegel_Wetter_DFFUDC
 
         private async Task AddPinsWaterlevel()
         {
-            MyMap_Test.Pins.Clear();
-
             await LoadWaterPins();
         }
 
