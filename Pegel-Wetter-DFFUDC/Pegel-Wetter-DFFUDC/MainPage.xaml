@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Pegel_Wetter_DFFUDC"
+             xmlns:maps="clr-namespace:Microsoft.Maui.Controls.Maps;assembly=Microsoft.Maui.Controls.Maps"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+             x:Class="Pegel_Wetter_DFFUDC.MainPage"
+             BackgroundColor="LightGray"
+             Title=" ">
+
+
+    <Grid>
+        
+        <!--1. for Frame, containing the Label + 2. for Map, taking the remeining space-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--define Frame and create buttons for other pages-->
+        <Frame 
+            Grid.Row="0" BackgroundColor="DimGrey" HeightRequest="70" Margin="-1,-55,-1,5" Padding="2" HorizontalOptions="FillAndExpand">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Column="0" Padding="1">
+                    <Frame 
+                        BackgroundColor="DarkBlue" Margin="5,3,15,0" Padding="2" HorizontalOptions="FillAndExpand" >
+                        <!--add four buttons in Frame-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                              
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                          
+                            <FlexLayout Grid.Column="0">
+                                <Button 
+                                    x:Name="swapDatesBut"
+                                    Clicked="swapDatesBut_Clicked"
+                                    Margin="1"
+                                    BackgroundColor="LightSkyBlue"
+                                    Text="swap throught dates"
+                                    TextColor="Black"                               
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </FlexLayout>
+                            <FlexLayout Grid.Column="1">
+                                <Button 
+                                    Clicked ="ShowWaterPins"
+                                    Margin="1"
+                                    BackgroundColor="LightSkyBlue"
+                                    Text="Waterlevel🌊"
+                                    TextColor="Black"                                 
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </FlexLayout>
+                            <FlexLayout Grid.Column="2">
+                                <Button 
+                                    Clicked="LoadRainPins"
+                                    Margin="1"
+                                    BackgroundColor="LightSkyBlue"
+                                    Text="Rainfall☂"
+                                    TextColor="Black"                               
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </FlexLayout>
+                            <FlexLayout Grid.Column="3">
+                                <Button 
+                                    Clicked="RemovePins_Clicked"
+                                    Margin="1"
+                                    BackgroundColor="IndianRed"
+                                    Text="Clear"
+                                    TextColor="Black"                                 
+                                    BorderWidth="1.5"
+                                    BorderColor="Black"/>
+                            </FlexLayout>
+                        </Grid>
+                    </Frame>
+                </StackLayout>
+
+                <FlexLayout Grid.Column="1" Padding="5">
+                    <Button
+                        x:Name="one"
+                        Clicked="GoCurrentData"
+                        Margin="4"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Current Data"
+                        TextColor="Black"
+                        WidthRequest="130"
+                        HorizontalOptions="FillAndExpand"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </FlexLayout>
+                <FlexLayout Grid.Column="2" Padding="5">
+                    <Button 
+                        x:Name="two"
+                        Clicked="GoAddData"
+                        Margin="4"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Add Data"
+                        TextColor="Black"
+                        WidthRequest="130"
+                        HorizontalOptions="FillAndExpand"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </FlexLayout>
+                <FlexLayout Grid.Column="3" Padding="5">
+                    <Button 
+                        x:Name="three"
+                        Clicked="GoHistorie"
+                        Margin="4"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Historie"
+                        TextColor="Black"
+                        WidthRequest="130"
+                        HorizontalOptions="Fill"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </FlexLayout>
+                <FlexLayout Grid.Column="4" Padding="10">
+                    <Button 
+                        x:Name="five"
+                        Clicked="GoDiagram"
+                        Margin="4"
+                        BackgroundColor="LightSkyBlue"
+                        Text="Diagram"
+                        TextColor="Black"
+                        WidthRequest="130"
+                        HorizontalOptions="Fill"
+                        BorderWidth="1.5"
+                        BorderColor="Black"/>
+                </FlexLayout>
+            </Grid>
+
+
+        </Frame>
+
+        <maps:Map x:Name="germanMap" Grid.Row="1" MapType="Hybrid" SizeChanged="SizeAdjustment"/>
+
+
+    </Grid>
+    
+
+</ContentPage>
+
