@@ -357,7 +357,7 @@ namespace Pegel_Wetter_DFFUDC
 
         private async void swapDatesBut_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new swapDates());
+           // await Navigation.PushAsync(new swapDates());
         }       
     }
 }
