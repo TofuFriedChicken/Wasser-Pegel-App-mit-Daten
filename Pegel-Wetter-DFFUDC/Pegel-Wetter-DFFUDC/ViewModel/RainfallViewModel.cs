@@ -11,32 +11,20 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using static Pegel_Wetter_DFFUDC.RainfallStation;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    public class RainfallModel
+    public class RainfallViewModel
     {
-        private readonly RainfallApi _rainfallApi;
-        public RainfallModel(RainfallApi rainfallApi)
+        public RainfallModel[] ProcessLines(string[] lines)
         {
-            _rainfallApi = rainfallApi;
-        }
-        public async Task<List<RainfallStations>> GetRainStationsAsync(string url)
-        {
-            return await _rainfallApi.GetRainStationsAsync(url);
-        }
-
-       
-        public RainfallStations[] ProcessLines(string[] lines)
-        {
-            var processedLines = lines
+            var processedLines = lines  
                 .Skip(380)
                 .Take(580)
                 .Select(line =>
                 {
                     var parts = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    return new RainfallStations
+                    return new RainfallModel
                     {
                         StationID = int.Parse(parts[0]),
                         FromDate = DateTime.ParseExact(parts[1], "yyyyMMdd", CultureInfo.InvariantCulture),
@@ -51,6 +39,7 @@ namespace Pegel_Wetter_DFFUDC
             return processedLines;
         }
     }
+
 }
 
 

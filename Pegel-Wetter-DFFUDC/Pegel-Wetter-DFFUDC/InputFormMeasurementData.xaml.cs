@@ -149,14 +149,14 @@ public partial class InputFormMeasurementData : ContentPage
 
       if (Double.TryParse(inputLonR.Text, out _) && Double.TryParse(inputLatR.Text, out _) && Double.TryParse(inputMeasurementDataR.Text, out _))
       {
-        InputRainfallData inputRainfallData = new InputRainfallData
+                RainfallModel inputRainfallData = new RainfallModel
         {
-          measurementStationName = inputMeasurementStationNameR.Text,
-          lon = Convert.ToDouble(inputLonR.Text),
-          lat = Convert.ToDouble(inputLatR.Text),
-          date = measurementDataDate,
-          information = inputInformationR.Text,
-          measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
+                    StationName = inputMeasurementStationNameR.Text,
+                    Latitude = Convert.ToDouble(inputLonR.Text),
+                    Longitude = Convert.ToDouble(inputLatR.Text),
+                    ToDate = measurementDataDate,
+          //information = inputInformationR.Text,
+         // measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
         };
       }
       else

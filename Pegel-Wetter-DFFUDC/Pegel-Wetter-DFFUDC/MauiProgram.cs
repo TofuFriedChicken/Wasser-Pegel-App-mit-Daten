@@ -27,9 +27,12 @@ namespace Pegel_Wetter_DFFUDC
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+
                 });
+
             builder.Services.AddSingleton<ModelInputintoHistory>();
-            builder.Services.AddSingleton<InputRainfallData>();
+            builder.Services.AddSingleton<RainfallModeldummy>();
+
 
 
 

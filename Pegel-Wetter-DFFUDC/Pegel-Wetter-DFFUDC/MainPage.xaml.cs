@@ -2,17 +2,18 @@ using Microsoft.Maui.Maps;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Maps;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using System.Net.NetworkInformation;
-using static Pegel_Wetter_DFFUDC.RainfallStation;
-using static Microsoft.Maui.ApplicationModel.Permissions;
+using System.IO.Compression;
+using System;
+using CommunityToolkit.Maui.Views;
+using System.Text;
+using System.Net.Http;
 using System.Reflection;
-using CsvHelper;
 
 
 //Code behind
@@ -21,11 +22,12 @@ namespace Pegel_Wetter_DFFUDC
 {
     public partial class MainPage : ContentPage
     {
-        WaterLevelModel _model;
-        public bool _visiblePinsMaybe;
-        private List<Pin> _loadedPins = new List<Pin>();    // list for the WaterPins
+        WaterLevelViewModel _model;
+        public bool _visiblePinsBoth;
+        private List<Pin> _loadedPinsW = new List<Pin>();    // list for the WaterPins
 
-        private readonly RainfallModel _rainfallModel;
+        private readonly RainfallApi _rainfallApi; 
+        private readonly RainfallViewModel _rainfallModel;
 
         public MainPage()
         {
@@ -35,14 +37,19 @@ namespace Pegel_Wetter_DFFUDC
             var mapSpan = new MapSpan(germanLocation, 90.0, 180.0);
             germanMap.MoveToRegion(mapSpan);
             SizeAdjustment(this, EventArgs.Empty);
+            _visiblePinsBoth = false;
 
-            _model = new WaterLevelModel();     // WaterLevel Pin
+            _model = new WaterLevelViewModel();     // WaterLevel Pin
             BindingContext = _model;
-            LoadWaterPins();
-            _visiblePinsMaybe = false;
+            CreateWaterPins();
 
-            // Rainfall Pin
-            _rainfallModel = new RainfallModel(new RainfallApi());
+            _rainfallApi = new RainfallApi();      // Rainfall Pin
+            _rainfallModel = new RainfallViewModel();
+
+            HistoryPage.Instance.InitializeData();  // Initialisiere die Daten der HistoryPage
+            BindingContext = HistoryPage.Instance;
+
+
 
         }
 
@@ -59,11 +66,12 @@ namespace Pegel_Wetter_DFFUDC
 
         private void OnHistoryPageClicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new HistoryPage());
+          //  Navigation.PushAsync(new HistoryPage());
+            Navigation.PushAsync(HistoryPage.Instance);
         }
 
-
-        private async void LoadWaterPins()     //  WaterLevel Pins
+        // Waterlevel Pins:
+        private async void CreateWaterPins()     
         {
             try
             { 
@@ -71,18 +79,15 @@ namespace Pegel_Wetter_DFFUDC
                 
                 foreach (var position in _model.Positions)
                 {
-                    //var key = pinData.Uuid;       
-                    //if (!_pinDataCache.Contains(key))
-                    //{
-                    //    _pinDataCache.Add(key, pinData);
-                    //}
-                    var pin = new Pin
+                
+                    var pin = new CustomPin
                     {
                         Label = position.longname,
-                        Address = position.agency, // + hier den Value von CurrentMeasurement anzeigen
+                        Address = position.agency, 
                         Location = new Location(position.latitude, position.longitude),
+                       
                     };
-                    _loadedPins.Add(pin);
+                    _loadedPinsW.Add(pin);
                 }
             }
             catch (Exception ex)
@@ -91,36 +96,70 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        private async void ShowWaterPins(object sender, EventArgs e)
+        public async void ShowWaterPins(object sender, EventArgs e)   // Complicated alternative after the eternal failure of pop-ups and mop-ups and GIFS
         {
-            foreach (var pin in _loadedPins)
+            var modalPage = new ContentPage
+            {
+                Content = new StackLayout
+                {
+                    Padding = new Thickness(60),
+                    BackgroundColor = Colors.LightBlue,
+                    Children =
+                {
+                    new ActivityIndicator { IsRunning = true, Color = Colors.Black },
+                    new Label { Text = "Keine Sorge, gleich geht es weiter. \n" +
+                    "Diese Seite sehen Sie nur solange alle Messstationen zu den deutschlandweiten Pegelständen gesetzt werden. " +
+                    "\nDas kann ein wenig dauern, wir haben alles unter Kontrolle." },
+                    new Image
+                    {
+                        Source = "loadpins.png",
+                        WidthRequest = 500, 
+                        HeightRequest = 500,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center
+                    }
+                    // Quelle: pixabay.com/vectors/map-pin-icon-map-pin-travel-1272165/
+                }
+                }
+            };
+            await Navigation.PushModalAsync(modalPage);
+
+            await Task.Delay(2000);     
+            await Navigation.PopModalAsync();
+            await WaterPins();
+
+        }
+     
+        private async Task WaterPins()
+        {
+            foreach (var pin in _loadedPinsW)
             {
 
                 germanMap.Pins.Add(pin);
-                pin.MarkerClicked += Pin_Clicked;
+                pin.MarkerClicked += WaterlevelValues_Clicked;
             }
-            _visiblePinsMaybe = true;
+            _visiblePinsBoth = true;
         }
 
-        private void Pin_Clicked(object sender, EventArgs e)
+        private async void WaterlevelValues_Clicked(object sender, EventArgs e)
         {
             var pin = sender as Pin;
             var position = _model.Positions.FirstOrDefault(p => p.latitude == pin.Location.Latitude && p.longitude == pin.Location.Longitude);
 
             var currentDate = DateTime.Now.ToString("dd.MM.yyyy");
-            var details = $"Location: {position.water.longname.ToLower()} - {position.agency.ToLower()}\n";
-            details += $"Value: {position.Timeseries[0].currentMeasurement.Value} cm \nDate: {currentDate}";
+            var details = $"\nStandort: {position.water.longname.ToLower()} - {position.agency.ToLower()}\n";
+            details += $"\nWert: {position.Timeseries[0].currentMeasurement.Value} cm \n\nDatum: {currentDate}";
 
-            DisplayAlert("Waterlevel", details, "Close");
+            await DisplayAlert("Pegelstände", details, "Ok");   
 
         }
 
         private void RemovePins_Clicked(object sender, EventArgs e)         // remove all pins
         {
-            if (_visiblePinsMaybe == true)
+            if (_visiblePinsBoth == true)
             {
                 germanMap.Pins.Clear();
-                _visiblePinsMaybe = false;
+                _visiblePinsBoth = false;
             }
             else
             {
@@ -129,35 +168,165 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        private async void ShowRainPins(object sender, EventArgs e)           // Pins Rainfall
+        // Rainfall Pins:
+        public async void LoadRainPins(object sender, EventArgs e)  //loading Page
         {
-            string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
-            var stations = await _rainfallModel.GetRainStationsAsync(url);
-            LoadRainPins(stations);
+            var modalPage = new ContentPage
+            {
+                Content = new StackLayout
+                {
+                    Padding = new Thickness(60),
+                    BackgroundColor = Colors.LightSteelBlue,
+                    Children =
+                {
+                    new ActivityIndicator { IsRunning = true, Color = Colors.Black },
+                    new Label { Text = "Keine Sorge, gleich geht es weiter. \n" +
+                    "Diese Seite sehen Sie nur solange alle Messstationen zu den deutschlandweiten Niederschlägen gesetzt werden. " +
+                    "\nGleich geht es weiter, wir haben alles unter Kontrolle." },
+                    new Image
+                    {
+                        Source = "loading_pic.PNG",
+                        WidthRequest = 500,
+                        HeightRequest = 500,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Start
+                    }
+                    // Quelle: www.pinterest.de/pin/848224911048205613
+                }
+                }
+            };
+            await Navigation.PushModalAsync(modalPage);
+
+            await Task.Delay(5000);               
+            await Navigation.PopModalAsync();
+            await RainPins();
+
+        }
+        private async Task RainPins()
+        {
+            string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/RR_Tageswerte_Beschreibung_Stationen.txt";
+            string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);  
+            var processedLines = _rainfallModel.ProcessLines(lines);
+            
+            AddPinsToMap(processedLines);
         }
 
-
-        private void LoadRainPins(List<RainfallStations> stations)
+        private void AddPinsToMap(RainfallModel[] stations)
         {
             foreach (var station in stations)
             {
                 var pin = new Pin
                 {
-                    Label = station.StationName,
-                    Address = $"High: {station.StationHight}m",
+                    Label = $"{station.StationName}, Höhe: {station.StationHight}m",
+                    Address = station.StationID.ToString(),
                     Location = new Location(station.Latitude, station.Longitude)
                 };
+                germanMap.Pins.Add(pin);
+                string StationID = station.StationID.ToString();        
+                pin.MarkerClicked += (sender, e) => RainfallValues_Clicked(sender, e, StationID);
+            }
+            _visiblePinsBoth = true;
+        }
 
-                germanMap.Pins.Add(pin); 
+        //Rainfall History - 20 Historical 
+        private async void RainfallValues_Clicked(object sender, PinClickedEventArgs e, string Station_id)
+        {
+            try
+            {
+                string baseUrl = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/";
+                string zipFileName = $"tageswerte_RR_00{Station_id}_akt.zip";            
+                string zipFileUrl = $"{baseUrl}{zipFileName}";                           
+                string localZipFilePath = DownloadZipFile(zipFileUrl, zipFileName);        
+
+                if (!File.Exists(localZipFilePath))
+                {
+                    await DisplayAlert("Keine Messungen:", "Hierzu gibt es keine aktuellen Daten", "Ok");
+                    return;
+                }
+                ExtractAndReadLastFileInZip(localZipFilePath);    
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Fehler ist aufgetreten:",$"{ex.Message}","Ok"); 
             }
         }
 
+        private string DownloadZipFile(string fileUrl, string fileName)
+        {
+            string localPath = Path.Combine(Path.GetTempPath(), fileName);
+            try
+            {
+                using (var client = new System.Net.WebClient())
+                {
+                    client.DownloadFile(fileUrl, localPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Fehler beim laden des Zip Files",$"{ex.Message}","Ok");    
+            }
+            return localPath;
+        }
+
+        public void ExtractAndReadLastFileInZip(string zipFilePath)
+        {
+            try
+            {
+                using (ZipArchive archive = ZipFile.OpenRead(zipFilePath))
+                {
+                    if (archive.Entries.Count == 0)
+                    {
+                        DisplayAlert("Fehler:","Zip Archive sind leer.","Ok"); 
+                        return;
+                    }
+                    ZipArchiveEntry lastEntry = archive.Entries[archive.Entries.Count - 1];  
+                    using (var reader = new StreamReader(lastEntry.Open()))                   
+                    {
+                        DisplayAlert($"Daten aus: ",$"{lastEntry.FullName}","Ok");
+
+                        reader.ReadLine();
+                        List<string> lastLines = new List<string>();
+                        Queue<string> lineQueue = new Queue<string>();      // List of 20 recent values
+
+                        while (reader.Peek() >= 0)
+                        {
+                            string line = reader.ReadLine();
+                            lineQueue.Enqueue(line);
+                            if (lineQueue.Count > 20) 
+                            {
+                                lineQueue.Dequeue();
+                            }
+                        }
+                        lastLines = lineQueue.ToList();
+
+                        List<string> displayMessages = new List<string>(); 
+                        foreach (string l in lastLines)  
+                        {
+                            string[] values = l.Split(';');
+                            
+                            string currentDate = values[1];     // Save current date (1 column) and RS value (3 column)
+                            string currentRSValue = values[3];
+
+                            displayMessages.Add($"Datum: {currentDate}  –  Niederschlag: {currentRSValue}");
+                        }
+                        string finalMessage = string.Join(Environment.NewLine, displayMessages);
+                        this.DisplayAlert("Niederschlag der letzten 20 Tage:", finalMessage, "Ok");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert($"Fehler beim extrahieren und lesen der Zip-Datei: ",$"{ex.Message}","Ok");
+                throw;
+            }
+    }
 
         // go to other Pages
         public async void GoCircleMode(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new ExamplePage());
         }
+
         public async void GoCurrentData(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new TestList());
@@ -188,6 +357,5 @@ namespace Pegel_Wetter_DFFUDC
         {
             await Navigation.PushAsync(new swapDates());
         }       
-
     }
 }

@@ -1,27 +1,30 @@
 ﻿using System;
+using System.Net.Http;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
-using static Pegel_Wetter_DFFUDC.WaterLevelViewModel;
+using static Pegel_Wetter_DFFUDC.Model.WaterLevelModel;
 using System.Text.Json;
 using System.Collections;
 using System.Diagnostics;
-
+using Newtonsoft.Json;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    public class WaterLevelModel 
+    public class WaterLevelViewModel
     {
         public WaterLevelApi _waterlevelApi;
         public ObservableCollection<Root> _positions;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public WaterLevelModel()
+        public WaterLevelViewModel()
         {
             _waterlevelApi = new WaterLevelApi();
         }
@@ -33,7 +36,7 @@ namespace Pegel_Wetter_DFFUDC
             set
             {
                 _positions = value;
-                //OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
         
@@ -55,8 +58,6 @@ namespace Pegel_Wetter_DFFUDC
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+
     }
 }
-
- 
-

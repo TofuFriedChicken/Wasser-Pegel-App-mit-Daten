@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Net.Http;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
+using System.Collections;
+using System.Diagnostics;
 
-namespace Pegel_Wetter_DFFUDC
+namespace Pegel_Wetter_DFFUDC.Model
 {
-    public class WaterLevelViewModel 
+    public class WaterLevelModel
     {
+        public string datatype { get; set; }
+
 
         // Root myDeserializedClass = JsonConvert.DeserializeObject<List<Root>>(myJsonResponse);
         //public class Comment
@@ -37,6 +40,8 @@ namespace Pegel_Wetter_DFFUDC
         {
             //public string uuid { get; set; }
             //public string number { get; set; }
+            public string datatype { get; set; }
+
             public string shortname { get; set; }
             public string longname { get; set; }
             //public double km { get; set; }
@@ -47,6 +52,9 @@ namespace Pegel_Wetter_DFFUDC
             public List<Timeseries> Timeseries { get; set; }
             //public List<CurrentMeasurement> timeseries { get; set; }
             public CurrentMeasurement currentMeasurement { get; set; }
+
+            public string StationDetail => $"{longname} Longitude {longitude} Latitude {latitude}";
+
         }
         public class Water
         {
