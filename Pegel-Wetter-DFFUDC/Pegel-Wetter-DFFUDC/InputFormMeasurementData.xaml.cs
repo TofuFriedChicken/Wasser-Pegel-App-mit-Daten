@@ -1,78 +1,66 @@
 
 using Pegel_Wetter_DFFUDC.Model;
+using Microsoft.Maui.Maps;
+using Microsoft.Maui.Controls.Maps;
+using Map = Microsoft.Maui.Controls.Maps.Map;
 
 namespace Pegel_Wetter_DFFUDC;
 
 public partial class InputFormMeasurementData : ContentPage
 {
+
+  //other App pages
+  MainPage mainPage = new MainPage();
+  HistoryPage historyPage = new HistoryPage();
+
+
   public InputFormMeasurementData()
   {
     InitializeComponent();
-
   }
 
+
+  // Picker for different input forms
+  string dataType = "";
   private void OnPickerSelectedIndexChanged(object sender, EventArgs e)     //source eventhandler https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/picker?view=net-maui-8.0 (last visit: 30.06.24)
   {
     var picker = (Picker)sender;
     int selectedIndex = picker.SelectedIndex;
 
-    if (selectedIndex != -1)
+    if (selectedIndex != -1)            //picker has default value -1 (= no item selected)
     {
       string selectedItem = (string)picker.ItemsSource[selectedIndex];
 
       if (selectedItem == "Pegelstand")
       {
         waterLevelForm.IsVisible = true;                      //source .IsVisible https://learn.microsoft.com/en-us/answers/questions/1160894/net-maui-how-to-show-or-hide-(-collapsed-)-content (last visit: 30.06.24)
-
         rainfallForm.IsVisible = false;
-        //waterLevelRainfallForm.IsVisible = false;
-        //measurementStationForm.IsVisible = false;
-
+        dataType = "waterlevel";
       }
       else if (selectedItem == "Niederschlag")
       {
         rainfallForm.IsVisible = true;
-
-        waterLevelForm.IsVisible = false;
-        //waterLevelRainfallForm.IsVisible = false;
-        //measurementStationForm.IsVisible = false;
-      }
-      else if (selectedItem == "Pegelstand und Niederschlag")
-      {
-        //waterLevelRainfallForm.IsVisible = true;
-
-        waterLevelForm.IsVisible = false;
-        rainfallForm.IsVisible = false;
-        //measurementStationForm.IsVisible = false;
-      }
-      else if (selectedItem == "Messstation")
-      {
-        // measurementStationForm.IsVisible = true;
-
-        waterLevelForm.IsVisible = false;
-        rainfallForm.IsVisible = false;
-        // waterLevelRainfallForm.IsVisible = false;
+        waterLevelForm.IsVisible = false; 
+        dataType = "rainfall"; 
       }
       else
       {
         waterLevelForm.IsVisible = false;
         rainfallForm.IsVisible = false;
-        //waterLevelRainfallForm.IsVisible = false;
-        //measurementStationForm.IsVisible = false;
-
       }
     }
 
   }
 
 
+  // Date Picker 
   DateTime measurementDataDate = DateTime.Today;
   public async void OnDateClicked(object sender, DateChangedEventArgs e)      //method source: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/datepicker?view=net-maui-8.0#localize-a-datepicker-on-windows, https://learn.microsoft.com/en-us/dotnet/api/microsoft.maui.controls.datechangedeventargs.-ctor?view=net-maui-8.0#microsoft-maui-controls-datechangedeventargs-ctor(system-datetime-system-datetime) and help of ChatGPT (last visit websites: 15.07.24)
   {
     DateTime selectedDate = e.NewDate;
     DateTime today = DateTime.Today;
 
-    if (selectedDate > today)
+    if (selectedDate > today)                     //check date selection
     {
       datePickerW.MaximumDate = DateTime.Today;                   //source date picker: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/controls/datepicker?view=net-maui-8.0#localize-a-datepicker-on-windows  (last visit: 15.07.24)
       datePickerR.MaximumDate = DateTime.Today;
@@ -81,10 +69,49 @@ public partial class InputFormMeasurementData : ContentPage
     else 
     {
       measurementDataDate = e.NewDate;
+    }   
+  }
+
+
+  // Add Pin for measurement station
+  public void AddPinToMap(Map map)
+  {
+    //Waterlevel Pin
+    if (waterLevelForm.IsVisible && !string.IsNullOrWhiteSpace(inputLonW.Text) && !string.IsNullOrWhiteSpace(inputLatW.Text))
+    {
+      string measurementStationName = inputMeasurementStationNameW.Text;
+      double lat = Convert.ToDouble(inputLatW.Text);
+      double lon = Convert.ToDouble(inputLonW.Text);
+      
+      var pinW = new Pin
+      {
+        Label = measurementStationName,
+        Location = new Location (lat, lon)
+      };
+
+      map.Pins.Add(pinW);
+    }
+
+    //Rainfall Pin
+    if (rainfallForm.IsVisible && !string.IsNullOrWhiteSpace(inputLonR.Text) && !string.IsNullOrWhiteSpace(inputLatR.Text))
+    {
+      string measurementStationName = inputMeasurementStationNameR.Text;
+      double lat = Convert.ToDouble(inputLatR.Text); 
+      double lon = Convert.ToDouble(inputLonR.Text);
+
+      var pinR = new Pin
+      {
+        Label = measurementStationName,
+        Location = new Location (lat, lon)
+      };
+
+      map.Pins.Add(pinR);
     }
     
   }
 
+
+  // get data from input fields
   public async void OnAddClicked(object sender, EventArgs e)
   {
     //check for valid input
@@ -106,10 +133,13 @@ public partial class InputFormMeasurementData : ContentPage
         inputMeasurementDataW.TextColor = Colors.Red;
       }
 
+
+      //get water level data
       if (Double.TryParse(inputLonW.Text, out _) && Double.TryParse(inputLatW.Text, out _) && Double.TryParse(inputMeasurementDataW.Text, out _))
       {
         InputWaterlevelData inputWaterlevelData = new InputWaterlevelData
         {
+          datatype = dataType, 
           measurementStationName = inputMeasurementStationNameW.Text,
           lon = Convert.ToDouble(inputLonW.Text),
           lat = Convert.ToDouble(inputLatW.Text),
@@ -118,10 +148,22 @@ public partial class InputFormMeasurementData : ContentPage
           measurementData = Convert.ToDouble(inputMeasurementDataW.Text)
         };
 
-        string measurementStationName = inputWaterlevelData.measurementStationName;
+        //add water level data to map and list 
+        mainPage.Appearing += (s, args) => { AddPinToMap(mainPage.Map); };        //source https://learn.microsoft.com/de-de/dotnet/api/microsoft.maui.controls.baseshellitem.appearing#microsoft-maui-controls-baseshellitem-appearing + help of ChatGPT (last visit: 27.07.24)
+        historyPage.OwnListWaterlevelData.Add(inputWaterlevelData);
 
-        //test.Text = measurementStationName;
-        test.Text = $"Selected Date: {measurementDataDate.ToString("d")}";
+			  bool alert = await DisplayAlert("Daten erfolgreich hinzugefügt.", "Wo möchtest du dir deine Daten anschauen?", "Messstation auf Karte anzeigen", "Daten in Liste anzeigen");
+
+        //select next step
+			  if (alert)
+			  {
+				  await Navigation.PushAsync(mainPage); 
+			  }  
+        else
+        {
+          await Navigation.PushAsync(historyPage);
+        }
+              
       }
       else
       {
@@ -131,6 +173,7 @@ public partial class InputFormMeasurementData : ContentPage
     }
     else if (rainfallForm.IsVisible && !string.IsNullOrWhiteSpace(inputMeasurementStationNameR.Text) && !string.IsNullOrWhiteSpace(inputLonR.Text) && !string.IsNullOrWhiteSpace(inputLatR.Text) && !string.IsNullOrWhiteSpace(inputInformationR.Text) && !string.IsNullOrWhiteSpace(inputMeasurementDataR.Text))
     {
+      //check for valid input
       if (!Double.TryParse(inputLonR.Text, out _))
       {
         inputLonR.TextColor = Colors.Red;
@@ -146,18 +189,36 @@ public partial class InputFormMeasurementData : ContentPage
         inputMeasurementDataR.TextColor = Colors.Red;
       }
 
-
+      //get rainfall data
       if (Double.TryParse(inputLonR.Text, out _) && Double.TryParse(inputLatR.Text, out _) && Double.TryParse(inputMeasurementDataR.Text, out _))
       {
-                RainfallModel inputRainfallData = new RainfallModel
+        InputRainfallData inputRainfallData = new InputRainfallData
         {
-                    StationName = inputMeasurementStationNameR.Text,
-                    Latitude = Convert.ToDouble(inputLonR.Text),
-                    Longitude = Convert.ToDouble(inputLatR.Text),
-                    ToDate = measurementDataDate,
-          //information = inputInformationR.Text,
-         // measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
+          datatype = dataType,
+          measurementStationName = inputMeasurementStationNameR.Text,
+          lon = Convert.ToDouble(inputLonR.Text),
+          lat = Convert.ToDouble(inputLatR.Text),
+          date = measurementDataDate,
+          information = inputInformationR.Text,
+          measurementData = Convert.ToDouble(inputMeasurementDataR.Text)
         };
+
+        //add rainfall data to map and list
+        mainPage.Appearing += (s, args) => { AddPinToMap(mainPage.Map); };        //source https://learn.microsoft.com/de-de/dotnet/api/microsoft.maui.controls.baseshellitem.appearing#microsoft-maui-controls-baseshellitem-appearing + help of ChatGPT (last visit: 27.07.24)
+        historyPage.OwnListRainfallData.Add(inputRainfallData);
+        
+			  bool alert = await DisplayAlert("Daten erfolgreich hinzugefügt.", "Wo möchtest du dir deine Daten anschauen?", "Messstation auf Karte anzeigen", "Daten in Liste anzeigen");
+
+        //select next step
+			  if (alert)
+			  {
+				  await Navigation.PushAsync(mainPage); 
+			  }  
+        else
+        {
+          await Navigation.PushAsync(historyPage);
+        }
+        
       }
       else
       {
@@ -168,24 +229,6 @@ public partial class InputFormMeasurementData : ContentPage
     {
       await DisplayAlert("Fehler", "Bitte trage in alle Felder Daten ein.", "Eingabe überarbeiten");    
     }
-
-
-
-
-
-
-
-    // var pinW = new Pin
-    // {
-    //   Location = new Location (inputWaterlevelData.lon, inputWaterlevelData.lat)
-    // };
-
-    // var pinR = new Pin
-    // {
-    //   Location = new Location (inputWaterlevelData.lon, inputWaterlevelData.lat)
-    // };
-
-
 
   }
 

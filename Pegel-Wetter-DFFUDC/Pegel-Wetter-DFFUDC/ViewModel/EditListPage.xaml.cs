@@ -10,7 +10,9 @@ namespace Pegel_Wetter_DFFUDC.ViewModel;
 
 public partial class EditListPage : ContentPage
 {
-    private RainfallModel selectedItem;
+    private RainfallModel RainselectedItem;
+    private WaterLevelModel.Root WaterselectedItem;
+
     ObservableCollection<ModelInputintoHistory> listHistory;
 
     public static string premeasurementStationName;
@@ -27,47 +29,107 @@ public partial class EditListPage : ContentPage
 
   //  public static double premeasurementData;
 
-    public EditListPage(RainfallModel selectedItem, ObservableCollection<ModelInputintoHistory> listHistory)
+    public EditListPage(RainfallModel selectedItemrainfall, ObservableCollection<ModelInputintoHistory> listHistory)
     {
         InitializeComponent();
-        this.selectedItem = selectedItem;
+        this.RainselectedItem = selectedItemrainfall;
         this.listHistory = listHistory;
-        BindingContext = selectedItem;
+        BindingContext = selectedItemrainfall;
  
-        premeasurementStationName = selectedItem.StationName;
+        premeasurementStationName = selectedItemrainfall.StationName;
 
-        prelon = selectedItem.Longitude;
+        prelon = selectedItemrainfall.Longitude;
 
-        prelat = selectedItem.Latitude;
+        prelat = selectedItemrainfall.Latitude;
 
     }
 
+    public EditListPage(WaterLevelModel.Root selectedItemwaterlevel, ObservableCollection<ModelInputintoHistory> listHistory)
+    {
+        InitializeComponent();
+        this.WaterselectedItem = selectedItemwaterlevel;
+        this.listHistory = listHistory;
+        BindingContext = selectedItemwaterlevel;
+
+        premeasurementStationName = selectedItemwaterlevel.longname;
+
+        prelon = selectedItemwaterlevel.longitude;
+
+        prelat = selectedItemwaterlevel.latitude;
+
+    }
+
+    DateTime measurementDataDate = DateTime.Today;
+    public async void OnDateEditClicked(object sender, DateChangedEventArgs e)
+    {
+        DateTime selectedDate = e.NewDate;
+        DateTime today = DateTime.Today;
+
+        if (selectedDate > today)
+        {
+            dateEntry.MaximumDate = DateTime.Today;
+            await DisplayAlert("Achtung!", "Dein gewähltes Datum liegt in der Zukunft! Bitte wähle ein anderes Datum, andernfalls wird das aktuelle Datum verwendet.", "Anderes Datum wählen");
+        }
+        else
+        {
+            measurementDataDate = e.NewDate;
+        }
+
+    }
 
     private void EditButtonClicked(object sender, EventArgs e)
     {
-        listHistory.Add(new ModelInputintoHistory
+        if (this.RainselectedItem!=null)
         {
-            edittype = "edited",
-            datatype = predatatype,
-            measurementStationName = premeasurementStationName,
-            lon = prelon,
-            lat = prelat,
-            date = predate,
+            listHistory.Add(new ModelInputintoHistory
+            {
+                edittype = "edited",
+                datatype = "rainfall",
+                measurementStationName = premeasurementStationName,
+                lon = prelon,
+                lat = prelat,
+                date = predate,
 
-            newmeasurementStationName = measurementStationNameEntry.Text,
-            newlon = double.Parse(lonEntry.Text),
-            newlat = double.Parse(latEntry.Text),
-            newdate = DateTime.Parse(dateEntry.Text),
-            newinformation = informationEntry.Text,
-            newmeasurementData = double.Parse(measurementDataEntry.Text)
+                newmeasurementStationName = measurementStationNameEntry.Text,
+                newlon = double.Parse(lonEntry.Text),
+                newlat = double.Parse(latEntry.Text),
+                newdate = measurementDataDate,
+                newinformation = informationEntry.Text,
+                newmeasurementData = double.Parse(measurementDataEntry.Text)
 
 
-        });
+            });
 
-        selectedItem.StationName = measurementStationNameEntry.Text;
-        selectedItem.Longitude = double.Parse(lonEntry.Text);
-        selectedItem.Latitude = double.Parse(latEntry.Text);
-        selectedItem.FromDate = DateTime.Parse(dateEntry.Text);
+            RainselectedItem.StationName = measurementStationNameEntry.Text;
+            RainselectedItem.Longitude = double.Parse(lonEntry.Text);
+            RainselectedItem.Latitude = double.Parse(latEntry.Text);
+            RainselectedItem.FromDate = measurementDataDate;
+        }
+        else if( this.WaterselectedItem != null)
+            listHistory.Add(new ModelInputintoHistory
+            {
+                edittype = "edited",
+                datatype = "waterlevel",
+                measurementStationName = premeasurementStationName,
+                lon = prelon,
+                lat = prelat,
+                date = predate,
+
+                newmeasurementStationName = measurementStationNameEntry.Text,
+                newlon = double.Parse(lonEntry.Text),
+                newlat = double.Parse(latEntry.Text),
+                newdate = measurementDataDate,
+                newinformation = informationEntry.Text,
+                newmeasurementData = double.Parse(measurementDataEntry.Text)
+
+
+            });
+
+            WaterselectedItem.longname = measurementStationNameEntry.Text;
+            WaterselectedItem.longitude = double.Parse(lonEntry.Text);
+            WaterselectedItem.latitude = double.Parse(latEntry.Text);
+        
+        
 
         Navigation.PopAsync();
     }

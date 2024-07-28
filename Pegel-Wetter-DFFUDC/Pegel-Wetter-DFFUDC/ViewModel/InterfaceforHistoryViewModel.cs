@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls;
+﻿
+using Microsoft.Maui.Controls;
 using Microsoft.VisualBasic;
 using Pegel_Wetter_DFFUDC.Model;
 using System;
@@ -14,86 +15,141 @@ namespace Pegel_Wetter_DFFUDC.ViewModel
 {
     interface InterfaceforHistoryViewModel
     {
-        public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<RainfallModel> inputrainfalldataparameter, ModelInputintoHistory selectedItem);
+        public void HistoryReturnElementrainfall(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<RainfallModel> inputrainfalldataparameter, ModelInputintoHistory selectedItem);
+        public void HistoryReturnElementwaterlevel(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<WaterLevelModel.Root> inputwaterleveldataparameter, ModelInputintoHistory selectedItem);
 
-        public void ListItemShow(ModelInputintoHistory item);
     }
 
     public class HistoryMethodClass : InterfaceforHistoryViewModel
     {
-        public ObservableCollection<ModelInputintoHistory>ListHistory { get; set; }
+        public ObservableCollection<ModelInputintoHistory> ListHistory { get; set; }
 
         public ObservableCollection<RainfallModel> ListRainfallStation { get; set; }
 
         public string MeasurementStationName { get; set; }
         public string StationDetail { get; set; }
 
-
-        async public void HistoryReturnElement(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<RainfallModel> inputrainfalldataparameter, ModelInputintoHistory selectedItemparameter)
+        public void HistoryReturnElementwaterlevel(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<WaterLevelModel.Root> inputwaterleveldataparameter, ModelInputintoHistory selectedItem)
         {
-            switch (selectedItemparameter.edittype)
+
+            switch (selectedItem.edittype)
             {
                 case "edited":
-                    listHistoryparameter.Remove(selectedItemparameter);
-                    var itemedited = inputrainfalldataparameter.FirstOrDefault(item => item.StationName == selectedItemparameter.measurementStationName);
+                    listHistoryparameter.Remove(selectedItem);
+                    var itemedited = inputwaterleveldataparameter.FirstOrDefault(item => item.longname == selectedItem.measurementStationName);
                     if (itemedited != null)
                     {
-                        inputrainfalldataparameter.Remove(itemedited);
+                        inputwaterleveldataparameter.Remove(itemedited);
                     }
 
-                    inputrainfalldataparameter.Add(new RainfallModel
+                    inputwaterleveldataparameter.Add(new WaterLevelModel.Root
                     {
-                        StationName = selectedItemparameter.measurementStationName,
-                        Longitude = selectedItemparameter.lon,
-                        Latitude = selectedItemparameter.lat,
-                        FromDate = selectedItemparameter.date,
-                   //     information = selectedItemparameter.information,
-                   //     measurementData = selectedItemparameter.measurementData
+                        longname = selectedItem.measurementStationName,
+                        longitude = selectedItem.lon,
+                        latitude = selectedItem.lat,
+                        Timestamp = selectedItem.date,
+                        //     information = selectedItemparameter.information,
+                        //     measurementData = selectedItemparameter.measurementData
                     });
                     break;
                 case "added": // in der normalen Liste sollte ein Item erscheinen welches von InputAdd geadded wird. "ListAdd() objects werden dann übertragen in List und ListHistory, wobei in ListHistory das object noch datatype hinzubekommt"
-                    var itemToRemove = inputrainfalldataparameter.FirstOrDefault(item => item.StationName == selectedItemparameter.measurementStationName);
+                    var itemToRemove = inputwaterleveldataparameter.FirstOrDefault(item => item.longname == selectedItem.measurementStationName);
                     if (itemToRemove != null)
                     {
-                        inputrainfalldataparameter.Remove(itemToRemove);
+                        inputwaterleveldataparameter.Remove(itemToRemove);
                     }
-                    /*
-                    listHistoryparameter.Remove(selectedItemparameter);
-                    inputrainfalldataparameter.Remove(new InputRainfallData
-                    {
-                        measurementStationName = selectedItemparameter.measurementStationName,
-                        lon = selectedItemparameter.lon,
-                        lat = selectedItemparameter.lat,
-                        date = selectedItemparameter.date,
-                        information = selectedItemparameter.information,
-                        measurementData = selectedItemparameter.measurementData
-                    });
-                    */
                     break;
                 case "deleted":
-                    listHistoryparameter.Remove(selectedItemparameter);
-                    inputrainfalldataparameter.Add(new RainfallModel
+                    listHistoryparameter.Remove(selectedItem);
+                    inputwaterleveldataparameter.Add(new WaterLevelModel.Root
                     {
-                        datatype = selectedItemparameter.datatype,
-                        StationName = selectedItemparameter.measurementStationName,
-                        Longitude = selectedItemparameter.lon,
-                        Latitude = selectedItemparameter.lat,
-                        FromDate = selectedItemparameter.date,
-                 //       information = selectedItemparameter.information,
-                 //       measurementData = selectedItemparameter.measurementData
+                        datatype = selectedItem.datatype,
+                        longname = selectedItem.measurementStationName,
+                        longitude = selectedItem.lon,
+                        latitude = selectedItem.lat,
+                        Timestamp = selectedItem.date,
+                        //       information = selectedItemparameter.information,
+                        //       measurementData = selectedItemparameter.measurementData
 
                     });
                     break;
                 default:
                     break;
             }
-        }                    
-      
-        public void ListItemShow(ModelInputintoHistory item)
+        }
+        async public void HistoryReturnElementrainfall(ObservableCollection<ModelInputintoHistory> listHistoryparameter, ObservableCollection<RainfallModel> inputrainfalldataparameter, ModelInputintoHistory selectedItemparameter)
         {
+            if (selectedItemparameter.datatype == "rainfall")
+            {
+                switch (selectedItemparameter.edittype)
+                {
+                    case "edited":
+                        listHistoryparameter.Remove(selectedItemparameter);
+                        var itemedited = inputrainfalldataparameter.FirstOrDefault(item => item.StationName == selectedItemparameter.measurementStationName);
+
+
+                        if (itemedited != null)
+                        {
+                            inputrainfalldataparameter.Remove(itemedited);
+                        }
+
+                        inputrainfalldataparameter.Add(new RainfallModel
+                        {
+                            StationName = selectedItemparameter.measurementStationName,
+                            Longitude = selectedItemparameter.lon,
+                            Latitude = selectedItemparameter.lat,
+                            FromDate = selectedItemparameter.date,
+                            //     information = selectedItemparameter.information,
+                            //     measurementData = selectedItemparameter.measurementData
+                        });
+                        break;
+                    case "added": // in der normalen Liste sollte ein Item erscheinen welches von InputAdd geadded wird. "ListAdd() objects werden dann übertragen in List und ListHistory, wobei in ListHistory das object noch datatype hinzubekommt"
+                        var itemToRemove = inputrainfalldataparameter.FirstOrDefault(item => item.StationName == selectedItemparameter.measurementStationName);
+                        if (itemToRemove != null)
+                        {
+                            inputrainfalldataparameter.Remove(itemToRemove);
+                        }
+                        /*
+                        listHistoryparameter.Remove(selectedItemparameter);
+                        inputrainfalldataparameter.Remove(new InputRainfallData
+                        {
+                            measurementStationName = selectedItemparameter.measurementStationName,
+                            lon = selectedItemparameter.lon,
+                            lat = selectedItemparameter.lat,
+                            date = selectedItemparameter.date,
+                            information = selectedItemparameter.information,
+                            measurementData = selectedItemparameter.measurementData
+                        });
+                        */
+                        break;
+                    case "deleted":
+                        listHistoryparameter.Remove(selectedItemparameter);
+                        inputrainfalldataparameter.Add(new RainfallModel
+                        {
+                            datatype = selectedItemparameter.datatype,
+                            StationName = selectedItemparameter.measurementStationName,
+                            Longitude = selectedItemparameter.lon,
+                            Latitude = selectedItemparameter.lat,
+                            FromDate = selectedItemparameter.date,
+                            //       information = selectedItemparameter.information,
+                            //       measurementData = selectedItemparameter.measurementData
+
+                        });
+                        break;
+                    default:
+                        break;
+
+
+                }
+
+            }
 
         }
+
+
     }
 
 
 }
+
+

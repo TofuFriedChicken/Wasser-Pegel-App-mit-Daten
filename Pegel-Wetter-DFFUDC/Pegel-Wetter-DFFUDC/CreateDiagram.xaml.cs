@@ -5,5 +5,5 @@ public partial class CreateDiagram : ContentPage
 	public CreateDiagram()
 	{
 		InitializeComponent();
-	}
+    }
 }

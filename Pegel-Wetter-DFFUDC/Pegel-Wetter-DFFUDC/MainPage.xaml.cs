@@ -14,6 +14,8 @@ using CommunityToolkit.Maui.Views;
 using System.Text;
 using System.Net.Http;
 using System.Reflection;
+using CsvHelper;
+using Map = Microsoft.Maui.Controls.Maps.Map;
 
 
 //Code behind
@@ -26,12 +28,15 @@ namespace Pegel_Wetter_DFFUDC
         public bool _visiblePinsBoth;
         private List<Pin> _loadedPinsW = new List<Pin>();    // list for the WaterPins
 
-        private readonly RainfallApi _rainfallApi; 
+        private readonly RainfallApi _rainfallApi;
         private readonly RainfallViewModel _rainfallModel;
+
+        public Map Map { get; set; }
 
         public MainPage()
         {
             InitializeComponent();
+
 
             var germanLocation = new Location(52.5200, 13.4050);     //center berlin + map adjustment
             var mapSpan = new MapSpan(germanLocation, 90.0, 180.0);
@@ -51,12 +56,15 @@ namespace Pegel_Wetter_DFFUDC
 
 
 
+            // for Pin from input form
+            Map = germanMap;
+
+
         }
 
         private void OnOpenListClicked(object sender, EventArgs e)
-
         {
-            Navigation.PushAsync(new TestList());
+            //Navigation.PushAsync(new TestList());
         }
 
         private void OnOpenInputFormClicked(object sender, EventArgs e)
@@ -66,26 +74,26 @@ namespace Pegel_Wetter_DFFUDC
 
         private void OnHistoryPageClicked(object sender, EventArgs e)
         {
-          //  Navigation.PushAsync(new HistoryPage());
+            //  Navigation.PushAsync(new HistoryPage());
             Navigation.PushAsync(HistoryPage.Instance);
         }
 
         // Waterlevel Pins:
-        private async void CreateWaterPins()     
+        private async void CreateWaterPins()
         {
             try
-            { 
+            {
                 await _model.LoadWaterLevels();
-                
+
                 foreach (var position in _model.Positions)
                 {
-                
+
                     var pin = new CustomPin
                     {
                         Label = position.longname,
-                        Address = position.agency, 
+                        Address = position.agency,
                         Location = new Location(position.latitude, position.longitude),
-                       
+
                     };
                     _loadedPinsW.Add(pin);
                 }
@@ -113,7 +121,7 @@ namespace Pegel_Wetter_DFFUDC
                     new Image
                     {
                         Source = "loadpins.png",
-                        WidthRequest = 500, 
+                        WidthRequest = 500,
                         HeightRequest = 500,
                         HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center
@@ -124,12 +132,12 @@ namespace Pegel_Wetter_DFFUDC
             };
             await Navigation.PushModalAsync(modalPage);
 
-            await Task.Delay(2000);     
+            await Task.Delay(2000);
             await Navigation.PopModalAsync();
             await WaterPins();
 
         }
-     
+
         private async Task WaterPins()
         {
             foreach (var pin in _loadedPinsW)
@@ -149,7 +157,7 @@ namespace Pegel_Wetter_DFFUDC
             var details = $"\nStandort: {position.water.longname.ToLower()} - {position.agency.ToLower()}\n";
             details += $"\nWert: {position.Timeseries[0].currentMeasurement.Value} cm \n\nDatum: {currentDate}";
 
-            await DisplayAlert("Pegelstände", details, "Ok");   
+            await DisplayAlert("Pegelstände", details, "Ok");
 
         }
 
@@ -159,11 +167,6 @@ namespace Pegel_Wetter_DFFUDC
             {
                 germanMap.Pins.Clear();
                 _visiblePinsBoth = false;
-            }
-            else
-            {
-                //Unittest
-                DisplayAlert("Information", "Nichts zum entfernen vorhanden.", "schließen");
             }
         }
 
@@ -196,7 +199,7 @@ namespace Pegel_Wetter_DFFUDC
             };
             await Navigation.PushModalAsync(modalPage);
 
-            await Task.Delay(5000);               
+            await Task.Delay(5000);
             await Navigation.PopModalAsync();
             await RainPins();
 
@@ -204,9 +207,9 @@ namespace Pegel_Wetter_DFFUDC
         private async Task RainPins()
         {
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/RR_Tageswerte_Beschreibung_Stationen.txt";
-            string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);  
+            string[] lines = await _rainfallApi.LoadFileFromUrlAsync(url);
             var processedLines = _rainfallModel.ProcessLines(lines);
-            
+
             AddPinsToMap(processedLines);
         }
 
@@ -216,12 +219,12 @@ namespace Pegel_Wetter_DFFUDC
             {
                 var pin = new Pin
                 {
-                    Label = $"{station.StationName}, Höhe: {station.StationHight}m",
+                    Label = $"{station.StationName}, H?he: {station.StationHight}m",
                     Address = station.StationID.ToString(),
                     Location = new Location(station.Latitude, station.Longitude)
                 };
                 germanMap.Pins.Add(pin);
-                string StationID = station.StationID.ToString();        
+                string StationID = station.StationID.ToString();
                 pin.MarkerClicked += (sender, e) => RainfallValues_Clicked(sender, e, StationID);
             }
             _visiblePinsBoth = true;
@@ -233,20 +236,20 @@ namespace Pegel_Wetter_DFFUDC
             try
             {
                 string baseUrl = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/";
-                string zipFileName = $"tageswerte_RR_00{Station_id}_akt.zip";            
-                string zipFileUrl = $"{baseUrl}{zipFileName}";                           
-                string localZipFilePath = DownloadZipFile(zipFileUrl, zipFileName);        
+                string zipFileName = $"tageswerte_RR_00{Station_id}_akt.zip";
+                string zipFileUrl = $"{baseUrl}{zipFileName}";
+                string localZipFilePath = DownloadZipFile(zipFileUrl, zipFileName);
 
                 if (!File.Exists(localZipFilePath))
                 {
                     await DisplayAlert("Keine Messungen:", "Hierzu gibt es keine aktuellen Daten", "Ok");
                     return;
                 }
-                ExtractAndReadLastFileInZip(localZipFilePath);    
+                ExtractAndReadLastFileInZip(localZipFilePath);
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Fehler ist aufgetreten:",$"{ex.Message}","Ok"); 
+                await DisplayAlert("Fehler ist aufgetreten:", $"{ex.Message}", "Ok");
             }
         }
 
@@ -262,7 +265,7 @@ namespace Pegel_Wetter_DFFUDC
             }
             catch (Exception ex)
             {
-                DisplayAlert("Fehler beim laden des Zip Files",$"{ex.Message}","Ok");    
+                DisplayAlert("Fehler beim laden des Zip Files", $"{ex.Message}", "Ok");
             }
             return localPath;
         }
@@ -275,13 +278,13 @@ namespace Pegel_Wetter_DFFUDC
                 {
                     if (archive.Entries.Count == 0)
                     {
-                        DisplayAlert("Fehler:","Zip Archive sind leer.","Ok"); 
+                        DisplayAlert("Fehler:", "Zip Archive sind leer.", "Ok");
                         return;
                     }
-                    ZipArchiveEntry lastEntry = archive.Entries[archive.Entries.Count - 1];  
-                    using (var reader = new StreamReader(lastEntry.Open()))                   
+                    ZipArchiveEntry lastEntry = archive.Entries[archive.Entries.Count - 1];
+                    using (var reader = new StreamReader(lastEntry.Open()))
                     {
-                        DisplayAlert($"Daten aus: ",$"{lastEntry.FullName}","Ok");
+                        DisplayAlert($"Daten aus: ", $"{lastEntry.FullName}", "Ok");
 
                         reader.ReadLine();
                         List<string> lastLines = new List<string>();
@@ -291,22 +294,22 @@ namespace Pegel_Wetter_DFFUDC
                         {
                             string line = reader.ReadLine();
                             lineQueue.Enqueue(line);
-                            if (lineQueue.Count > 20) 
+                            if (lineQueue.Count > 20)
                             {
                                 lineQueue.Dequeue();
                             }
                         }
                         lastLines = lineQueue.ToList();
 
-                        List<string> displayMessages = new List<string>(); 
-                        foreach (string l in lastLines)  
+                        List<string> displayMessages = new List<string>();
+                        foreach (string l in lastLines)
                         {
                             string[] values = l.Split(';');
-                            
+
                             string currentDate = values[1];     // Save current date (1 column) and RS value (3 column)
                             string currentRSValue = values[3];
 
-                            displayMessages.Add($"Datum: {currentDate}  –  Niederschlag: {currentRSValue}");
+                            displayMessages.Add($"Datum: {currentDate}  ?  Niederschlag: {currentRSValue}");
                         }
                         string finalMessage = string.Join(Environment.NewLine, displayMessages);
                         this.DisplayAlert("Niederschlag der letzten 20 Tage:", finalMessage, "Ok");
@@ -315,10 +318,10 @@ namespace Pegel_Wetter_DFFUDC
             }
             catch (Exception ex)
             {
-                DisplayAlert($"Fehler beim extrahieren und lesen der Zip-Datei: ",$"{ex.Message}","Ok");
+                DisplayAlert($"Fehler beim extrahieren und lesen der Zip-Datei: ", $"{ex.Message}", "Ok");
                 throw;
             }
-    }
+        }
 
         // go to other Pages
         public async void GoSwapDates(object sender, EventArgs e)
@@ -328,7 +331,7 @@ namespace Pegel_Wetter_DFFUDC
 
         public async void GoCurrentData(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new TestList());
+            //  await Navigation.PushAsync(new TestList());
         }
         private async void GoAddData(object sender, EventArgs e)
         {
@@ -350,6 +353,11 @@ namespace Pegel_Wetter_DFFUDC
             //Update Map size based on current window size
             germanMap.WidthRequest = this.Width;
             germanMap.HeightRequest = this.Height;
-        }     
+        }
+
+        private async void swapDatesBut_Clicked(object sender, EventArgs e)
+        {
+            //await Navigation.PushAsync(new swapDates());
+        }
     }
 }

@@ -6,16 +6,18 @@
 
 
     <VerticalStackLayout>
-        <Grid RowDefinitions="Auto, Auto, *, Auto" ColumnDefinitions="2*,*, *">
+        <Grid RowDefinitions="Auto, Auto, *, *, *" ColumnDefinitions="*, *">
 
-            <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="2" HorizontalOptions="Start" Margin="5" BackgroundColor="MediumPurple">
-                <Label Text="Change History"></Label>
-                <Button Text="&lt;-" Clicked="OnHistoryBackwardClick" BackgroundColor="LightGray" WidthRequest="40" />
+            <!-- Buttons zum Umschalten der Listen -->
+            <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
+                <Button Text="Rainfall Liste" Clicked="OnRainfallButtonClick" BackgroundColor="LightGray" WidthRequest="150"/>
+                <Button Text="Waterlevel Liste" Clicked="OnWaterlevelButtonClick" BackgroundColor="LightGray" WidthRequest="150"/>
+                <Button Text="Back" Clicked="OnHistoryBackwardClick" BackgroundColor="LightGray" WidthRequest="80" />
+
             </StackLayout>
 
-
-            <ListView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" ItemsSource="{Binding ListRainfallStation}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray">
-                <!--ItemSelected="OnItemSelected"-->
+            <!-- Rainfall Liste -->
+            <ListView x:Name="RainfallListView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding ListRainfallStation}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray" IsVisible="False">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -37,8 +39,8 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <ListView Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" ItemsSource="{Binding ListWaterfallStation}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray">
-                <!--ItemSelected="OnItemSelected"-->
+            <!-- Waterlevel Liste -->
+            <ListView x:Name="WaterlevelListView" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding ListWaterlevelStation}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray" IsVisible="False">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -60,13 +62,12 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <ListView x:Name="xListHistory" Grid.Row="2" Grid.Column="2" ItemsSource="{Binding ListHistory}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray">
-                <!--ItemSelected="OnItemSelected"-->
+            <!-- Historie Liste -->
+            <ListView x:Name="xListHistory" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding ListHistory}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid>
-                                
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
@@ -79,13 +80,55 @@
                                 <Label Grid.Row="0" Grid.Column="0" Text="{Binding measurementStationName}" FontAttributes="Bold" />
                                 <Label Grid.Row="1" Grid.Column="0" Text="{Binding StationDetail}" TextColor="White"/>
                             </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
+            <!-- Own Rainfall Data List -->
+            <ListView x:Name="OwnRainfallList" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OwnListRainfallData}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ownMeasurementData}" FontAttributes="Bold" BackgroundColor="DarkGray" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!-- Own Waterlevel Data List -->
+            <ListView x:Name="OwnWaterlevelList" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding OwnListWaterlevelData}" Margin="10,10,10,0" RowHeight="40" ItemSelected="ListView_ItemSelected" BackgroundColor="Gray">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ownMeasurementData}" FontAttributes="Bold" BackgroundColor="DarkGray" />
+                            </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
         </Grid>
-
     </VerticalStackLayout>
 </ContentPage>

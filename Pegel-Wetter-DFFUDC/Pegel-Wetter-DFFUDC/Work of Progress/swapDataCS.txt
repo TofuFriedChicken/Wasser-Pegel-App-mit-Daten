@@ -1,4 +1,4 @@
-using Microsoft.Maui.Controls.Maps;
+ï»¿using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Devices.Sensors;
 using Microsoft.Maui.Maps;
 using CommunityToolkit.Maui.Maps;
@@ -113,12 +113,12 @@ namespace Pegel_Wetter_DFFUDC
 
         private void UpdateTodayLabel() { DateLabel.Text = today.ToString("dddd, dd. MMMM yyyy"); /*form changeable*/}
 
-        // normal auch wieder sichtbar machen, bis 20 tage zurück, bei gewähltem Datum und WlMap_Clicked auf daten des tages springen
+        // normal auch wieder sichtbar machen, bis 20 tage zurck, bei gewhltem Datum und WlMap_Clicked auf daten des tages springen
         private async void DateBack_Clicked(object sender, EventArgs e)
         {
             if (today <= (DateTime.Today - TimeSpan.FromDays(20)))
             {
-                await DisplayAlert("Fehler", "Daten werden nur von den letzten 20 Tagen abgerufen.", "Schließen");
+                await DisplayAlert("Fehler", "Daten werden nur von den letzten 20 Tagen abgerufen.", "Schlieen");
             }
             else if (today > (DateTime.Today - TimeSpan.FromDays(20))) 
             {
@@ -136,19 +136,19 @@ namespace Pegel_Wetter_DFFUDC
             if (today == DateTime.Today)
             {
                 //Unittest
-                await DisplayAlert("Fehler", "Du bist beim aktuellen Datum angekommen.", "Schließen");
+                await DisplayAlert("Fehler", "Du bist beim aktuellen Datum angekommen.", "Schlieen");
             }
             else
             {
                 today = today.AddDays(1); //1 day to future
                 UpdateTodayLabel();
 
-                //await LoadWlPinsDate(today); //läd Pins für aktuelles datum
+                //await LoadWlPinsDate(today); //ld Pins fr aktuelles datum
                 UpdateButtonVisible(); //aktualisiert Sichtbarkeit Buttons
             }
         }
 
-        //Quelle ChatGPT 4.0, 25.07.2024; mitlerweile mehrfach verändert
+        //Quelle ChatGPT 4.0, 25.07.2024; mitlerweile mehrfach verndert
         public async Task ShowLoadingPopup(Func<Task> loadedFunction)
         {
             //Popup Ladefenster definiert
@@ -176,9 +176,9 @@ namespace Pegel_Wetter_DFFUDC
             WlPinsVisible = false;
             UpdateButtonVisible();
 
-            await ShowLoadingPopup(async () => //soll Ladefenster öffnen
+            await ShowLoadingPopup(async () => //soll Ladefenster ffnen
             {
-                await AddPinsRainfall(); //fügt geladene pins aus API in Liste hinzu, Läd bis Funktion beendet
+                await AddPinsRainfall(); //fgt geladene pins aus API in Liste hinzu, Ld bis Funktion beendet
             }); 
         }
 
@@ -189,8 +189,8 @@ namespace Pegel_Wetter_DFFUDC
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/historical/RR_Tageswerte_Beschreibung_Stationen.txt";
             string[] lines = await RfApi.LoadFileFromUrlAsync(url); //Array von Arrays sinvoller oder Liste
 
-            //übergibt stationenarray an Methode, läd informationen in Liste aus stationen
-            LoadRainPins(RfViewModel.ProcessLines(lines)); 
+            //bergibt stationenarray an Methode, ld informationen in Liste aus stationen
+            LoadRainPins(RfModel.ProcessLines(lines)); 
         }
         
         private void LoadRainPins(RainfallModel[] stations)
@@ -202,7 +202,7 @@ namespace Pegel_Wetter_DFFUDC
 
             if (stations == null)
             {
-                DisplayAlert("Fehler", "Die Liste ist leer. Daten können nicht ausgegeben werden", "Ok");
+                DisplayAlert("Fehler", "Die Liste ist leer. Daten knnen nicht ausgegeben werden", "Ok");
                 return;
             }
             else if (stations != null) 
@@ -230,7 +230,7 @@ namespace Pegel_Wetter_DFFUDC
                     RfPin.MarkerClicked += (sender, e) => mainPage.RainfallValues_Clicked(sender, e, StationID);
                 }
 
-                foreach (var RfPin in RfPinslist) //Fehler, hängt sich mit haltepunkten auf, reagiert nivht mehr
+                foreach (var RfPin in RfPinslist) //Fehler, hngt sich mit haltepunkten auf, reagiert nivht mehr
                 {
                     MyMap_Test.Pins.Add(RfPin);   // Zeigt Pins nicht an
                 }
@@ -243,13 +243,12 @@ namespace Pegel_Wetter_DFFUDC
             foreach (var pin in RfPinslist)
             {
                 if (pin != null) 
-                {
-                    var clickedPin = RfPinslist.FirstOrDefault(pin => pin != null);
-                    var details = $"Ort: {StationID} \n" +
-                                  $"Wert: 'Wert einfügen' cm \n" +    //nicht vollständig
-                                  $"Datum: {today}";
+                { 
+                    var details = $"Location: {pin.Address} \n" +
+                              $"Value: 'Wert einfgen'  cm \n" +    //nicht vollstndig
+                              $"Date: {today}";
 
-                   DisplayAlert("Waterlevelstation", details, "Schließen"); //deatils nicht korrekt ausgegeben
+                    DisplayAlert("Waterlevelstation", details, "Schlieen"); //deatils nicht korrekt ausgegeben
                 }
             }
         }
@@ -261,12 +260,12 @@ namespace Pegel_Wetter_DFFUDC
             WlPinsVisible = true;
             UpdateButtonVisible();
 
-            //zeigt Ladefenster solange (() => {Funktion}) läd     Lambda = (parameters) =>"goes to" {expression_or_statement_block} -> zum schreiben anonymer Funktionen (= Funktionen ohne Name, die gleich definiert werden, oft einmalig/kurzfristig)
+            //zeigt Ladefenster solange (() => {Funktion}) ld     Lambda = (parameters) =>"goes to" {expression_or_statement_block} -> zum schreiben anonymer Funktionen (= Funktionen ohne Name, die gleich definiert werden, oft einmalig/kurzfristig)
             
             await ShowLoadingPopup(async () =>
             {   /* sollte aktuelles datum abfragen und aktualisieren*/
 
-                //fügt geladene pins aus API in Liste hinzu
+                //fgt geladene pins aus API in Liste hinzu
                 await AddPinsWaterlevel();
 
             });
@@ -289,7 +288,7 @@ namespace Pegel_Wetter_DFFUDC
 
                 if (WlViewModel.Positions == null)
                 {
-                    await DisplayAlert("Fehler", "Die Liste ist leer. Daten können nicht ausgegeben werden", "Ok");
+                    await DisplayAlert("Fehler", "Die Liste ist leer. Daten knnen nicht ausgegeben werden", "Ok");
                     return;
                 }
                
@@ -314,9 +313,9 @@ namespace Pegel_Wetter_DFFUDC
                     MyMap_Test.Pins.Add(pin);
                 }
             }
-            catch (Exception ex) { await DisplayAlert("Ladefehler", "Pins konnten nicht geladen werden \n" + ex.Message, "schließen"); }
+            catch (Exception ex) { await DisplayAlert("Ladefehler", "Pins konnten nicht geladen werden \n" + ex.Message, "schlieen"); }
 
-            // Pins zur Karte hinzufügen
+            // Pins zur Karte hinzufgen
             foreach (var WlPin in WlPinslist) 
             {
                 MyMap_Test.Pins.Add(WlPin);
@@ -336,7 +335,7 @@ namespace Pegel_Wetter_DFFUDC
             {
                 if (WlModel.Positions == null || WlModel.Positions.Count == 0)
                 {
-                    await DisplayAlert("Fehler", "Keine Daten für das ausgewählte Datum verfügbar.", "Ok");
+                    await DisplayAlert("Fehler", "Keine Daten fr das ausgewhlte Datum verfgbar.", "Ok");
                     return;
                 }
                 else if (WlModel.Positions != null)
@@ -357,10 +356,10 @@ namespace Pegel_Wetter_DFFUDC
                     }
                 }
             }
-            catch (Exception ex) { await DisplayAlert("Ladefehler", "Pins konnten nicht geladen werden \n" + ex.Message, "schließen"); }
+            catch (Exception ex) { await DisplayAlert("Ladefehler", "Pins konnten nicht geladen werden \n" + ex.Message, "schlieen"); }
 
 
-            // Pins zur Karte hinzufügen
+            // Pins zur Karte hinzufgen
             foreach (var WlPin in WlPinslist)
             {
                 MyMap_Test.Pins.Add(WlPin);
@@ -381,7 +380,7 @@ namespace Pegel_Wetter_DFFUDC
                     var details = $"Standort: {position.latitude} + {position.longitude} \n" +
                                   $"Wert: {position.currentMeasurement.Value} cm \nDatum: {position.currentMeasurement.Timestamp}";
 
-                    DisplayAlert("Waterlevelstation", details, "Schließen");
+                    DisplayAlert("Waterlevelstation", details, "Schlieen");
                 }
             }
         }

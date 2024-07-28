@@ -43,8 +43,8 @@ namespace Pegel_Wetter_DFFUDC.Model
             measurementStationName = waterLevelData.shortname;
             lon = waterLevelData.longitude;
             lat = waterLevelData.latitude;
-            date = waterLevelData.currentMeasurement.Timestamp;
-            measurementData = waterLevelData.currentMeasurement.Value;
+            date = waterLevelData.Timestamp;
+           // measurementData = waterLevelData.currentMeasurement;
             information = $"{waterLevelData.longname}, {waterLevelData.agency}";
 
 
@@ -55,8 +55,8 @@ namespace Pegel_Wetter_DFFUDC.Model
                 measurementStationName = waterLevelData.shortname,
                 lon = waterLevelData.longitude,
                 lat = waterLevelData.latitude,
-                date = waterLevelData.currentMeasurement.Timestamp,
-                measurementData = waterLevelData.currentMeasurement.Value,
+                date = waterLevelData.Timestamp,
+            //    measurementData =waterLevelData.currentMeasurement,
                 information = $"{waterLevelData.longname}, {waterLevelData.agency}"
             });
 

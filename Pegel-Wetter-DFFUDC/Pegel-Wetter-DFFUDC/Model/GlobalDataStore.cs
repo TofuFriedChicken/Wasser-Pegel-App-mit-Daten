@@ -40,6 +40,8 @@ namespace Pegel_Wetter_DFFUDC.Model
               new RainfallModel {datatype = "rainfall", StationName = "Alice", Longitude = 4, Latitude = 256},
               new RainfallModel {datatype = "rainfall", StationName = "Alice", Longitude = 4, Latitude = 256},
               new RainfallModel {datatype = "rainfall", StationName = "hehe2", Longitude = 3, Latitude = 123},
+              new RainfallModel {datatype = "rainfall", StationName = "hehe2", Longitude = 3, Latitude = 123},
+
         };
 
             ListWaterlevelStation = new ObservableCollection<WaterLevelModel.Root>
@@ -55,11 +57,6 @@ namespace Pegel_Wetter_DFFUDC.Model
             {
                 new ModelInputintoHistory{edittype = "added",datatype = "waterfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
                 new ModelInputintoHistory{edittype = "edited",datatype = "waterfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
-                new ModelInputintoHistory{edittype = "added",datatype = "rainfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
-                new ModelInputintoHistory{edittype = "deleted",datatype = "rainfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
-                new ModelInputintoHistory{edittype = "added",datatype = "waterfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
-                new ModelInputintoHistory{edittype = "edited",datatype = "rainfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
-                new ModelInputintoHistory{edittype = "added",datatype = "waterfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
                 new ModelInputintoHistory{edittype = "deleted",datatype = "rainfall", measurementStationName = "Alice", lon = 22, lat = 123, measurementData =123, information = "angaben"},
 
             };

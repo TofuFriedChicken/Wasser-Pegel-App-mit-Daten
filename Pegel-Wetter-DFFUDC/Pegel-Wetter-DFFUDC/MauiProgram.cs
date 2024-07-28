@@ -26,9 +26,10 @@ namespace Pegel_Wetter_DFFUDC
                 });
 
             builder.Services.AddSingleton<ModelInputintoHistory>();
-            builder.Services.AddSingleton<RainfallModeldummy>();
 
-            builder.Services.AddTransient<swapDates>();
+
+
+          //  builder.Services.AddTransient<swapDates>();
             
 #if DEBUG
             builder.Logging.AddDebug();
