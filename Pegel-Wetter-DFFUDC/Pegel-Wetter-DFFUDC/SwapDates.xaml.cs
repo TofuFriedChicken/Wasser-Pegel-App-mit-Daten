@@ -26,9 +26,10 @@ using System.Linq;
 
 namespace Pegel_Wetter_DFFUDC
 {
-    /*
+
     public partial class swapDates : ContentPage
-    {
+    { }
+    /*{
         //Quelle für alles, wenn nicht anders angegeben: Microsoft Documentation
 
         private DateTime today = DateTime.Today;
