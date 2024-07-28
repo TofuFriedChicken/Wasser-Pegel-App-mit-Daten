@@ -84,7 +84,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="ViewModel\DetailPage.xaml">
+	  <Compile Update="ViewModel\DetailPageRain.xaml.cs">
+	    <DependentUpon>DetailPageRain.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="ViewModel\DetailPageRain.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ViewModel\DetailPageWater.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ViewModel\EditListPage.xaml">
