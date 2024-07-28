@@ -49,18 +49,10 @@ public partial class HistoryPage : ContentPage
         BindingContext = this;
 
         //Lists from input form data
-        OwnListRainfallData = new ObservableCollection<InputRainfallData>
-        {
-            new InputRainfallData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
-        };
-        OwnListWaterlevelData = new ObservableCollection<InputWaterlevelData>
-        {
-            new InputWaterlevelData { datatype="rainfall", measurementStationName = "Alice", lon=4, lat=256, information="6", measurementData=2},
-        };
-
-
-
-
+        OwnListRainfallData = new ObservableCollection<InputRainfallData>();
+        
+        OwnListWaterlevelData = new ObservableCollection<InputWaterlevelData>();
+       
 
         InitializeComponent();
 

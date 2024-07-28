@@ -14,4 +14,12 @@ public class InputRainfallData : IMeasurementData
 
     public double measurementData { get; set; }
 
+     public string ownMeasurementData 
+    {
+        get 
+        {
+            return $"Niederschlag | Messstation: {measurementStationName} | Datum: {date:yyyy-MM-dd} | Informationen: {information} | Wert: {measurementData}mm";
+        }
+    }
+
 }

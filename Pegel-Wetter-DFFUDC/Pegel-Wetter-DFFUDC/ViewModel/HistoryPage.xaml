@@ -100,8 +100,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding measurementStationName}" FontAttributes="Bold" BackgroundColor="DarkGray" />
-                                <Label Grid.Row="1" Grid.Column="0" Text="{Binding StationDetail}" TextColor="White"/>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ownMeasurementData}" FontAttributes="Bold" BackgroundColor="DarkGray" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
@@ -123,8 +122,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding measurementStationName}" FontAttributes="Bold" BackgroundColor="DarkGray" />
-                                <Label Grid.Row="1" Grid.Column="0" Text="{Binding StationDetail}" TextColor="White"/>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding ownMeasurementData}" FontAttributes="Bold" BackgroundColor="DarkGray" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

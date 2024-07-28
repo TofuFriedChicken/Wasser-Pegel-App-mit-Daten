@@ -12,4 +12,12 @@ public class InputWaterlevelData : IMeasurementData
   public string information { get; set; }
 
   public double measurementData { get; set; }
+
+  public string ownMeasurementData 
+    {
+        get 
+        {
+            return $"Pegelstand | Messstation: {measurementStationName} | Datum: {date:yyyy-MM-dd} | Informationen: {information} | Wert: {measurementData}cm";
+        }
+    }
 }
