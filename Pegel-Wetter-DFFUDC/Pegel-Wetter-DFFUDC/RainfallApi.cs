@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using static Pegel_Wetter_DFFUDC.RainfallStation;
 using System.Globalization;
 using Microsoft.Maui.Controls.Maps;
 using System.Diagnostics;
@@ -24,7 +23,6 @@ namespace Pegel_Wetter_DFFUDC
             var content = await response.Content.ReadAsStringAsync();
             return content.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
         }
-
     }
 }
 

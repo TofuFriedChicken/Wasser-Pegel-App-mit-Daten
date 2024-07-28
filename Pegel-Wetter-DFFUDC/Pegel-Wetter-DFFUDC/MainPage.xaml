@@ -41,11 +41,10 @@
                                 <ColumnDefinition Width="3*"/>
                                 <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-                          
+
                             <FlexLayout Grid.Column="0">
-                                <Button 
-                                    x:Name="swapDatesBut"
-                                    Clicked="swapDatesBut_Clicked"
+                                <Button
+                                    Clicked="GoSwapDates"
                                     Margin="1"
                                     BackgroundColor="LightSkyBlue"
                                     Text="swap throught dates"

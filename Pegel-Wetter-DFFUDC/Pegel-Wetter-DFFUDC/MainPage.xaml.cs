@@ -134,7 +134,6 @@ namespace Pegel_Wetter_DFFUDC
         {
             foreach (var pin in _loadedPinsW)
             {
-
                 germanMap.Pins.Add(pin);
                 pin.MarkerClicked += WaterlevelValues_Clicked;
             }
@@ -229,7 +228,7 @@ namespace Pegel_Wetter_DFFUDC
         }
 
         //Rainfall History - 20 Historical 
-        private async void RainfallValues_Clicked(object sender, PinClickedEventArgs e, string Station_id)
+        public async void RainfallValues_Clicked(object sender, PinClickedEventArgs e, string Station_id)
         {
             try
             {
@@ -322,9 +321,9 @@ namespace Pegel_Wetter_DFFUDC
     }
 
         // go to other Pages
-        public async void GoCircleMode(object sender, EventArgs e)
+        public async void GoSwapDates(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new ExamplePage());
+            await Navigation.PushAsync(new swapDates());
         }
 
         public async void GoCurrentData(object sender, EventArgs e)
@@ -351,11 +350,6 @@ namespace Pegel_Wetter_DFFUDC
             //Update Map size based on current window size
             germanMap.WidthRequest = this.Width;
             germanMap.HeightRequest = this.Height;
-        }
-
-        private async void swapDatesBut_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new swapDates());
-        }       
+        }     
     }
 }

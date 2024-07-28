@@ -7,10 +7,10 @@ using CommunityToolkit.Maui;
 using static Pegel_Wetter_DFFUDC.swapDates;
 using Map = Microsoft.Maui.Controls.Maps.Map;
 using EventArgs = System.EventArgs;
-using static Pegel_Wetter_DFFUDC.RainfallStation;
 using static Pegel_Wetter_DFFUDC.RainfallApi;
-using static Pegel_Wetter_DFFUDC.WaterLevelModel;
+using static Pegel_Wetter_DFFUDC.RainfallModel;
 using static Pegel_Wetter_DFFUDC.WaterLevelViewModel;
+using static Pegel_Wetter_DFFUDC.MainPage;
 using CommunityToolkit.Maui.Views;
 using System;
 using LiveChartsCore.Behaviours.Events;
@@ -35,21 +35,26 @@ namespace Pegel_Wetter_DFFUDC
         private DateTime date;
 
         private bool WlPinsVisible = false;
+
+        MainPage mainPage = new MainPage();
+        
+        //Rf
+
+        RainfallModel RfModel = new RainfallModel();
+        RainfallViewModel RfViewModel = new RainfallViewModel();
+        RainfallApi RfApi = new RainfallApi(); //Api Key
+
+        
+        private List<Pin> RfPinslist = new List<Pin>();
+        string[] lines = { };
         
 
         //Wl
-        WaterLevelModel WlModel = new WaterLevelModel();
+
         WaterLevelViewModel WlViewModel = new WaterLevelViewModel();
+
         private List<Pin> WlPinslist = new List<Pin>();
         
-
-        //Rf Stationen 
-        RainfallModel RfModel = new RainfallModel(new RainfallApi()); //Api Key
-        RainfallApi RfApi = new RainfallApi();
-        RainfallStations RfStations = new RainfallStations();
-        private List<Pin> RfPinslist = new List<Pin>();
-
-        string[] lines = { };
 
         public swapDates()
         {
@@ -79,8 +84,6 @@ namespace Pegel_Wetter_DFFUDC
             //MyMap_Test.Pins.Add(testpin);
 
             UpdateTodayLabel(); //current date 
-
-            RfStations = new RainfallStations();
 
             UpdateButtonVisible(); // Initial call to set button visibility
             
@@ -179,7 +182,7 @@ namespace Pegel_Wetter_DFFUDC
             }); 
         }
 
-        //getRainfall in Liste -> lines(array)
+        /**/
         private async Task AddPinsRainfall()
         {
             //fragt stationen ab
@@ -187,12 +190,11 @@ namespace Pegel_Wetter_DFFUDC
             string[] lines = await RfApi.LoadFileFromUrlAsync(url); //Array von Arrays sinvoller oder Liste
 
             //¸bergibt stationenarray an Methode, l‰d informationen in Liste aus stationen
-            LoadRainPins(RfModel.ProcessLines(lines)); 
+            LoadRainPins(RfViewModel.ProcessLines(lines)); 
         }
-
-        private void LoadRainPins(RainfallStations[] stations)
+        
+        private void LoadRainPins(RainfallModel[] stations)
         {
-
             MyMap_Test.Pins.Clear();
             RfPinslist.Clear();
 
@@ -218,46 +220,38 @@ namespace Pegel_Wetter_DFFUDC
                                 $"Date: {station.FromDate} to {station.ToDate},\n" +
                                 $"High: {station.StationHight}m,\n",
                         Address = station.StationID.ToString(),
-                        Location = new Location(station.Latitude, station.Longitude) 
+                        Location = new Location(station.Latitude, station.Longitude)
                     };
 
                     //MyMap_Test.Pins.Add(RfPin);
                     RfPinslist.Add(RfPin);
-                }
 
-                /*
-                if (stations.Length > 0)
-                {
-                    var RfPinLocation = new Location(stations[0].Latitude, stations[0].Longitude);
-                    MyMap_Test.MoveToRegion(MapSpan.FromCenterAndRadius(RfPinLocation, Distance.FromKilometers(100)));
-
+                    string StationID = station.StationID.ToString();
+                    RfPin.MarkerClicked += (sender, e) => mainPage.RainfallValues_Clicked(sender, e, StationID);
                 }
-                */
 
                 foreach (var RfPin in RfPinslist) //Fehler, h‰ngt sich mit haltepunkten auf, reagiert nivht mehr
                 {
                     MyMap_Test.Pins.Add(RfPin);   // Zeigt Pins nicht an
-                    //RfPin.MarkerClicked += RfPin_Clicked(RfPin, RfPin.MarkerClicked); //jeder Pin ein Clickevent
                 }
             } 
         }
 
-        // Anzeige fehlerhaft, nicht vorhanden
-        private void RfPin_Clicked(object sender, PinClickedEventArgs e) //Anzeige wenn auf Pin geklickt
+        // Anzeige fehlerhaft, nicht vorhanden, daher Methode von Sophie
+        private void RfPin_Clicked(object sender, PinClickedEventArgs e, string StationID) //Anzeige wenn auf Pin geklickt
         {
-            //var station = RainfallStations.station;
             foreach (var pin in RfPinslist)
             {
                 if (pin != null) 
-                { 
-                    var details = $"Location: {pin.Address} \n" +
-                              $"Value: 'Wert einf¸gen'  cm \n" +    //nicht vollst‰ndig
-                              $"Date: {today}";
+                {
+                    var clickedPin = RfPinslist.FirstOrDefault(pin => pin != null);
+                    var details = $"Ort: {StationID} \n" +
+                                  $"Wert: 'Wert einf¸gen' cm \n" +    //nicht vollst‰ndig
+                                  $"Datum: {today}";
 
-                    DisplayAlert("Waterlevelstation", details, "Schlieﬂen"); //deatils nicht korrekt ausgegeben
+                   DisplayAlert("Waterlevelstation", details, "Schlieﬂen"); //deatils nicht korrekt ausgegeben
                 }
             }
-            
         }
 
 
@@ -283,6 +277,7 @@ namespace Pegel_Wetter_DFFUDC
             await LoadWaterPins();
         }
 
+        /**/
         private async Task LoadWaterPins()
         {
             //testwerte
@@ -290,9 +285,9 @@ namespace Pegel_Wetter_DFFUDC
 
             try
             {
-                await WlModel.LoadWaterLevels();
+                await WlViewModel.LoadWaterLevels();
 
-                if (WlModel.Positions == null)
+                if (WlViewModel.Positions == null)
                 {
                     await DisplayAlert("Fehler", "Die Liste ist leer. Daten kˆnnen nicht ausgegeben werden", "Ok");
                     return;
@@ -300,7 +295,7 @@ namespace Pegel_Wetter_DFFUDC
                
                 WlPinslist.Clear();
 
-                foreach (var position in WlModel.Positions) //fehler in deklarierung
+                foreach (var position in WlViewModel.Positions) //fehler in deklarierung
                 {
                     //erstellt Pins und speichert sie in Liste
                     Pin WlPin = new Pin
@@ -318,8 +313,6 @@ namespace Pegel_Wetter_DFFUDC
                 {
                     MyMap_Test.Pins.Add(pin);
                 }
-
-
             }
             catch (Exception ex) { await DisplayAlert("Ladefehler", "Pins konnten nicht geladen werden \n" + ex.Message, "schlieﬂen"); }
 
@@ -328,17 +321,16 @@ namespace Pegel_Wetter_DFFUDC
             {
                 MyMap_Test.Pins.Add(WlPin);
             }
-
         }
 
+        /*
         //zeigt Pins nicht an
         private async Task LoadWlPinsDate(DateTime date)
         {
-
             MyMap_Test.Pins.Clear();
             WlPinslist.Clear();
 
-            await WlModel.LoadWaterLevelForDate(date); //Datum abfrage von Sophie
+            await WlViewModel.LoadWaterLevels(); //Datum abfrage von Sophie
 
             try
             {
@@ -373,7 +365,7 @@ namespace Pegel_Wetter_DFFUDC
             {
                 MyMap_Test.Pins.Add(WlPin);
             }
-        }
+        }*/
 
         private void WlPin_Clicked(object sender, PinClickedEventArgs e)
         {
@@ -381,12 +373,13 @@ namespace Pegel_Wetter_DFFUDC
 
             if (sender is Pin pin)
             {
-                var position = WlModel.Positions.FirstOrDefault(p => p.latitude == pin.Location.Latitude && p.longitude == pin.Location.Longitude);
+                var position = WlViewModel.Positions.FirstOrDefault(p => p.latitude == pin.Location.Latitude && p.longitude == pin.Location.Longitude);
                 
                 if (position != null)
                 {
-                    var details = $"Location: {position.latitude} + {position.longitude} \n" +
-                              $"Value: {position.currentMeasurement.Value} cm \nDate: {position.currentMeasurement.Timestamp}";
+                    var currentDate = DateTime.Now.ToString("dd.MM.yyyy");
+                    var details = $"Standort: {position.latitude} + {position.longitude} \n" +
+                                  $"Wert: {position.currentMeasurement.Value} cm \nDatum: {position.currentMeasurement.Timestamp}";
 
                     DisplayAlert("Waterlevelstation", details, "Schlieﬂen");
                 }

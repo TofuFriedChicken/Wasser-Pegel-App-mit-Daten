@@ -47,12 +47,6 @@ namespace Pegel_Wetter_DFFUDC
             Positions = new ObservableCollection<Root>(waterLevels);
         }
 
-        public async Task LoadWaterLevelForDate(DateTime date)
-        {
-            var waterlevels = await _waterlevelApi.GetWaterLevelsForDateAsync(date);
-            Positions = new ObservableCollection<Root>(waterlevels);
-        }
-
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
