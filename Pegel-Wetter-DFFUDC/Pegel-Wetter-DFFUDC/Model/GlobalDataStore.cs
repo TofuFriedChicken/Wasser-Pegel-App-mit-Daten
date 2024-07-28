@@ -42,16 +42,16 @@ namespace Pegel_Wetter_DFFUDC.Model
               new RainfallModel {datatype = "rainfall", StationName = "hehe2", Longitude = 3, Latitude = 123},
               new RainfallModel {datatype = "rainfall", StationName = "hehe2", Longitude = 3, Latitude = 123},
 
-        };
+            };
 
             ListWaterlevelStation = new ObservableCollection<WaterLevelModel.Root>
-        {
+            {
               new WaterLevelModel.Root{datatype="waterlevel", longname = "hehe", longitude = 3, latitude = 123},
               new WaterLevelModel.Root{datatype="waterlevel", longname = "hehe", longitude = 3, latitude = 123},
               new WaterLevelModel.Root{datatype="waterlevel", longname = "hehe", longitude = 3, latitude = 123},
 
 
-        };
+            };
 
             ListHistory = new ObservableCollection<ModelInputintoHistory>()
             {

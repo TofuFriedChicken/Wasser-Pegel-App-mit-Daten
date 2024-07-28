@@ -26,10 +26,13 @@ namespace Pegel_Wetter_DFFUDC
     {
         WaterLevelViewModel _model;
         public bool _visiblePinsBoth;
-        private List<Pin> _loadedPinsW = new List<Pin>();    // list for the WaterPins
+        public List<Pin> _loadedPinsW = new List<Pin>();    // list for the WaterPins
 
         private readonly RainfallApi _rainfallApi;
         private readonly RainfallViewModel _rainfallModel;
+
+        //Liste für Johanna
+        public List<CustomPin> LoadedPinsW { get { return _loadedPinsW; } }
 
         public Map Map { get; set; }
 
@@ -131,11 +134,9 @@ namespace Pegel_Wetter_DFFUDC
                 }
             };
             await Navigation.PushModalAsync(modalPage);
-
             await Task.Delay(2000);
-            await Navigation.PopModalAsync();
             await WaterPins();
-
+            await Navigation.PopModalAsync();
         }
 
         private async Task WaterPins()
@@ -198,12 +199,11 @@ namespace Pegel_Wetter_DFFUDC
                 }
             };
             await Navigation.PushModalAsync(modalPage);
-
             await Task.Delay(5000);
-            await Navigation.PopModalAsync();
             await RainPins();
-
+            await Navigation.PopModalAsync();
         }
+
         private async Task RainPins()
         {
             string url = "https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/more_precip/recent/RR_Tageswerte_Beschreibung_Stationen.txt";
@@ -219,7 +219,7 @@ namespace Pegel_Wetter_DFFUDC
             {
                 var pin = new Pin
                 {
-                    Label = $"{station.StationName}, H?he: {station.StationHight}m",
+                    Label = $"{station.StationName}, Höhe: {station.StationHight}m",
                     Address = station.StationID.ToString(),
                     Location = new Location(station.Latitude, station.Longitude)
                 };
@@ -270,6 +270,8 @@ namespace Pegel_Wetter_DFFUDC
             return localPath;
         }
 
+        public string currentRSValue { get; private set; }
+
         public void ExtractAndReadLastFileInZip(string zipFilePath)
         {
             try
@@ -309,7 +311,7 @@ namespace Pegel_Wetter_DFFUDC
                             string currentDate = values[1];     // Save current date (1 column) and RS value (3 column)
                             string currentRSValue = values[3];
 
-                            displayMessages.Add($"Datum: {currentDate}  ?  Niederschlag: {currentRSValue}");
+                            displayMessages.Add($"Datum: {currentDate}  -  Niederschlag: {currentRSValue}");
                         }
                         string finalMessage = string.Join(Environment.NewLine, displayMessages);
                         this.DisplayAlert("Niederschlag der letzten 20 Tage:", finalMessage, "Ok");
@@ -326,13 +328,14 @@ namespace Pegel_Wetter_DFFUDC
         // go to other Pages
         public async void GoSwapDates(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new swapDates());
-            await DisplayAlert("Fehler", "SwapDates ist noch in der Beabeitung. Wir bitten um Verständnis.", "Schließen");
+            await Navigation.PushAsync(new swapDates());
+            //await DisplayAlert("Fehler", "Diese Seite ist noch in der Beabeitung. Wir bitten um Verständnis.", "Schließen");
         }
 
         public async void GoCurrentData(object sender, EventArgs e)
         {
-            //  await Navigation.PushAsync(new TestList());
+            //await Navigation.PushAsync(new TestList());
+            await DisplayAlert("Fehler", "Diese Seite ist noch in der Beabeitung. Wir bitten um Verständnis.", "Schließen");
         }
         private async void GoAddData(object sender, EventArgs e)
         {
