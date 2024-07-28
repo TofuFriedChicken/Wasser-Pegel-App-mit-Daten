@@ -32,7 +32,7 @@ namespace Pegel_Wetter_DFFUDC
         private readonly RainfallViewModel _rainfallModel;
 
         //Liste für Johanna
-        public List<CustomPin> LoadedPinsW { get { return _loadedPinsW; } }
+        //public List<CustomPin> LoadedPinsW { get { return _loadedPinsW; } }
 
         public Map Map { get; set; }
 
@@ -328,8 +328,8 @@ namespace Pegel_Wetter_DFFUDC
         // go to other Pages
         public async void GoSwapDates(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new swapDates());
-            //await DisplayAlert("Fehler", "Diese Seite ist noch in der Beabeitung. Wir bitten um Verständnis.", "Schließen");
+            //await Navigation.PushAsync(new swapDates());
+            await DisplayAlert("Fehler", "Diese Seite ist momentan fehlerhaft. Der Code ist vorhanden. Wir bitten um Verständnis.", "Schließen");
         }
 
         public async void GoCurrentData(object sender, EventArgs e)

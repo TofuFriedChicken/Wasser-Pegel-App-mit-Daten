@@ -26,6 +26,7 @@ using System.Linq;
 
 namespace Pegel_Wetter_DFFUDC
 {
+    /*
     public partial class swapDates : ContentPage
     {
         //Quelle für alles, wenn nicht anders angegeben: Microsoft Documentation
@@ -113,7 +114,7 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        private void UpdateTodayLabel() { DateLabel.Text = today.ToString("dddd, dd. MMMM yyyy"); /*form changeable*/}
+        private void UpdateTodayLabel() { DateLabel.Text = today.ToString("dddd, dd. MMMM yyyy"); /*form changeable}
 
         // normal auch wieder sichtbar machen, bis 20 tage zurck, bei gewhltem Datum und WlMap_Clicked auf daten des tages springen
         private async void DateBack_Clicked(object sender, EventArgs e)
@@ -164,7 +165,7 @@ namespace Pegel_Wetter_DFFUDC
                 }
             };
 
-            MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen*/ });
+            MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen });
 
             try { await loadedFunction(); }
             catch (Exception ex) { await MainThread.InvokeOnMainThreadAsync(async () => { await DisplayAlert("Fehler", "Es ist ein Fehler aufgetreten. \nLaden nicht erfolgreich.\n" + ex.Message, "OK"); }); }
@@ -221,7 +222,7 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        /**/
+        
         private async Task AddPinsRainfall()
         {
             //fragt stationen ab
@@ -299,7 +300,7 @@ namespace Pegel_Wetter_DFFUDC
             //zeigt Ladefenster solange (() => {Funktion}) ld     Lambda = (parameters) =>"goes to" {expression_or_statement_block} -> zum schreiben anonymer Funktionen (= Funktionen ohne Name, die gleich definiert werden, oft einmalig/kurzfristig)
 
             await ShowLoadingPopup(async () =>
-            {   /* sollte aktuelles datum abfragen und aktualisieren*/
+            {   /* sollte aktuelles datum abfragen und aktualisieren
 
                 //fgt geladene pins aus API in Liste hinzu
                 await AddPinsWaterlevel();
@@ -312,7 +313,7 @@ namespace Pegel_Wetter_DFFUDC
             await LoadWaterPins();
         }
 
-        /**/
+        
         private async Task LoadWaterPins()
         {
             //testwerte
@@ -377,4 +378,5 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
     }
+    */
 }
