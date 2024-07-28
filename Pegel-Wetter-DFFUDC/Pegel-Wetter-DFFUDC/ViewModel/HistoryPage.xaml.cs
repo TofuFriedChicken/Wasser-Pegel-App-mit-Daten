@@ -9,18 +9,15 @@ using System.Windows.Input;
 namespace Pegel_Wetter_DFFUDC;
 
 public partial class HistoryPage : ContentPage
-{
+{    public ObservableCollection<RainfallModeldummy> ListRainfallStationdummy => DataStore.Instance.ListRainfallStationDummy;
+
+    public ObservableCollection<WaterlevelModeldummy> ListWaterfallStationdummy => DataStore.Instance.ListWaterlevelStationDummy;
 
     private static readonly Lazy<HistoryPage> lazy = new Lazy<HistoryPage>(() => new HistoryPage());
 
     public static HistoryPage Instance { get { return lazy.Value; } }
 
     public ObservableCollection<RainfallModel> ListRainfallStation => DataStore.Instance.ListRainfallStation;
-
-    public ObservableCollection<RainfallModeldummy> ListRainfallStationdummy => DataStore.Instance.ListRainfallStationDummy;
-
-    public ObservableCollection<WaterlevelModeldummy> ListWaterfallStationdummy => DataStore.Instance.ListWaterlevelStationDummy;
-
 
     public ObservableCollection<WaterLevelModel.Root> ListWaterlevelStation => DataStore.Instance.ListWaterlevelStation;
 
@@ -31,6 +28,9 @@ public partial class HistoryPage : ContentPage
     private List<ClassofMainListforJumps> ListofMainlist { get; set; }
 
     private List<RainfallModel> RainfallDataset { get; set; }
+
+    private List<WaterLevelModel.Root> WaterlevelDataset { get; set; }
+
 
 
     public HistoryPage()
@@ -52,6 +52,8 @@ public partial class HistoryPage : ContentPage
     {
         List<ModelInputintoHistory> loadmainlist = ListHistory.ToList();
         List<RainfallModel> loadhistorylist = ListRainfallStation.ToList();
+        List<WaterLevelModel.Root> loadhistorylistwater = ListWaterlevelStation.ToList();
+
         SaveCurrentMainlist();
         SaveCurrentHistory();
     }
@@ -105,11 +107,20 @@ public partial class HistoryPage : ContentPage
             switch (action)
             {
                 case "Return":
-                    SaveCurrentHistory();
-                    SaveCurrentMainlist();
-                    HistoryMethodClass historyreturn = new HistoryMethodClass();
-                    historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItemhistory);
-                    // historyreturn.HistoryReturnElement(ModelInputintoHistory.GetSingletonHistoryList().ListHistory, InputRainfallData.GetSingletonRainfall().ListRainfallStation, selectedItemhistory);
+                    if (selectedItemhistory.datatype == "rainfall")
+                    {
+                        SaveCurrentHistory();
+                        SaveCurrentMainlist();
+                        HistoryMethodClass historyreturn = new HistoryMethodClass();
+                        historyreturn.HistoryReturnElementrainfall(ListHistory, ListRainfallStation, selectedItemhistory);
+                    }
+                    else if (selectedItemhistory.datatype == "waterlevel")
+                    {
+                        SaveCurrentHistory();
+                        SaveCurrentMainlist();
+                        HistoryMethodClass historyreturn = new HistoryMethodClass();
+                        historyreturn.HistoryReturnElementrainfall(ListHistory, ListRainfallStation, selectedItemhistory);
+                    }
                     break;
                 default:
                     break;
@@ -117,7 +128,7 @@ public partial class HistoryPage : ContentPage
 
         }
 
-        if (e.SelectedItem is RainfallModel selectedItemmainlist)
+        if (e.SelectedItem is RainfallModel selectedItemrainparam)
         {
             action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Edit", "Detail");
 
@@ -128,11 +139,34 @@ public partial class HistoryPage : ContentPage
                     SaveCurrentMainlist();
                    // History.Add(selectedItemmainlist); // Speichern der alten Werte in die History
                     HistoryMethodClass listedit = new HistoryMethodClass();
-                    await Navigation.PushAsync(new EditListPage(selectedItemmainlist, ListHistory));
+                    await Navigation.PushAsync(new EditListPage(selectedItemrainparam, ListHistory));
                     break;
                 case "Detail":
                     HistoryMethodClass listdetail = new HistoryMethodClass();
-                    await Navigation.PushAsync(new DetailPage(selectedItemmainlist));
+                    await Navigation.PushAsync(new DetailPageRain(selectedItemrainparam));
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        if (e.SelectedItem is WaterLevelModel.Root selectedItemwaterparam)
+        {
+            action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Edit", "Detail");
+
+            switch (action)
+            {
+                case "Edit":
+                    SaveCurrentHistory();
+                    SaveCurrentMainlist();
+                    // History.Add(selectedItemmainlist); // Speichern der alten Werte in die History
+                    HistoryMethodClass listedit = new HistoryMethodClass();
+                    await Navigation.PushAsync(new EditListPage(selectedItemwaterparam, ListHistory));
+                    break;
+                case "Detail":
+                    HistoryMethodClass listdetail = new HistoryMethodClass();
+                    await Navigation.PushAsync(new DetailPageWater(selectedItemwaterparam));
                     break;
                 default:
                     break;

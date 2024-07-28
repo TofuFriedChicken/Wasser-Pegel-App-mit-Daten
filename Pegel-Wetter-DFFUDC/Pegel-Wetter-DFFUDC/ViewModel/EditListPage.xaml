@@ -13,7 +13,7 @@
         <Entry x:Name="latEntry" Placeholder="{Binding lat}" Text="{Binding lat}"/>
 
         <Label Text="Datum der Messung:"/>
-        <Entry x:Name="dateEntry" Placeholder="{Binding date}" Text="{Binding date}"/>
+        <DatePicker x:Name="dateEntry" DateSelected="OnDateEditClicked"/>
 
         <Label Text="Angaben zum Gewässer:"/>
         <Entry x:Name="informationEntry" Placeholder="{Binding information}" Text="{Binding information}"/>
