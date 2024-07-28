@@ -12,23 +12,44 @@
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <lvc:CartesianChart
-                Grid.Row="0"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Text="Startwert im x-y-Diagramm (min. 0)"/>
+            <Entry Grid.Row="0" Grid.Column="1" Text="{Binding StartIndex, Mode=TwoWay}" Keyboard="Numeric" />
+
+            <Label Grid.Row="1" Grid.Column="0" Text="Anzahl der Anzeigbaren Werte (max. 20)(muss erneut gesetzt werden, wenn Startwert verändert wird.)"/>
+            <Entry Grid.Row="1" Grid.Column="1" Text="{Binding Count, Mode=TwoWay}" Keyboard="Numeric" />
+            
+            <Label Grid.Row="2" Text="Niederschlag"/>
+
+            <lvc:CartesianChart               
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
                 Series="{Binding Rainfall}"
-                XAxes="{Binding XAxes}"
-                YAxes="{Binding YAxesrainfall}"
+                XAxes="{Binding XAxesRainfall}"
+                YAxes="{Binding YAxesRainfall}"
                 ZoomMode="X">
             </lvc:CartesianChart>
+            
+            <Label Grid.Row="4" Text="Pegelstand"/>
 
             <lvc:CartesianChart
-                Grid.Row="1"
-                Series="{Binding level}"
-                XAxes="{Binding XAxes}"
-                YAxes="{Binding YAxeslevel}"
+                Grid.Row="5"
+                Grid.ColumnSpan="2"
+                Series="{Binding Level}"
+                XAxes="{Binding XAxesLevel}"
+                YAxes="{Binding YAxesLevel}"
                 ZoomMode="X">
             </lvc:CartesianChart>
 
