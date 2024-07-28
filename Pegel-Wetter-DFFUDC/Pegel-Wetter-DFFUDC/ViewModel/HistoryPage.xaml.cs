@@ -17,9 +17,9 @@ public partial class HistoryPage : ContentPage
 
     public ObservableCollection<RainfallModel> ListRainfallStation => DataStore.Instance.ListRainfallStation;
 
-    public ObservableCollection<RainfallModeldummy> ListRainfallStationdummy => DataStore.Instance.ListRainfallStationDummy;
+    public ObservableCollection<RainfallModeldummy> ListRainfallStationdummy => DataStore.Instance.ListRainfallStationdummy;
 
-    public ObservableCollection<WaterlevelModeldummy> ListWaterfallStationdummy => DataStore.Instance.ListWaterlevelStationDummy;
+    public ObservableCollection<WaterlevelModeldummy> ListWaterfallStationdummy => DataStore.Instance.ListWaterfallStationdummy;
 
 
     public ObservableCollection<WaterLevelModel.Root> ListWaterlevelStation => DataStore.Instance.ListWaterlevelStation;
@@ -108,7 +108,7 @@ public partial class HistoryPage : ContentPage
                     SaveCurrentHistory();
                     SaveCurrentMainlist();
                     HistoryMethodClass historyreturn = new HistoryMethodClass();
-                  //  historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItemhistory);
+                    historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItemhistory);
                     // historyreturn.HistoryReturnElement(ModelInputintoHistory.GetSingletonHistoryList().ListHistory, InputRainfallData.GetSingletonRainfall().ListRainfallStation, selectedItemhistory);
                     break;
                 default:
