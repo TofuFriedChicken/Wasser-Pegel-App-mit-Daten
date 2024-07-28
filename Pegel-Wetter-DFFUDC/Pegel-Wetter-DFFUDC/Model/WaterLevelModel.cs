@@ -38,6 +38,9 @@ namespace Pegel_Wetter_DFFUDC.Model
         //}
         public class Root
         {
+            public DateTime Timestamp { get; set; }
+
+
             //public string uuid { get; set; }
             //public string number { get; set; }
             public string datatype { get; set; }

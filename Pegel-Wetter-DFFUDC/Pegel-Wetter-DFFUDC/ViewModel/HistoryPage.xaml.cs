@@ -9,7 +9,9 @@ using System.Windows.Input;
 namespace Pegel_Wetter_DFFUDC;
 
 public partial class HistoryPage : ContentPage
-{
+{    public ObservableCollection<RainfallModeldummy> ListRainfallStationdummy => DataStore.Instance.ListRainfallStationDummy;
+
+    public ObservableCollection<WaterlevelModeldummy> ListWaterfallStationdummy => DataStore.Instance.ListWaterlevelStationDummy;
 
     private static readonly Lazy<HistoryPage> lazy = new Lazy<HistoryPage>(() => new HistoryPage());
 
@@ -17,9 +19,9 @@ public partial class HistoryPage : ContentPage
 
     public ObservableCollection<RainfallModel> ListRainfallStation => DataStore.Instance.ListRainfallStation;
 
-    public ObservableCollection<RainfallModeldummy> ListRainfallStationdummy => DataStore.Instance.ListRainfallStationDummy;
+ //   public ObservableCollection<RainfallModeldummy> ListRainfallStationdummy => DataStore.Instance.ListRainfallStationdummy;
 
-    public ObservableCollection<WaterlevelModeldummy> ListWaterfallStationdummy => DataStore.Instance.ListWaterlevelStationDummy;
+ //   public ObservableCollection<WaterlevelModeldummy> ListWaterfallStationdummy => DataStore.Instance.ListWaterfallStationdummy;
 
 
     public ObservableCollection<WaterLevelModel.Root> ListWaterlevelStation => DataStore.Instance.ListWaterlevelStation;
@@ -31,6 +33,9 @@ public partial class HistoryPage : ContentPage
     private List<ClassofMainListforJumps> ListofMainlist { get; set; }
 
     private List<RainfallModel> RainfallDataset { get; set; }
+
+    private List<WaterLevelModel.Root> WaterlevelDataset { get; set; }
+
 
 
     //Lists from input form data
@@ -64,6 +69,8 @@ public partial class HistoryPage : ContentPage
     {
         List<ModelInputintoHistory> loadmainlist = ListHistory.ToList();
         List<RainfallModel> loadhistorylist = ListRainfallStation.ToList();
+        List<WaterLevelModel.Root> loadhistorylistwater = ListWaterlevelStation.ToList();
+
         SaveCurrentMainlist();
         SaveCurrentHistory();
     }
@@ -118,11 +125,20 @@ public partial class HistoryPage : ContentPage
             switch (action)
             {
                 case "Return":
-                    SaveCurrentHistory();
-                    SaveCurrentMainlist();
-                    HistoryMethodClass historyreturn = new HistoryMethodClass();
-                    historyreturn.HistoryReturnElement(ListHistory, ListRainfallStation, selectedItemhistory);
-                    // historyreturn.HistoryReturnElement(ModelInputintoHistory.GetSingletonHistoryList().ListHistory, InputRainfallData.GetSingletonRainfall().ListRainfallStation, selectedItemhistory);
+                    if (selectedItemhistory.datatype == "rainfall")
+                    {
+                        SaveCurrentHistory();
+                        SaveCurrentMainlist();
+                        HistoryMethodClass historyreturn = new HistoryMethodClass();
+                        historyreturn.HistoryReturnElementrainfall(ListHistory, ListRainfallStation, selectedItemhistory);
+                    }
+                    else if (selectedItemhistory.datatype == "waterlevel")
+                    {
+                        SaveCurrentHistory();
+                        SaveCurrentMainlist();
+                        HistoryMethodClass historyreturn = new HistoryMethodClass();
+                        historyreturn.HistoryReturnElementrainfall(ListHistory, ListRainfallStation, selectedItemhistory);
+                    }
                     break;
                 case "Delete":
                     bool confirmation = await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Löschen", "Abbrechen");    //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24)
@@ -137,8 +153,7 @@ public partial class HistoryPage : ContentPage
 
         }
 
-        // rainfall data list
-        if (e.SelectedItem is RainfallModel selectedItemmainlist)
+        if (e.SelectedItem is RainfallModel selectedItemrainparam)
         {
             action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Edit", "Detail", "Delete");
 
@@ -149,17 +164,47 @@ public partial class HistoryPage : ContentPage
                     SaveCurrentMainlist();
                    // History.Add(selectedItemmainlist); // Speichern der alten Werte in die History
                     HistoryMethodClass listedit = new HistoryMethodClass();
-                    await Navigation.PushAsync(new EditListPage(selectedItemmainlist, ListHistory));
+                    await Navigation.PushAsync(new EditListPage(selectedItemrainparam, ListHistory));
                     break;
                 case "Detail":
                     HistoryMethodClass listdetail = new HistoryMethodClass();
-                    await Navigation.PushAsync(new DetailPage(selectedItemmainlist));
+                    await Navigation.PushAsync(new DetailPageRain(selectedItemrainparam));
                     break;
                 case "Delete":
                     bool confirmation = await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Löschen", "Abbrechen");    //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24)
                     if (confirmation)
                     {
-                        ListRainfallStation.Remove(selectedItemmainlist);
+                        ListRainfallStation.Remove(selectedItemrainparam);
+                    }     
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        if (e.SelectedItem is WaterLevelModel.Root selectedItemwaterparam)
+        {
+            action = await DisplayActionSheet("ActionSheet: Send to?", "Cancel", null, "Edit", "Detail");
+
+            switch (action)
+            {
+                case "Edit":
+                    SaveCurrentHistory();
+                    SaveCurrentMainlist();
+                    // History.Add(selectedItemmainlist); // Speichern der alten Werte in die History
+                    HistoryMethodClass listedit = new HistoryMethodClass();
+                    await Navigation.PushAsync(new EditListPage(selectedItemwaterparam, ListHistory));
+                    break;
+                case "Detail":
+                    HistoryMethodClass listdetail = new HistoryMethodClass();
+                    await Navigation.PushAsync(new DetailPageWater(selectedItemwaterparam));
+                    break;
+                case "Delete":
+                    bool confirmation = await DisplayAlert("Datensatz löschen", "Willst du diese Daten wirklich löschen? Sie können danach nicht wieder hergestellt werden.", "Löschen", "Abbrechen");    //source display alert: https://learn.microsoft.com/de-de/dotnet/maui/user-interface/pop-ups?view=net-maui-8.0#display-an-alert (last visist: 14.07.24)
+                    if (confirmation)
+                    {
+                        ListWaterlevelStation.Remove(selectedItemwaterparam);
                     }
                     break;     
                 default:
