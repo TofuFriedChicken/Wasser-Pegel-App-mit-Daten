@@ -14,8 +14,8 @@
 
         <HorizontalStackLayout HorizontalOptions="End">
 
-            <Button x:Name="DateBack" BackgroundColor="White" TextColor="Blue" Text="back"/>
-            <!--Clicked="DateBack_Clicked"-->
+            <Button x:Name="DateBack" BackgroundColor="White" TextColor="Blue" Text="back" Clicked="DateBack_Clicked"/>
+            <!---->
 
             <Frame CornerRadius = "10" BackgroundColor="White">
 
@@ -23,25 +23,25 @@
 
             </Frame>
 
-            <Button x:Name="DateForward" BackgroundColor="White" TextColor="Blue" Text="forward" />
-            <!--Clicked="DateForward_Clicked"-->
+            <Button x:Name="DateForward" BackgroundColor="White" TextColor="Blue" Text="forward" Clicked="DateForward_Clicked"/>
+            <!---->
 
         </HorizontalStackLayout>
 
         <HorizontalStackLayout HorizontalOptions = "Start" >
 
-            <Button x:Name="rainfallmap" BackgroundColor="White" TextColor="Blue" Text="show only rainfall measuring station" />
-            <!--Clicked="rainfallmap_Clicked"-->
+            <Button x:Name="rainfallmap" BackgroundColor="White" TextColor="Blue" Text="show only rainfall measuring station" Clicked="rainfallmap_Clicked" />
+            <!---->
 
-            <Button x:Name="waterlevelmap" BackgroundColor="White" TextColor="Blue" Text="show only waterlevel measuring station"  />
-            <!--Clicked="waterlevelmap_Clicked"-->
+            <Button x:Name="waterlevelmap" BackgroundColor="White" TextColor="Blue" Text="show only waterlevel measuring station" Clicked="waterlevelmap_Clicked"/>
+            <!---->
 
         </HorizontalStackLayout>
 
 
         <!--create map, SizeChanged="CurrentMapSizeUpdate"-->
         <maps:Map x:Name="MyMap_swapDates"
-                  
+                  SizeChanged="CurrentMapSizeUpdate"
                   MapType="Satellite">
         </maps:Map>
 

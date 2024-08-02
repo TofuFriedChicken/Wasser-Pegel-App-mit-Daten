@@ -28,8 +28,7 @@ namespace Pegel_Wetter_DFFUDC
 {
 
     public partial class swapDates : ContentPage
-    { }
-    /*{
+    {
         //Quelle für alles, wenn nicht anders angegeben: Microsoft Documentation
 
         private DateTime today = DateTime.Today;
@@ -115,7 +114,7 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
 
-        private void UpdateTodayLabel() { DateLabel.Text = today.ToString("dddd, dd. MMMM yyyy"); /*form changeable}
+        private void UpdateTodayLabel() { DateLabel.Text = today.ToString("dddd, dd. MMMM yyyy"); /*form changeable*/}
 
         // normal auch wieder sichtbar machen, bis 20 tage zurck, bei gewhltem Datum und WlMap_Clicked auf daten des tages springen
         private async void DateBack_Clicked(object sender, EventArgs e)
@@ -166,7 +165,7 @@ namespace Pegel_Wetter_DFFUDC
                 }
             };
 
-            MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen });
+            MainThread.BeginInvokeOnMainThread(() => { this.ShowPopup(loadingPopup); /*Popup aufgerufen*/ });
 
             try { await loadedFunction(); }
             catch (Exception ex) { await MainThread.InvokeOnMainThreadAsync(async () => { await DisplayAlert("Fehler", "Es ist ein Fehler aufgetreten. \nLaden nicht erfolgreich.\n" + ex.Message, "OK"); }); }
@@ -188,7 +187,7 @@ namespace Pegel_Wetter_DFFUDC
 
         private void reloadRFPinlist()
         {
-            var pins = mainPage.LoadedPinsW;
+            var pins = mainPage._loadedPinsW ;
             if (pins == null)
             {
                 DisplayAlert("Fehler", "Die Liste ist leer. Daten knnen nicht ausgegeben werden", "Ok");
@@ -202,6 +201,7 @@ namespace Pegel_Wetter_DFFUDC
                     double latitudetest = 48.75845;
                     double longitudetest = 9.9855;
 
+                    /*
                     Pin RfPin = new Pin
                     {
 
@@ -213,7 +213,9 @@ namespace Pegel_Wetter_DFFUDC
                     RfPinslist.Add(RfPin);
 
                     string StationID = pin.StationID.ToString();
-                    //RfPin.MarkerClicked += (sender, e) => mainPage.RainfallValues_Clicked(sender, e, StationID); 
+                    //RfPin.MarkerClicked += (sender, e) => mainPage.RainfallValues_Clicked(sender, e, StationID);
+                    
+                    */
                 }
 
                 foreach (var RfPin in RfPinslist) //Fehler, hängt sich mit haltepunkten auf, reagiert nivht mehr
@@ -301,7 +303,7 @@ namespace Pegel_Wetter_DFFUDC
             //zeigt Ladefenster solange (() => {Funktion}) ld     Lambda = (parameters) =>"goes to" {expression_or_statement_block} -> zum schreiben anonymer Funktionen (= Funktionen ohne Name, die gleich definiert werden, oft einmalig/kurzfristig)
 
             await ShowLoadingPopup(async () =>
-            {   /* sollte aktuelles datum abfragen und aktualisieren
+            {   //sollte aktuelles datum abfragen und aktualisieren
 
                 //fgt geladene pins aus API in Liste hinzu
                 await AddPinsWaterlevel();
@@ -379,5 +381,5 @@ namespace Pegel_Wetter_DFFUDC
             }
         }
     }
-    */
+    
 }

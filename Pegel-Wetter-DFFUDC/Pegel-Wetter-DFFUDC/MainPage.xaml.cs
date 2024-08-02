@@ -328,8 +328,8 @@ namespace Pegel_Wetter_DFFUDC
         // go to other Pages
         public async void GoSwapDates(object sender, EventArgs e)
         {
-            //await Navigation.PushAsync(new swapDates());
-            await DisplayAlert("Fehler", "Diese Seite ist momentan fehlerhaft. Der Code ist vorhanden. Wir bitten um Verst‰ndnis.", "Schlieﬂen");
+            await Navigation.PushAsync(new swapDates());
+            //await DisplayAlert("Fehler", "Diese Seite ist momentan fehlerhaft. Der Code ist vorhanden. Wir bitten um Verst‰ndnis.", "Schlieﬂen");
         }
 
         public async void GoCurrentData(object sender, EventArgs e)
